@@ -1,3 +1,14 @@
+// constants are just references to values (string values here)
+// collected in one place and defined as const
+//
+// You do not have to use constants
+// But done well they:
+// - Make it easier to avoid typos
+// - Help make use of IDE completion
+// - Make it easy if the value changes
+//    - only need to change the value here
+//    - the constant reference doesn't change
+
 export const LOGIN_STATUS = {
     PENDING: 'pending',
     NOT_LOGGED_IN: 'notLoggedIn',
@@ -8,8 +19,8 @@ export const SERVER = {
     AUTH_MISSING: 'auth-missing',
     AUTH_INSUFFICIENT: 'auth-insufficient',
     REQUIRED_USERNAME: 'required-username',
-    REQUIRED_WORD: 'required-word',
-    INVALID_WORD: 'invalid-word',
+    REQUIRED_INFO: 'required-info',
+    INVALID_INFO: 'invalid-word',
 };
 
 export const CLIENT = {
@@ -24,9 +35,22 @@ export const MESSAGES = {
     [SERVER.AUTH_MISSING]: `You may have logged out or your session has expired. Please try login again`,
     [SERVER.AUTH_INSUFFICIENT]: 'Your username/password combination does not match any records, please try again.',
     [SERVER.REQUIRED_USERNAME]: 'Please enter a valid (1 to 20 letters and/or numbers) username',
-    [SERVER.REQUIRED_WORD]: `Your input was empty.Please submit your word again.`,
-    [SERVER.INVALID_WORD]: `Your input was invalid. 
-                     Please submit a word that contains at least one letter, 
-                     and only contains English letters. Please try again.`,
+    [SERVER.REQUIRED_INFO]: `Your submitted info was incorrect. Please check and send it again.`,
+    [SERVER.INVALID_INFO]: `Your submitted info was invalid. It doesn't seem to exist in our library. Please try again.`,
     default: 'Something went wrong.  Please try again',
+};
+
+export const ACTIONS = {
+    LOG_IN: 'logIn',
+    LOG_OUT: 'logOut',
+    START_LOADING_USER_LIBRARY: 'startLoadingUserLibrary',
+    SAVE_ALBUM: 'saveAlbum',
+    REPORT_ERROR: 'reportError',
+    REPLACE_USER_LIBRARY: 'replaceUserLibrary',
+    START_LOADING_ALBUMS: 'startLoadingAlbums',
+    REPLACE_ALBUMS: 'replaceAlbums',
+    START_LOADING_ALBUM_TRACKS: 'startLoadingAlbumTracks',
+    REPLACE_ALBUM_TRACKS: 'replaceAlbumTracks',
+    START_SEARCH_ALBUMS: 'startSearchAlbums',
+    SET_PAGE: 'setPage',
 };

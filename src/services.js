@@ -30,7 +30,7 @@ const sharedParamsUrl =
     `limit=${sharedParams.limit}&` +
     `offset=${sharedParams.offset}`;
 
-export function fetchNewRelease(accessToken, tokenType) {
+export function fetchNewAlbums(accessToken, tokenType) {
     return fetch(`https://api.spotify.com/v1/browse/new-releases?` + 
                  `${sharedParamsUrl}`, {
         method: 'GET',

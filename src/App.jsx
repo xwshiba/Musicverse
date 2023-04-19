@@ -1,19 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import './App.css';
 import './Forms.css';
+
+import reducer, {initialState} from './reducer';
 
 import {
   LOGIN_STATUS,
   CLIENT,
   SERVER,
+  ACTIONS,
 } from './constants';
+
 import {
   fetchSession,
   fetchLogin,
   fetchLogout,
   fetchAuthToken,
-  fetchNewRelease,
+  fetchNewAlbums,
   fetchSearch,
   fetchAlbumTracks,
   fetchUserLibrary,
@@ -31,161 +35,106 @@ import AlbumTracks from './AlbumTracks';
 
 function App() {
 
-  const [page, setPage] = useState('Albums');
-  const [error, setError] = useState('');
-  const [loginStatus, setLoginStatus] = useState(LOGIN_STATUS.PENDING); // one variable covers multiple cases
-  const [username, setUsername] = useState('');
-  const [isUserLibraryPending, setIsUserLibraryPending] = useState(false);
-  const [userLibrary, setUserLibrary] = useState({});
+  // All our global state is from the reducer
+  // Some "local" state will remain in various components
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  const [prompt, setPrompt] = useState('New Albums');
-  const [albums, setAlbums] = useState({});
-  const [isAlbumsPending, setIsAlbumsPending] = useState(false);
-
-  const [albumTracks, setAlbumTracks] = useState({});
-  const [isAlbumTracksPending, setIsAlbumTracksPending] = useState(false);
-
+  // We also pass "action" functions that do things and update state
+  // The top level state has a BUNCH of these
+  // We can move these elsewhere if we think it helps
+  // - to move, these would have to get dispatch somehow
+  // - such as adding dispatch to the params
+  // - or having a function that takes dispatch and returns these functions
+  // For now, recognize the benefit of keeping the JSX returned at the bottom of this component
+  // clean and readable because we have all of these state-management functions here
 
   function onLogin(username) {
-    setLoginStatus(LOGIN_STATUS.PENDING);
-    setIsUserLibraryPending(true);
+    dispatch({type: ACTIONS.START_LOADING_USER_LIBRARY});
+
     fetchLogin(username)
-      .then(userData => {
-        setError(''); // in case another action had set an error
-        setUserLibrary(userData);
-        setIsUserLibraryPending(false);
-        setUsername(username);
-        setLoginStatus(LOGIN_STATUS.IS_LOGGED_IN);
+      .then(fetchedUserLibrary => {
+        dispatch({ type: ACTIONS.LOG_IN, username });
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary: fetchedUserLibrary });
       })
       .catch(err => {
-        setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-        setError(err?.error || 'ERROR');
-        setIsUserLibraryPending(false);
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
   };
 
   function onLogout(e) {
     e.preventDefault();
-    setError('');
-    setUsername('');
-    setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-    setUserLibrary({});
+    dispatch({ type: ACTIONS.LOG_OUT });
     fetchLogout() // We don't really care about results
       .catch(err => {
-        setError(err?.error || 'ERROR'); // Ensure that the error ends up truthy
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
   };
 
   function loadAlbumsPage() {
-    setIsAlbumsPending(true);
-    setPrompt('New Albums');
+    dispatch({ type: ACTIONS.START_LOADING_ALBUMS, page: 'Albums', prompt: 'New Albums' });
 
     fetchAuthToken()
       .then(tokenInfo => {
-        return fetchNewRelease(tokenInfo.access_token, tokenInfo.token_type);
+        return fetchNewAlbums(tokenInfo.access_token, tokenInfo.token_type);
       })
-      .then(newAlbumsInfo => {
-        setAlbums(newAlbumsInfo.albums.items);
-        setIsAlbumsPending(false);
+      .then(fetchedAlbums => {
+        dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedAlbums.albums.items }); // array
       })
       .catch(err => {
         console.log(err);
-        setIsAlbumsPending(false);
-        if (err?.error === CLIENT.NO_SESSION) { // expected "error"
-          setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-          // Not yet logged in isn't a reported error
-          return;
-        }
-        // For unexpected errors, report them
-        setError(err?.error || 'ERROR');
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
 
   function loadAlbumTracks(id){
-    setIsAlbumTracksPending(true);
-    setPage('AlbumTracks');
+    dispatch({ type: ACTIONS.START_LOADING_ALBUM_TRACKS, page: 'AlbumTracks' });
 
     fetchAuthToken()
       .then(tokenInfo => {
         return fetchAlbumTracks(tokenInfo.access_token, tokenInfo.token_type, id);
       })
-      .then(tracksInfo => {
-        setAlbumTracks(tracksInfo);
-        setIsAlbumTracksPending(false);
+      .then(fetchedAlbumTracks => {
+        dispatch({ type: ACTIONS.REPLACE_ALBUM_TRACKS, albumTracks: fetchedAlbumTracks });
       })
       .catch(err => {
         console.log(err);
-        setIsAlbumTracksPending(false);
-        if (err?.error === CLIENT.NO_SESSION) { // expected "error"
-          setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-          // Not yet logged in isn't a reported error
-          return;
-        }
-        // For unexpected errors, report them
-        setError(err?.error || 'ERROR');
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
 
   function onSearch(query) {
-    setIsAlbumsPending(true);
-    setPage('Albums');
-    setPrompt('Search Results');
+    dispatch({ type: ACTIONS.START_SEARCH_ALBUMS, page: 'Albums', prompt: 'Searched Results' });
 
     fetchAuthToken()
       .then(tokenInfo => {
         return fetchSearch(query, tokenInfo.access_token, tokenInfo.token_type);
       })
-      .then(searchedAlbumsInfo => {
-        setAlbums(searchedAlbumsInfo.albums.items);
-        setIsAlbumsPending(false);
+      .then(fetchedSearchedAlbums => {
+        dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedSearchedAlbums.albums.items }); // array
       })
       .catch(err => {
         console.log(err);
-        setIsAlbumsPending(false);
-        if (err?.error === CLIENT.NO_SESSION) { // expected "error"
-          setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-          // Not yet logged in isn't a reported error
-          return;
-        }
-        // For unexpected errors, report them
-        setError(err?.error || 'ERROR');
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
 
-  function onAddAlbum(albumInfo) {
-    setIsUserLibraryPending(true);
+  function onSaveAlbum(albumInfo) {
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchSaveAlbum(albumInfo)
-      .then(albumData => {
-        const { albums } = userLibrary;
-        // prevent obj mutation
-        const updated_albums = {
-          ...albums,
-          [albumData.id]: albumData,
-        };
-
-        setUserLibrary({
-          ...userLibrary,
-          albums: updated_albums,
-        });
-
-        setIsUserLibraryPending(false);
+      .then(fetchedSavedAlbum => {
+        dispatch({ type: ACTIONS.SAVE_ALBUM, savedAlbum: fetchedSavedAlbum});
       })
       .catch(err => {
         console.log(err);
-        if (err?.error === SERVER.AUTH_MISSING) { // session expired
-          setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
-        };
-        setIsUserLibraryPending(false);
-        setError(err?.error || 'ERROR'); // Ensure that the error ends up truthy
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
   };
 
   function checkForSession() {
     fetchSession()
       .then(session => { // The returned object from the service call
-        setUsername(session.username);
-        setLoginStatus(LOGIN_STATUS.IS_LOGGED_IN); // We do not have todos yet!
+        dispatch({ type: ACTIONS.LOG_IN, username: session.username });
         return fetchUserLibrary(); // By returning this promise we can chain the original promise
       })
       .catch(err => {
@@ -194,18 +143,18 @@ function App() {
         }
         return Promise.reject(err); // Pass any other error unchanged
       })
-      .then(userData => {
-        setUserLibrary(userData);
+      .then(userLibrary => {
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary})
       })
       .catch(err => {
         console.log(err);
         if (err?.error === CLIENT.NO_SESSION) { // expected "error"
-          setLoginStatus(LOGIN_STATUS.NOT_LOGGED_IN);
+          dispatch({ type: ACTIONS.LOG_OUT });
           // Not yet logged in isn't a reported error
           return;
         }
         // For unexpected errors, report them
-        setError(err?.error || 'ERROR'); // Ensure that the error ends up truthy
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
 
   };
@@ -225,27 +174,27 @@ function App() {
       <main className="main">
         <Nav
           onSearch={onSearch} 
-          username={username} 
-          setPage={setPage}
+          username={state.username} 
+          setPage={( page ) => dispatch({ type: ACTIONS.SET_PAGE, page})}
           onLogout={onLogout} /> 
         {/* can use useContext */}
-        {error && <Status error={error} />}
-        {loginStatus === LOGIN_STATUS.PENDING && <Loading className="login__waiting">Loading user...</Loading>}
-        {loginStatus === LOGIN_STATUS.NOT_LOGGED_IN && page === 'Login' && <LoginForm onLogin={onLogin} />}
-        {loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (
+        {state.error && <Status error={state.error} />}
+        {state.loginStatus === LOGIN_STATUS.PENDING && <Loading className="login__waiting">Loading user...</Loading>}
+        {state.loginStatus === LOGIN_STATUS.NOT_LOGGED_IN && state.page === 'Login' && <LoginForm onLogin={onLogin} />}
+        {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (
           <div className="content">
-            <h1>Welcome, {username}!</h1>
+            <h1>Welcome, {state.username}!</h1>
             <UserLibrary
-              isUserLibraryPending={isUserLibraryPending}
-              userLibrary={userLibrary}
+              isUserLibraryPending={state.isUserLibraryPending}
+              userLibrary={state.userLibrary}
             />
             <Controls onLogout={onLogout} />
           </div>
         )}
-        {isAlbumsPending === true && page === 'Albums' && <Loading className="albums__waiting">Loading Albums...</Loading>}
-        {isAlbumsPending === false && page === 'Albums' && <Albums prompt = {prompt} albums = {albums} loadAlbumTracks={loadAlbumTracks}/>}
-        {isAlbumTracksPending === true && page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
-        {isAlbumTracksPending === false && page === 'AlbumTracks' && <AlbumTracks albumTracks={albumTracks} onAddAlbum={onAddAlbum}/>}
+        {state.isAlbumsPending === true && state.page === 'Albums' && <Loading className="albums__waiting">Loading Albums...</Loading>}
+        {state.isAlbumsPending === false && state.page === 'Albums' && <Albums prompt = {state.prompt} albums = {state.albums} loadAlbumTracks={loadAlbumTracks}/>}
+        {state.isAlbumTracksPending === true && state.page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
+        {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' && <AlbumTracks albumTracks={state.albumTracks} onAddAlbum={onSaveAlbum}/>}
       </main>
     </div>
   );

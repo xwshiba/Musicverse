@@ -2,7 +2,6 @@ import SearchBar from './SearchBar';
 import UserButton from './UserButton';
 
 function Nav({ onSearch, username, setPage, onLogout }) {
-
     const navigate = (e) => {
         setPage(e.target.dataset.page);
     };

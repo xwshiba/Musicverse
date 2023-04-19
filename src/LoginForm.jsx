@@ -12,7 +12,7 @@ function LoginForm({ onLogin }) {
 
     function onChange(e) {
         setUsername(e.target.value);
-    }
+    };
 
     function onSubmit(e) {
         e.preventDefault(); // Remember this! Can be very confusing if page reloads
@@ -20,7 +20,7 @@ function LoginForm({ onLogin }) {
             // We could enforce more requirements, but I'm keeping this simple
             onLogin(username); // "action" function we were passed in
         }
-    }
+    };
 
     return (
         <div className="login">

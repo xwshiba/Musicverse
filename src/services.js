@@ -19,8 +19,57 @@ export function fetchAuthToken() {
         })
 };
 
+const sharedParams = {
+    country: "US",
+    limit: 10,
+    offset: 0,
+};
+
+const sharedParamsUrl = 
+    `country=${sharedParams.country}&` +
+    `limit=${sharedParams.limit}&` +
+    `offset=${sharedParams.offset}`;
+
 export function fetchNewRelease(accessToken, tokenType) {
-    return fetch('https://api.spotify.com/v1/browse/new-releases', {
+    return fetch(`https://api.spotify.com/v1/browse/new-releases?` + 
+                 `${sharedParamsUrl}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `${tokenType} ${accessToken}`
+        },
+    })
+        .catch(() => Promise.reject({ error: 'network-error' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            };
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
+};
+
+export function fetchAlbumTracks(accessToken, tokenType, id) {
+    return fetch(`https://api.spotify.com/v1/albums/${id}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `${tokenType} ${accessToken}`
+        },
+    })
+        .catch(() => Promise.reject({ error: 'network-error' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            };
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
+};
+
+export function fetchSearch(query, accessToken, tokenType) {
+    return fetch(`https://api.spotify.com/v1/search?q=${ query }&type=album&`+
+                 `${sharedParamsUrl}`, {
         method: 'GET',
         headers: {
             Authorization: `${tokenType} ${accessToken}`
@@ -91,8 +140,8 @@ export function fetchLogout() {
         });
 };
 
-export function fetchUserWords() {
-    return fetch('/api/v1/words', {
+export function fetchUserLibrary() {
+    return fetch('/api/v1/userLibrary', {
         method: 'GET',
         headers: {
             'content-type': 'application/json',
@@ -108,14 +157,14 @@ export function fetchUserWords() {
         })
 };
 
-export function fetchChangeUserWords(word) {
-    return fetch('/api/v1/words', {
-        method: 'PUT',
+export function fetchSaveAlbum(albumInfo) {
+    return fetch('/api/v1/userLibrary/albums', {
+        method: 'POST',
         headers: {
             'content-type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ word }),
+        body: JSON.stringify({ albumInfo }),
     })
         .catch(err => Promise.reject({ error: 'network-error' }))
         .then(response => {

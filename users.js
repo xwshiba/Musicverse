@@ -1,4 +1,4 @@
-const wordFor = {};
+const users = {};
 
 function isValidUsername(username) {
     let isValid = true;
@@ -7,14 +7,16 @@ function isValidUsername(username) {
     return isValid;
 };
 
-function isValidWord(word) {
-    let isValid = true;
-    isValid = isValid && word.match(/^[A-Za-z]*$/);
-    return isValid;
+function getUserData(username) {
+    return users[username];
+};
+
+function addUserData(username, userData) {
+    users[username] = userData;
 };
 
 module.exports = {
     isValidUsername,
-    isValidWord,
-    wordFor,
+    getUserData,
+    addUserData,
 };

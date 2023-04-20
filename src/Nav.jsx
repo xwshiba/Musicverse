@@ -1,9 +1,16 @@
 import SearchBar from './SearchBar';
 import UserButton from './UserButton';
 
-function Nav({ onSearch, username, setPage, onLogout }) {
-    const navigate = (e) => {
+function Nav({ 
+    onSearch, 
+    username, 
+    setPage, 
+    loadAlbumsPage, 
+    onLogout }) {
+
+    const navigateAndLoad = (e) => {
         setPage(e.target.dataset.page);
+        loadAlbumsPage();
     };
 
     return (
@@ -13,7 +20,7 @@ function Nav({ onSearch, username, setPage, onLogout }) {
                     className="navbar__logo" 
                     href="#/home"
                     data-page="Home"
-                    onClick={(e) => navigate(e)} >Musicverse</a>
+                    onClick={(e) => setPage(e.target.dataset.page)} >Musicverse</a>
             </div>
             <SearchBar onSearch={onSearch} />
             <ul className="navbar__links">
@@ -22,14 +29,14 @@ function Nav({ onSearch, username, setPage, onLogout }) {
                         href="#/albums" 
                         className="navbar__subheader"
                         data-page="Albums"
-                        onClick={(e) => navigate(e)} >Albums</a>
+                        onClick={(e) => navigateAndLoad(e)} >Albums</a>
                 </li>
                 <li className="navbar__item">
                     <a 
                         href="#/artists" 
                         className="navbar__subheader"
                         data-page="Artists"
-                        onClick={(e) => navigate(e)} >Artists</a>
+                        onClick={(e) => setPage(e.target.dataset.page)} >Artists</a>
                 </li>
                 <UserButton username={username} setPage={setPage} onLogout={onLogout} />
             </ul>

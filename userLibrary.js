@@ -59,16 +59,16 @@ function makeUserLibrary() {
         return reviews[id]; // might return undefined
     };
 
-    userLibrary.addReview = function addReview(albumId, content) {
+    userLibrary.addReview = function addReview(content, albumInfo) {
         const id = uuid();
         const date = Date.now();
         reviews[id] = {
             id,
             content,
             date,
-            albumId: userLibrary.getAlbum(albumId),
+            albumInfo,
         };
-        albums[albumId].reviewId = id;
+        return id;
     };
 
     userLibrary.deleteReview = function deleteReview(id) {

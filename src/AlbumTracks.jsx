@@ -1,9 +1,14 @@
+import ReviewForm from "./ReviewForm";
+
 function AlbumTracks({
     albumTracks,
-    onAddAlbum,
+    onSaveAlbum,
+    onDeleteAlbum,
+    userLibrary,
+    onAddReview,
 }) {
-    const {album_type, id, images, name, release_date, tracks, artists} = albumTracks;
-    const {items} = tracks;
+    const { album_type, id, images, name, release_date, tracks, artists } = albumTracks;
+    const { items } = tracks;
 
     const formatTime = milliseconds => { // a referenced function to translate milliseconds
         const seconds = Math.floor((milliseconds / 1000) % 60);
@@ -15,6 +20,20 @@ function AlbumTracks({
             minutes.toString().padStart(2, "0"),
             seconds.toString().padStart(2, "0")
         ].join(":");
+    };
+
+    function onSubmit(e, userReview) {
+        e.preventDefault(); // Remember this! Can be very confusing if page reloads
+        if (userReview) {  // Don't allow blank username to try login
+            // We could enforce more requirements, but I'm keeping this simple
+            const reviewedAlbumInfo = {
+                albumId: id,
+                name,
+                images,
+                artists,
+            };
+            onAddReview(userReview, reviewedAlbumInfo); // "action" function we were passed in
+        }
     };
 
     return (
@@ -33,21 +52,27 @@ function AlbumTracks({
             </div>
 
             <div className="album-tracks__control">
-                <button 
-                    className="control__unsaved"
-                    onClick={() => onAddAlbum({
+                {userLibrary?.albums?.[id] ? ( // avoid userLibrary empty errors
+                <button
+                        className="album-tracks__control-btn btn"
+                    onClick={() => onDeleteAlbum(id)}>
+                    Unsave The Album
+                </button>): 
+                (<button
+                        className="album-tracks__control-btn btn"
+                    onClick={() => onSaveAlbum({
                         id,
                         name,
                         images,
                         artists,
                     })}>
-                        Save The Album
-                </button>
+                    Save The Album
+                </button>)}
             </div>
 
             <ul className="album-tracks__tracks">
                 {items.map((item) => {
-                    const {id, name, duration_ms} = item;
+                    const { id, name, duration_ms } = item;
                     return (
                         <li key={id} className="album-tracks__item">
                             <span className="album-tracks__name">{name}</span>
@@ -56,25 +81,7 @@ function AlbumTracks({
                     )
                 })}
             </ul>
-            <form
-                action="#/comment"
-                className="forms forms__change"
-                method="POST" >
-                <label className="forms__label">
-                    <span className="forms__tag">Write review</span>
-                    <textarea
-                        className="forms__textarea"
-                        rows="5"
-                        placeholder="Share your reviews, thoughts and please be kind:)"
-                        name="comment" />
-                </label>
-                <button
-                    type="submit"
-                    className="forms__btn btn"
-                >
-                    Submit
-                </button>
-            </form>
+            <ReviewForm onSubmit={onSubmit}/>
         </section>
     );
 }

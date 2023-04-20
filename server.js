@@ -108,36 +108,46 @@ app.post('/api/v1/userLibrary/albums', (req, res) => {
     res.json(userLibrary.getAlbum(id));
 });
 
-// user cannot post review if user didn't save the album
+app.delete('/api/v1/userLibrary/albums/:id', (req, res) => {
+    const sid = req.cookies.sid;
+    const username = sid ? sessions.getSessionUser(sid) : '';
+    if (!sid || !users.isValidUsername(username)) {
+        res.status(401).json({ error: 'auth-missing' });
+        return;
+    };
 
+    const { id } = req.params;
+    const userLibrary = users.getUserData(username);
+    const exists = userLibrary.containsAlbum(id);
+    if (exists) { // if it's empty object
+        userLibrary.deleteAlbum(id);
+    };
 
+    res.json({ message: exists ? `Album ${id} deleted` : `Album ${id} did not exist` });
+});
 
+app.post('/api/v1/userLibrary/reviews', (req, res) => {
+    const sid = req.cookies.sid;
+    const username = sid ? sessions.getSessionUser(sid) : '';
+    if (!sid || !users.isValidUsername(username)) {
+        res.status(401).json({ error: 'auth-missing' });
+        return;
+    };
 
-// app.put('/api/v1/words', (req, res) => {
-//     // Session checks for these are very repetitive - a good place to abstract out
-//     const sid = req.cookies.sid;
-//     const username = sid ? sessions.getSessionUser(sid) : '';
-//     if (!sid || !username) {
-//         res.status(401).json({ error: 'auth-missing' });
-//         return;
-//     }
+    const { content, reviewedAlbumInfo } = req.body;
+    const userLibrary = users.getUserData(username);
 
-//     const { word } = req.body;
+    if (!content || !reviewedAlbumInfo) { // reject if either is empty
+        res.status(400).json({ error: 'required-info' });
+        return;
+    };
 
-//     if (!word && word !== '') {
-//         res.status(400).json({ error: 'required-word' });
-//         return;
-//     }
+    // user cannot post review if user didn't save the album
+    // business logic
+    // otherwise will need to find a way to save the album info somewhere
 
-//     if (!users.isValidWord(word)) {
-//         res.status(400).json({ error: 'invalid-word' });
-//         return;
-//     }
-
-//     users.wordFor[username] = word;
-
-//     res.json({ username, storedWord: word });
-// });
-
+    const id = userLibrary.addReview(content, reviewedAlbumInfo);
+    res.json(userLibrary.getReviewById(id));
+});
 
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

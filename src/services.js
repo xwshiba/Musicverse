@@ -1,6 +1,6 @@
-const authTokenBody = `grant_type=client_credentials&client_id=` + 
-                      `${process.env.REACT_APP_CLIENT_ID}` + 
-                      `&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`;
+const authTokenBody = `grant_type=client_credentials&client_id=` +
+    `${process.env.REACT_APP_CLIENT_ID}` +
+    `&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`;
 
 export function fetchAuthToken() {
     return fetch('https://accounts.spotify.com/api/token', {
@@ -25,14 +25,14 @@ const sharedParams = {
     offset: 0,
 };
 
-const sharedParamsUrl = 
+const sharedParamsUrl =
     `country=${sharedParams.country}&` +
     `limit=${sharedParams.limit}&` +
     `offset=${sharedParams.offset}`;
 
 export function fetchNewAlbums(accessToken, tokenType) {
-    return fetch(`https://api.spotify.com/v1/browse/new-releases?` + 
-                 `${sharedParamsUrl}`, {
+    return fetch(`https://api.spotify.com/v1/browse/new-releases?` +
+        `${sharedParamsUrl}`, {
         method: 'GET',
         headers: {
             Authorization: `${tokenType} ${accessToken}`
@@ -68,8 +68,8 @@ export function fetchAlbumTracks(accessToken, tokenType, id) {
 };
 
 export function fetchSearch(query, accessToken, tokenType) {
-    return fetch(`https://api.spotify.com/v1/search?q=${ query }&type=album&`+
-                 `${sharedParamsUrl}`, {
+    return fetch(`https://api.spotify.com/v1/search?q=${query}&type=album&` +
+        `${sharedParamsUrl}`, {
         method: 'GET',
         headers: {
             Authorization: `${tokenType} ${accessToken}`
@@ -173,4 +173,39 @@ export function fetchSaveAlbum(albumInfo) {
             }
             return response.json();
         })
+};
+
+export function fetchDeleteAlbum(id) {
+    return fetch(`/api/v1/userLibrary/albums/${id}`, {
+        method: 'DELETE',
+    })
+        .catch(() => Promise.reject({ error: 'networkError' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
+};
+
+export function fetchAddReview(content, reviewedAlbumInfo) {
+    return fetch('/api/v1/userLibrary/reviews', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content, reviewedAlbumInfo }),
+    })
+        .catch(err => Promise.reject({ error: 'network-error' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
 };

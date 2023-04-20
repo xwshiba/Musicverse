@@ -27,6 +27,7 @@ function reducer(state, action) {
                 error: '',
                 loginStatus:LOGIN_STATUS.IS_LOGGED_IN,
                 username: action.username,
+                page: action.page,
             };
 
         case ACTIONS.START_LOADING_USER_LIBRARY:  // actions are the change in state, not how that change happened
@@ -120,6 +121,19 @@ function reducer(state, action) {
                 },
                 isUserLibraryPending: false,
             };
+        
+        case ACTIONS.ADD_REVIEW:
+            return {
+                ...state,
+                userLibrary: {
+                    ...state.userLibrary,
+                    reviews: {
+                        ...state.userLibrary.reviews,
+                        [action.addedReview.id]: action.addedReview,
+                    },
+                },
+                isUserLibraryPending: false,
+            }
         
         case ACTIONS.SET_PAGE:
             return {

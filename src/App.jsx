@@ -21,7 +21,9 @@ import {
   fetchSearch,
   fetchAlbumTracks,
   fetchUserLibrary,
-  fetchSaveAlbum
+  fetchSaveAlbum,
+  fetchDeleteAlbum,
+  fetchAddReview
 } from './services';
 
 import Nav from './Nav';
@@ -53,7 +55,7 @@ function App() {
 
     fetchLogin(username)
       .then(fetchedUserLibrary => {
-        dispatch({ type: ACTIONS.LOG_IN, username });
+        dispatch({ type: ACTIONS.LOG_IN, username, page: 'Account' });
         dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary: fetchedUserLibrary });
       })
       .catch(err => {
@@ -123,12 +125,45 @@ function App() {
 
     fetchSaveAlbum(albumInfo)
       .then(fetchedSavedAlbum => {
-        dispatch({ type: ACTIONS.SAVE_ALBUM, savedAlbum: fetchedSavedAlbum});
+        dispatch({ type: ACTIONS.SAVE_ALBUM, savedAlbum: fetchedSavedAlbum });
       })
       .catch(err => {
         console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
+  };
+
+  function onDeleteAlbum(id) {
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
+
+    fetchDeleteAlbum(id)
+      .then(() => {
+        return fetchUserLibrary(); // Return the promise so we can chain
+      })
+      .then(userLibrary => {
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
+      })
+      .catch(err => {
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+      });
+  };
+
+  function onAddReview(content, reviewedAlbumInfo) {
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
+
+    fetchAddReview(content, reviewedAlbumInfo)
+      .then(fetchedAddedReview => {
+        dispatch({ type: ACTIONS.ADD_REVIEW, addedReview: fetchedAddedReview });
+        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+      });
+  };
+
+  function setPage(page) {
+    dispatch({ type: ACTIONS.SET_PAGE, page });
   };
 
   function checkForSession() {
@@ -156,7 +191,6 @@ function App() {
         // For unexpected errors, report them
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
-
   };
 
   // Here we use a useEffect to perform the initial loading
@@ -175,14 +209,15 @@ function App() {
         <Nav
           onSearch={onSearch} 
           username={state.username} 
-          setPage={( page ) => dispatch({ type: ACTIONS.SET_PAGE, page})}
+          setPage={setPage}
+          loadAlbumsPage={loadAlbumsPage}
           onLogout={onLogout} /> 
         {/* can use useContext */}
         {state.error && <Status error={state.error} />}
         {state.loginStatus === LOGIN_STATUS.PENDING && <Loading className="login__waiting">Loading user...</Loading>}
         {state.loginStatus === LOGIN_STATUS.NOT_LOGGED_IN && state.page === 'Login' && <LoginForm onLogin={onLogin} />}
-        {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && (
-          <div className="content">
+        {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && state.page === 'Account' && (
+          <div className="account">
             <h1>Welcome, {state.username}!</h1>
             <UserLibrary
               isUserLibraryPending={state.isUserLibraryPending}
@@ -194,7 +229,13 @@ function App() {
         {state.isAlbumsPending === true && state.page === 'Albums' && <Loading className="albums__waiting">Loading Albums...</Loading>}
         {state.isAlbumsPending === false && state.page === 'Albums' && <Albums prompt = {state.prompt} albums = {state.albums} loadAlbumTracks={loadAlbumTracks}/>}
         {state.isAlbumTracksPending === true && state.page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
-        {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' && <AlbumTracks albumTracks={state.albumTracks} onAddAlbum={onSaveAlbum}/>}
+        {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' && 
+          <AlbumTracks 
+            albumTracks={state.albumTracks} 
+            onSaveAlbum={onSaveAlbum}
+            onDeleteAlbum={onDeleteAlbum}
+            userLibrary={state.userLibrary}
+            onAddReview={onAddReview} />}
       </main>
     </div>
   );

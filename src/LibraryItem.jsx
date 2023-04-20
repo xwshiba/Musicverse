@@ -9,7 +9,8 @@ function LibraryItem({
     return (
         <>
             <AlbumItems albums={albums}/>
-            <ReviewItems reviews={reviews}/>
+            <ReviewItems 
+                reviews={reviews}/>
         </>
     );
 }

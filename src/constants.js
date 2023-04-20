@@ -20,7 +20,7 @@ export const SERVER = {
     AUTH_INSUFFICIENT: 'auth-insufficient',
     REQUIRED_USERNAME: 'required-username',
     REQUIRED_INFO: 'required-info',
-    INVALID_INFO: 'invalid-word',
+    INVALID_INFO: 'invalid-info',
 };
 
 export const CLIENT = {
@@ -52,5 +52,6 @@ export const ACTIONS = {
     START_LOADING_ALBUM_TRACKS: 'startLoadingAlbumTracks',
     REPLACE_ALBUM_TRACKS: 'replaceAlbumTracks',
     START_SEARCH_ALBUMS: 'startSearchAlbums',
+    ADD_REVIEW: 'addReview',
     SET_PAGE: 'setPage',
 };

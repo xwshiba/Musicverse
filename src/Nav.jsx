@@ -6,7 +6,8 @@ function Nav({
     username, 
     setPage, 
     loadAlbumsPage, 
-    onLogout }) {
+    onLogout 
+}) {
 
     const navigateAndLoad = (e) => {
         setPage(e.target.dataset.page);
@@ -30,13 +31,6 @@ function Nav({
                         className="navbar__subheader"
                         data-page="Albums"
                         onClick={(e) => navigateAndLoad(e)} >Albums</a>
-                </li>
-                <li className="navbar__item">
-                    <a 
-                        href="#/artists" 
-                        className="navbar__subheader"
-                        data-page="Artists"
-                        onClick={(e) => setPage(e.target.dataset.page)} >Artists</a>
                 </li>
                 <UserButton username={username} setPage={setPage} onLogout={onLogout} />
             </ul>

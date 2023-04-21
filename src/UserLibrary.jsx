@@ -4,6 +4,7 @@ import LibraryItem from './LibraryItem';
 function UserLibrary({
     isUserLibraryPending,
     userLibrary,
+    getItemDetails,
 }) {
     // All this code before the return is to make the return easier to skim
     const SHOW = {  // a constant used only in this component
@@ -26,7 +27,8 @@ function UserLibrary({
             {show === SHOW.PENDING && <Loading className="library__waiting">Loading User Library...</Loading>}
             {(show === SHOW.EMPTY || show === SHOW.USERLIBRARY) &&
                 <LibraryItem 
-                    userLibrary={userLibrary}/>}
+                    userLibrary={userLibrary}
+                    getItemDetails={getItemDetails}/>}
         </div>
     );
 };

@@ -34,6 +34,7 @@ import Controls from './Controls';
 import UserLibrary from './UserLibrary';
 import Albums from './Albums';
 import AlbumTracks from './AlbumTracks';
+import ItemDetails from './ItemDetails';
 
 function App() {
 
@@ -128,6 +129,10 @@ function App() {
         dispatch({ type: ACTIONS.SAVE_ALBUM, savedAlbum: fetchedSavedAlbum });
       })
       .catch(err => {
+        // must report session expire and force logout
+        if (err?.error === SERVER.AUTH_MISSING) {
+          dispatch({ type: ACTIONS.LOG_OUT });
+        };
         console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
@@ -142,8 +147,14 @@ function App() {
       })
       .then(userLibrary => {
         dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
+        // if albumInfo is deleted, just switch page
+        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account'} );
       })
       .catch(err => {
+        // must report session expire and force logout
+        if (err?.error === SERVER.AUTH_MISSING) {
+          dispatch({ type: ACTIONS.LOG_OUT });
+        };
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
   };
@@ -154,16 +165,15 @@ function App() {
     fetchAddReview(content, reviewedAlbumInfo)
       .then(fetchedAddedReview => {
         dispatch({ type: ACTIONS.ADD_REVIEW, addedReview: fetchedAddedReview });
-        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
       })
       .catch(err => {
+        // must report session expire and force logout
+        if (err?.error === SERVER.AUTH_MISSING) {
+          dispatch({ type: ACTIONS.LOG_OUT });
+        };
         console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
-  };
-
-  function setPage(page) {
-    dispatch({ type: ACTIONS.SET_PAGE, page });
   };
 
   function checkForSession() {
@@ -182,7 +192,6 @@ function App() {
         dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary})
       })
       .catch(err => {
-        console.log(err);
         if (err?.error === CLIENT.NO_SESSION) { // expected "error"
           dispatch({ type: ACTIONS.LOG_OUT });
           // Not yet logged in isn't a reported error
@@ -191,6 +200,14 @@ function App() {
         // For unexpected errors, report them
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
+  };
+
+  function getItemDetails(albumId, reviewId) {
+    dispatch({ type: ACTIONS.GET_ITEM_DETAILS, albumId, reviewId, page: 'ItemDetails' });
+  };
+
+  function setPage(page) {
+    dispatch({ type: ACTIONS.SET_PAGE, page });
   };
 
   // Here we use a useEffect to perform the initial loading
@@ -222,6 +239,7 @@ function App() {
             <UserLibrary
               isUserLibraryPending={state.isUserLibraryPending}
               userLibrary={state.userLibrary}
+              getItemDetails={getItemDetails}
             />
             <Controls onLogout={onLogout} />
           </div>
@@ -236,6 +254,14 @@ function App() {
             onDeleteAlbum={onDeleteAlbum}
             userLibrary={state.userLibrary}
             onAddReview={onAddReview} />}
+        {state.page === 'ItemDetails' && <ItemDetails 
+          userLibrary={state.userLibrary}
+          albumId={state.albumId}
+          reviewId={state.reviewId}
+          onAddReview={onAddReview}
+          onSaveAlbum={onSaveAlbum}
+          onDeleteAlbum={onDeleteAlbum}
+          />}
       </main>
     </div>
   );

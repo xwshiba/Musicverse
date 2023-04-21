@@ -24,13 +24,16 @@ function makeUserLibrary() {
     };
 
     userLibrary.addAlbum = function addAlbum(albumInfo) {
-        const {id, name, images, artists} = albumInfo;
+        // tracks received but ignored here
+        const { id, name, images, artists, release_date, album_type } = albumInfo;
 
         albums[id] = {
             id,
             name,
             images,
             artists,
+            release_date,
+            album_type,
         };
         return id;
     };
@@ -48,9 +51,9 @@ function makeUserLibrary() {
     };
 
     userLibrary.getReviewByAlbum = function getReviewByAlbum(albumId) {
-        for (let review of reviews) {
-            if (review.albumId === albumId) {
-                return review;
+        for (let id in reviews) {
+            if (reviews[id].albumInfo.id === albumId) {
+                return id;
             };
         };
     };
@@ -61,7 +64,7 @@ function makeUserLibrary() {
 
     userLibrary.addReview = function addReview(content, albumInfo) {
         const id = uuid();
-        const date = Date.now();
+        const date = (new Date()).toDateString();
         reviews[id] = {
             id,
             content,

@@ -142,9 +142,11 @@ app.post('/api/v1/userLibrary/reviews', (req, res) => {
         return;
     };
 
-    // user cannot post review if user didn't save the album
-    // business logic
-    // otherwise will need to find a way to save the album info somewhere
+    const exists = userLibrary.getReviewByAlbum(reviewedAlbumInfo.albumId);
+    if (exists) { // prevent review again
+        res.status(400).json({ error: 'duplicate-review' });
+        return;
+    };
 
     const id = userLibrary.addReview(content, reviewedAlbumInfo);
     res.json(userLibrary.getReviewById(id));

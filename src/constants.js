@@ -21,11 +21,12 @@ export const SERVER = {
     REQUIRED_USERNAME: 'required-username',
     REQUIRED_INFO: 'required-info',
     INVALID_INFO: 'invalid-info',
+    DUPLICATE_REVIEW: 'duplicate-review',
 };
 
 export const CLIENT = {
     NETWORK_ERROR: 'network-error',
-    NO_SESSION: 'no-session',
+    NO_SESSION: 'no-session', // don't need message to display
 };
 
 export const MESSAGES = {
@@ -37,6 +38,7 @@ export const MESSAGES = {
     [SERVER.REQUIRED_USERNAME]: 'Please enter a valid (1 to 20 letters and/or numbers) username',
     [SERVER.REQUIRED_INFO]: `Your submitted info was incorrect. Please check and send it again.`,
     [SERVER.INVALID_INFO]: `Your submitted info was invalid. It doesn't seem to exist in our library. Please try again.`,
+    [SERVER.DUPLICATE_REVIEW]: `You have already reviewed the album. We do not allow duplicate reviews. Please revise your review.`,
     default: 'Something went wrong.  Please try again',
 };
 
@@ -53,5 +55,6 @@ export const ACTIONS = {
     REPLACE_ALBUM_TRACKS: 'replaceAlbumTracks',
     START_SEARCH_ALBUMS: 'startSearchAlbums',
     ADD_REVIEW: 'addReview',
+    GET_ITEM_DETAILS:'getItemDetails',
     SET_PAGE: 'setPage',
 };

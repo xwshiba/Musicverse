@@ -16,6 +16,8 @@ export const initialState = {
     isAlbumsPending: false,
     albumTracks: {},
     isAlbumTracksPending: false,
+    albumId: '',
+    reviewId: '',
 };
 
 function reducer(state, action) {
@@ -63,7 +65,6 @@ function reducer(state, action) {
                 isUserLibraryPending: false,
                 isAlbumsPending: false,
                 isAlbumTracksPending: false,
-                loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
             };
         
         case ACTIONS.START_LOADING_ALBUMS:
@@ -133,7 +134,17 @@ function reducer(state, action) {
                     },
                 },
                 isUserLibraryPending: false,
-            }
+            };
+
+        case ACTIONS.GET_ITEM_DETAILS:
+            return {
+                ...state,
+                albumId: action.albumId,
+                reviewId: action.reviewId,
+                page: action.page,
+                error: '',
+                albumTracks: {}, // otherwise might show the cached tracks
+            };
         
         case ACTIONS.SET_PAGE:
             return {

@@ -1,4 +1,7 @@
-function AlbumItems({ albums }) {
+function AlbumItems({ 
+    albums,
+    getItemDetails,
+}) {
     if (!albums || Object.keys(albums).length === 0) {
         return (
             <p className="albums__title">No albums in your library yet. Like more albums!</p>
@@ -14,13 +17,15 @@ function AlbumItems({ albums }) {
                     // images and artists are arrays
                     return (
                         <li
-                            key={id}
+                            key={ id }
                             className="album__item"
-                            href={`#/userLibrary/albums/${id}`}>
+                            href={`#/userLibrary/albums/${ id }`}
+                            onClick={() => getItemDetails(albumId, '')}
+                            >
                             <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                             <span className="album__name">{name}</span>
                             <div className="album__artists">
-                                {artists.map((artist) => {
+                                { artists.map(( artist ) => {
                                     const { id, name } = artist;
                                     return (
                                         <span key={id} className="album__artist">{name}</span>

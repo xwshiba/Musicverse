@@ -5,8 +5,8 @@ import Submenu from './Submenu';
 function UserButton({ username, setPage, onLogout }) {
     const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
 
-    const showSubmenu = () => {
-        setIsSubmenuOpen(true);
+    const toggleSubmenu = () => {
+        setIsSubmenuOpen(!isSubmenuOpen);
     };
 
     const closeSubmenu = () => {
@@ -32,7 +32,12 @@ function UserButton({ username, setPage, onLogout }) {
 
     return (
         <li className="navbar__item">
-            <a href={`#/${username}`} className="navbar__subheader">{username}^</a>
+            <a 
+                href={`#/${username}`} 
+                className="navbar__subheader"
+                onClick={toggleSubmenu} >
+                {username}^
+            </a>
             <Submenu isSubmenuOpen={isSubmenuOpen} navigateAndClose={navigateAndClose} onLogout={onLogout} />
         </li>
     );

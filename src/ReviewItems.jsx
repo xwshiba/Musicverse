@@ -1,5 +1,6 @@
 function ReviewItems({ 
     reviews,
+    getItemDetails,
 }) {
     if (!reviews || Object.keys(reviews).length === 0) {
         return (
@@ -12,12 +13,13 @@ function ReviewItems({
             <ul className="reviews__content">
                 {Object.keys(reviews).map((reviewId) => {
                     const { id, content, date, albumInfo } = reviews[reviewId];
-                    const { images, name } = albumInfo;
+                    const { id: albumId, images, name } = albumInfo;
                     return (
                         <li
                             key={ id }
                             className="review__item"
-                            href={`#/userLibrary/reviews/${ id }`}>
+                            href={`#/userLibrary/reviews/${ id }`}
+                            onClick={() => getItemDetails( albumId, id )}>
                             <div className="review__album">
                                 <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                                 <span className="album__name">{name}</span>

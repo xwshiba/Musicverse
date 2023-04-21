@@ -1,7 +1,8 @@
 import { useState } from 'react';
 
 function ReviewForm({
-    onSubmit,
+    onAddReview,
+    albumInfo,
 }) {
     const [userReview, setUserReview] = useState('');
 
@@ -9,12 +10,19 @@ function ReviewForm({
         setUserReview(e.target.value);
     };
 
+    function onSubmitReview(e, userReview, albumInfo) {
+        e.preventDefault();
+        if (userReview) {  // Don't allow blank username to try login
+            onAddReview(userReview, albumInfo); // "action" function we were passed in
+        };
+    };
+
     return (
         <form
             action="#/comment"
             className="forms forms__change"
             method="POST" 
-            onSubmit={(e) => onSubmit(e, userReview)}>
+            onSubmit={(e) => onSubmitReview(e, userReview, albumInfo)}>
             <label className="forms__label">
                 <span className="forms__tag">Write review</span>
                 <textarea

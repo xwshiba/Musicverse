@@ -19,7 +19,7 @@ function ReviewForm({
 
     return (
         <form
-            action="#/comment"
+            action="#/review"
             className="forms forms__change"
             method="POST" 
             onSubmit={(e) => onSubmitReview(e, userReview, albumInfo)}>
@@ -29,7 +29,7 @@ function ReviewForm({
                     className="forms__textarea"
                     rows="8"
                     placeholder="Share your reviews, thoughts and please be kind:)"
-                    name="comment" 
+                    name="review" 
                     onChange={onChange}/>
             </label>
             <button

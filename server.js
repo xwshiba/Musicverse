@@ -152,4 +152,43 @@ app.post('/api/v1/userLibrary/reviews', (req, res) => {
     res.json(userLibrary.getReviewById(id));
 });
 
+app.delete('/api/v1/userLibrary/reviews/:id', (req, res) => {
+    const sid = req.cookies.sid;
+    const username = sid ? sessions.getSessionUser(sid) : '';
+    if (!sid || !users.isValidUsername(username)) {
+        res.status(401).json({ error: 'auth-missing' });
+        return;
+    };
+
+    const { id } = req.params;
+    const userLibrary = users.getUserData(username);
+    const exists = userLibrary.containsReview(id);
+    if (exists) { // if it's empty object
+        userLibrary.deleteReview(id);
+    };
+    res.json({ message: exists ? `Review deleted` : `Your review did not exist` });
+});
+
+app.patch('/api/v1/userLibrary/reviews/:id', (req, res) => {
+    const sid = req.cookies.sid;
+    const username = sid ? sessions.getSessionUser(sid) : '';
+    if (!sid || !users.isValidUsername(username)) {
+        res.status(401).json({ error: 'auth-missing' });
+        return;
+    }
+
+    const { id } = req.params;
+    const { content } = req.body;
+
+    const userLibrary = users.getUserData(username);
+    const exists = userLibrary.containsReview(id);
+
+    if (!exists) {
+        res.status(404).json({ error: `invalid-info` });
+        return;
+    }
+    userLibrary.updateReview(id, content);
+    res.json(userLibrary.getReviewById(id));
+});
+
 app.listen(PORT, () => console.log(`http://localhost:${PORT}`));

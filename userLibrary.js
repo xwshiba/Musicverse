@@ -58,6 +58,13 @@ function makeUserLibrary() {
         };
     };
 
+    userLibrary.containsReview = function containsReview(id) {
+        // This !! syntax coerces the value to a boolean
+        // First by giving us the reverse of the truthy/falsy value,
+        // then by reversing it to true/false
+        return !!reviews[id];
+    };
+
     userLibrary.getReviewById = function getReviewById(id) {
         return reviews[id]; // might return undefined
     };

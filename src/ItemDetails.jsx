@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 import AlbumBanner from "./AlbumBanner";
 import ReviewForm from "./ReviewForm";
 import TracksDetail from "./TracksDetail";
 import AlbumControls from "./AlbumControls";
+import EditReviewForm from './EditReviewForm';
 
 function ItemDetails({
     reviewId,
@@ -11,7 +14,11 @@ function ItemDetails({
     albumTracks,
     onSaveAlbum,
     onDeleteAlbum,
-}) {    
+    onDeleteReview,
+    onUpdateReview,
+}) {
+    const [editViewVisibility, setEditViewVisibility] = useState(false);
+
     function getReviewByAlbum(albumId) {
         const { reviews } = userLibrary;
         for (let id in reviews) {
@@ -34,14 +41,32 @@ function ItemDetails({
                     albumId={userLibrary?.albums?.[albumId]?.id}
                     onDeleteAlbum={onDeleteAlbum}
                     onSaveAlbum={onSaveAlbum}
-                    albumInfo={albumInfo} /> 
+                    albumInfo={albumInfo} />
                 <TracksDetail albumTracks={albumTracks} />
                 <div className="item-detail__review">
                     <h2>Your Review</h2>
-                    <span className="review__date">Date: {date}</span>
-                    <p className="review__content">Content: {content}</p>
+                    {editViewVisibility ?
+                        <EditReviewForm
+                            reviewId={possibleReviewId}
+                            content={content}
+                            onUpdateReview={onUpdateReview}
+                            setEditViewVisibility={setEditViewVisibility} /> :
+                        (<>
+                            <div className="review__controls">
+                                <button
+                                    className="btn"
+                                    onClick={() => setEditViewVisibility(true)}
+                                >Edit</button>
+                                <button
+                                    className="btn"
+                                    onClick={() => onDeleteReview(possibleReviewId)}
+                                >Delete</button>
+                            </div>
+                            <span className="review__date">Date: {date}</span>
+                            <p className="review__content">Content: {content}</p>
+                        </>)
+                    }
                 </div>
-
             </div>
         );
     };
@@ -49,23 +74,21 @@ function ItemDetails({
     // cover user saved albums and general album tracks review requests   
     const albumInfo = userLibrary?.albums?.[albumId] || albumTracks;
 
-        return (
-            <div className="item-detail">
-                <AlbumBanner albumInfo={albumInfo} />
-                <AlbumControls
-                    albumId={userLibrary?.albums?.[albumId]?.id}
-                    onDeleteAlbum={onDeleteAlbum}
-                    onSaveAlbum={onSaveAlbum}
-                    albumInfo={albumInfo} /> 
-                <TracksDetail albumTracks={albumTracks} />
-                <ReviewForm 
-                    onAddReview={onAddReview}
-                    albumInfo={albumInfo} />
-            </div>
-        );
-    };
+    return (
+        <div className="item-detail">
+            <AlbumBanner albumInfo={albumInfo} />
+            <AlbumControls
+                albumId={userLibrary?.albums?.[albumId]?.id}
+                onDeleteAlbum={onDeleteAlbum}
+                onSaveAlbum={onSaveAlbum}
+                albumInfo={albumInfo} />
+            <TracksDetail albumTracks={albumTracks} />
+            <ReviewForm
+                onAddReview={onAddReview}
+                albumInfo={albumInfo} />
+        </div>
+    );
+};
 
 
 export default ItemDetails;
-
-

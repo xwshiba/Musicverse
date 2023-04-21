@@ -6,6 +6,8 @@ function AlbumTracks({
     onDeleteAlbum,
     userLibrary,
     onAddReview,
+    onDeleteReview,
+    onUpdateReview,
 }) {
     const { id } = albumTracks;
     return (
@@ -18,6 +20,8 @@ function AlbumTracks({
                 albumTracks={albumTracks}
                 onSaveAlbum={onSaveAlbum}
                 onDeleteAlbum={onDeleteAlbum}
+                onDeleteReview={onDeleteReview}
+                onUpdateReview={onUpdateReview}
             />
         </section>
     );

@@ -56,5 +56,6 @@ export const ACTIONS = {
     START_SEARCH_ALBUMS: 'startSearchAlbums',
     ADD_REVIEW: 'addReview',
     GET_ITEM_DETAILS:'getItemDetails',
+    UPDATE_REVIEW: 'updateReview',
     SET_PAGE: 'setPage',
 };

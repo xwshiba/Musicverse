@@ -23,7 +23,9 @@ import {
   fetchUserLibrary,
   fetchSaveAlbum,
   fetchDeleteAlbum,
-  fetchAddReview
+  fetchAddReview,
+  fetchDeleteReview,
+  fetchUpdateReview,
 } from './services';
 
 import Nav from './Nav';
@@ -176,6 +178,44 @@ function App() {
       });
   };
 
+  function onDeleteReview(id) {
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
+
+    fetchDeleteReview(id)
+      .then(() => {
+        return fetchUserLibrary(); // Return the promise so we can chain
+      })
+      .then(userLibrary => {
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
+        // if review is deleted, just switch page
+        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
+      })
+      .catch(err => {
+        // must report session expire and force logout
+        if (err?.error === SERVER.AUTH_MISSING) {
+          dispatch({ type: ACTIONS.LOG_OUT });
+        };
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+      });
+  };
+
+  function onUpdateReview(id, content) {
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
+
+    fetchUpdateReview(id, content)
+      .then(fetchedUpdatedReview => {
+        dispatch({ type: ACTIONS.UPDATE_REVIEW, updatedReview: fetchedUpdatedReview });
+      })
+      .catch(err => {
+        // must report session expire and force logout
+        if (err?.error === SERVER.AUTH_MISSING) {
+          dispatch({ type: ACTIONS.LOG_OUT });
+        };
+        console.log(err);
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+      });
+  };
+
   function checkForSession() {
     fetchSession()
       .then(session => { // The returned object from the service call
@@ -253,7 +293,9 @@ function App() {
             onSaveAlbum={onSaveAlbum}
             onDeleteAlbum={onDeleteAlbum}
             userLibrary={state.userLibrary}
-            onAddReview={onAddReview} />}
+            onAddReview={onAddReview}
+            onDeleteReview={onDeleteReview}
+            onUpdateReview={onUpdateReview} />}
         {state.page === 'ItemDetails' && <ItemDetails 
           userLibrary={state.userLibrary}
           albumId={state.albumId}
@@ -261,6 +303,8 @@ function App() {
           onAddReview={onAddReview}
           onSaveAlbum={onSaveAlbum}
           onDeleteAlbum={onDeleteAlbum}
+          onDeleteReview={onDeleteReview}
+          onUpdateReview={onUpdateReview}
           />}
       </main>
     </div>

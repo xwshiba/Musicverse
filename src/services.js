@@ -209,3 +209,38 @@ export function fetchAddReview(content, reviewedAlbumInfo) {
                 .then(err => Promise.reject(err));
         });
 };
+
+export function fetchDeleteReview(id) {
+    return fetch(`/api/v1/userLibrary/reviews/${id}`, {
+        method: 'DELETE',
+    })
+        .catch(() => Promise.reject({ error: 'networkError' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
+};
+
+export function fetchUpdateReview(id, content) {
+    return fetch(`/api/v1/userLibrary/reviews/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content }),
+    })
+        .catch(() => Promise.reject({ error: 'networkError' }))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            return response.json()
+                .catch(error => Promise.reject({ error }))
+                .then(err => Promise.reject(err));
+        });
+};

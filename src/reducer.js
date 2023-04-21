@@ -146,6 +146,19 @@ function reducer(state, action) {
                 albumTracks: {}, // otherwise might show the cached tracks
             };
         
+        case ACTIONS.UPDATE_REVIEW:
+            return {
+                ...state,
+                userLibrary: {
+                    ...state.userLibrary,
+                    reviews: {
+                        ...state.userLibrary.reviews,
+                        [action.updatedReview.id]: action.updatedReview,
+                    },
+                },
+                isUserLibraryPending: false,
+            };
+
         case ACTIONS.SET_PAGE:
             return {
                 ...state,

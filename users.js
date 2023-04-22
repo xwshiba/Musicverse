@@ -15,8 +15,16 @@ function addUserData(username, userData) {
     users[username] = userData;
 };
 
+function isValidReview(text) {
+    // Allowlist plain text isn't ideal. But it's better than getting XSS injection
+    let isValid = true;
+    isValid = isValid && text.match(/^[a-zA-Z\s.!']*$/);
+    return isValid;
+};
+
 module.exports = {
     isValidUsername,
     getUserData,
     addUserData,
+    isValidReview,
 };

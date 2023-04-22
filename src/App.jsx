@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
-import './App.css';
-import './Forms.css';
+import './css/App.css';
+import './css/Forms.css';
 
 import reducer, {initialState} from './reducer';
 
@@ -16,19 +16,24 @@ import {
   fetchSession,
   fetchLogin,
   fetchLogout,
-  fetchAuthToken,
-  fetchNewAlbums,
-  fetchSearch,
-  fetchAlbumTracks,
   fetchUserLibrary,
   fetchSaveAlbum,
   fetchDeleteAlbum,
   fetchAddReview,
   fetchDeleteReview,
   fetchUpdateReview,
+  fetchAlbumReviews,
 } from './services';
 
+import {
+  fetchAuthToken,
+  fetchNewAlbums,
+  fetchSearch,
+  fetchAlbumTracks,
+} from './spotify-services'; // third-party services
+
 import Nav from './Nav';
+import Home from './Home';
 import Status from './Status';
 import LoginForm from './LoginForm';
 import Loading from './Loading';
@@ -73,6 +78,7 @@ function App() {
       .catch(err => {
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
+    dispatch({ type: ACTIONS.SET_PAGE, page: 'Home' });
   };
 
   function loadAlbumsPage() {
@@ -100,6 +106,19 @@ function App() {
       })
       .then(fetchedAlbumTracks => {
         dispatch({ type: ACTIONS.REPLACE_ALBUM_TRACKS, albumTracks: fetchedAlbumTracks });
+      })
+      .catch(err => {
+        console.log(err);
+        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+      })
+  };
+
+  function loadAlbumReviews(id) {
+    dispatch({ type: ACTIONS.START_LOADING_ALBUM_REVIEWS });
+
+    fetchAlbumReviews(id)
+      .then(fetchedAlbumReviews => {
+        dispatch({ type: ACTIONS.REPLACE_ALBUM_REVIEWS, albumReviews: fetchedAlbumReviews.albumReviews });
       })
       .catch(err => {
         console.log(err);
@@ -229,7 +248,8 @@ function App() {
         return Promise.reject(err); // Pass any other error unchanged
       })
       .then(userLibrary => {
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary})
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary});
+        dispatch({ type: ACTIONS.SET_PAGE, page: 'Home' });
       })
       .catch(err => {
         if (err?.error === CLIENT.NO_SESSION) { // expected "error"
@@ -255,7 +275,6 @@ function App() {
   useEffect(
     () => {
       checkForSession();
-      loadAlbumsPage();
     },
     [] // Only run on initial render
   );
@@ -280,12 +299,23 @@ function App() {
               isUserLibraryPending={state.isUserLibraryPending}
               userLibrary={state.userLibrary}
               getItemDetails={getItemDetails}
+              loadAlbumReviews={loadAlbumReviews}
             />
             <Controls onLogout={onLogout} />
           </div>
         )}
+        {state.page === 'Home' && 
+          <Home 
+            loadAlbumsPage={loadAlbumsPage} 
+            username={state.username} />}
         {state.isAlbumsPending === true && state.page === 'Albums' && <Loading className="albums__waiting">Loading Albums...</Loading>}
-        {state.isAlbumsPending === false && state.page === 'Albums' && <Albums prompt = {state.prompt} albums = {state.albums} loadAlbumTracks={loadAlbumTracks}/>}
+        {state.isAlbumsPending === false && state.page === 'Albums' && 
+          <Albums 
+            prompt = {state.prompt} 
+            albums = {state.albums} 
+            loadAlbumTracks={loadAlbumTracks}
+            loadAlbumReviews={loadAlbumReviews}
+          />}
         {state.isAlbumTracksPending === true && state.page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
         {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' && 
           <AlbumTracks 
@@ -295,7 +325,9 @@ function App() {
             userLibrary={state.userLibrary}
             onAddReview={onAddReview}
             onDeleteReview={onDeleteReview}
-            onUpdateReview={onUpdateReview} />}
+            onUpdateReview={onUpdateReview}
+            albumReviews={state.albumReviews}
+             />}
         {state.page === 'ItemDetails' && <ItemDetails 
           userLibrary={state.userLibrary}
           albumId={state.albumId}
@@ -305,6 +337,7 @@ function App() {
           onDeleteAlbum={onDeleteAlbum}
           onDeleteReview={onDeleteReview}
           onUpdateReview={onUpdateReview}
+          albumReviews={state.albumReviews}
           />}
       </main>
     </div>

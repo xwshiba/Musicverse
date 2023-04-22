@@ -1,8 +1,18 @@
-function Albums({ prompt, albums, loadAlbumTracks }) {
+function Albums({ 
+    prompt, 
+    albums, 
+    loadAlbumTracks,
+    loadAlbumReviews 
+}) {
     if (Object.keys(albums).length === 0) {
         return (
             <p className="albums__title">No Albums to display yet, check back later</p>
         );
+    };
+
+    function loadAlbumDetails(id) {
+        loadAlbumTracks(id);
+        loadAlbumReviews(id);
     };
 
     return (
@@ -16,7 +26,7 @@ function Albums({ prompt, albums, loadAlbumTracks }) {
                         <li 
                             key={id} 
                             className="album__item"
-                            onClick={() => loadAlbumTracks(id)}
+                            onClick={() => loadAlbumDetails(id)}
                             href={`#/albums/${id}`}>
                             <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                             <span className="album__name">{name}</span>

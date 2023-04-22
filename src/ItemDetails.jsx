@@ -5,6 +5,7 @@ import ReviewForm from "./ReviewForm";
 import TracksDetail from "./TracksDetail";
 import AlbumControls from "./AlbumControls";
 import EditReviewForm from './EditReviewForm';
+import AlbumReviews from './AlbumReviews';
 
 function ItemDetails({
     reviewId,
@@ -16,6 +17,7 @@ function ItemDetails({
     onDeleteAlbum,
     onDeleteReview,
     onUpdateReview,
+    albumReviews,
 }) {
     const [editViewVisibility, setEditViewVisibility] = useState(false);
 
@@ -67,10 +69,11 @@ function ItemDetails({
                         </>)
                     }
                 </div>
+                <AlbumReviews albumReviews={albumReviews} userReviewId={possibleReviewId} />
             </div>
         );
     };
-    // in this case no reviews only display album Info
+    // in this case no user reviews only display album Info
     // cover user saved albums and general album tracks review requests   
     const albumInfo = userLibrary?.albums?.[albumId] || albumTracks;
 
@@ -83,12 +86,12 @@ function ItemDetails({
                 onSaveAlbum={onSaveAlbum}
                 albumInfo={albumInfo} />
             <TracksDetail albumTracks={albumTracks} />
+            <AlbumReviews albumReviews={albumReviews} userReviewId=''/>
             <ReviewForm
                 onAddReview={onAddReview}
-                albumInfo={albumInfo} />
+                albumInfo={albumInfo} />            
         </div>
     );
 };
-
 
 export default ItemDetails;

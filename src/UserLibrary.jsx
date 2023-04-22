@@ -5,6 +5,7 @@ function UserLibrary({
     isUserLibraryPending,
     userLibrary,
     getItemDetails,
+    loadAlbumReviews,
 }) {
     // All this code before the return is to make the return easier to skim
     const SHOW = {  // a constant used only in this component
@@ -28,7 +29,8 @@ function UserLibrary({
             {(show === SHOW.EMPTY || show === SHOW.USERLIBRARY) &&
                 <LibraryItem 
                     userLibrary={userLibrary}
-                    getItemDetails={getItemDetails}/>}
+                    getItemDetails={getItemDetails}
+                    loadAlbumReviews={loadAlbumReviews}/>}
         </div>
     );
 };

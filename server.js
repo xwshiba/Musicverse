@@ -8,7 +8,8 @@ const PORT = process.env.PORT || 3000;
 
 const sessions = require('./sessions');
 const users = require('./users');
-const userLibrary = require('./userLibrary');
+const userLibrary = require('./user-library'); // acts as the database portion relates with the user
+const albumReviews = require('./album-reviews'); // acts as the global database
 
 app.use(cookieParser());
 app.use(express.static('./build'));
@@ -23,6 +24,13 @@ app.get('/api/v1/session', (req, res) => {
     };
 
     res.json({ username });
+});
+
+app.get('/api/v1/albums/:id/reviews', (req, res) => {
+    // reviews are accessible to the public
+    // don't need sessions check
+    const { id } = req.params;
+    res.json({ albumReviews: albumReviews.getAllReviews(id) });
 });
 
 app.post('/api/v1/session', (req, res) => {
@@ -142,13 +150,23 @@ app.post('/api/v1/userLibrary/reviews', (req, res) => {
         return;
     };
 
-    const exists = userLibrary.getReviewByAlbum(reviewedAlbumInfo.albumId);
+    if (!users.isValidReview(content)) { // reject if review contains bad tokens
+        res.status(400).json({ error: 'invalid-info' });
+        return;
+    };
+
+    const exists = userLibrary.getReviewByAlbum(reviewedAlbumInfo.id);
     if (exists) { // prevent review again
         res.status(400).json({ error: 'duplicate-review' });
         return;
     };
 
-    const id = userLibrary.addReview(content, reviewedAlbumInfo);
+    const id = userLibrary.addReview(content, reviewedAlbumInfo, username);
+
+    // then add to the global database
+    const addedReview = userLibrary.getReviewById(id);
+    albumReviews.addReview(reviewedAlbumInfo.id, addedReview);
+
     res.json(userLibrary.getReviewById(id));
 });
 
@@ -163,8 +181,13 @@ app.delete('/api/v1/userLibrary/reviews/:id', (req, res) => {
     const { id } = req.params;
     const userLibrary = users.getUserData(username);
     const exists = userLibrary.containsReview(id);
-    if (exists) { // if it's empty object
+
+    if (exists) { // if the library contains the review
+        const toDeleteReview = userLibrary.getReviewById(id);
         userLibrary.deleteReview(id);
+
+        // handle the global database next
+        albumReviews.deleteReview(toDeleteReview.albumInfo.id, toDeleteReview);
     };
     res.json({ message: exists ? `Review deleted` : `Your review did not exist` });
 });
@@ -180,14 +203,29 @@ app.patch('/api/v1/userLibrary/reviews/:id', (req, res) => {
     const { id } = req.params;
     const { content } = req.body;
 
+    if (!content) { // reject if either is empty
+        res.status(400).json({ error: 'required-info' });
+        return;
+    };
+
+    if (!users.isValidReview(content)) { // reject if review contains bad tokens
+        res.status(400).json({ error: 'invalid-info' });
+        return;
+    };
+
     const userLibrary = users.getUserData(username);
     const exists = userLibrary.containsReview(id);
 
     if (!exists) {
         res.status(404).json({ error: `invalid-info` });
         return;
-    }
+    };
     userLibrary.updateReview(id, content);
+
+    // then revise the global database
+    const patchedReview = userLibrary.getReviewById(id);
+    albumReviews.updateReview(patchedReview?.albumInfo?.id, patchedReview);
+
     res.json(userLibrary.getReviewById(id));
 });
 

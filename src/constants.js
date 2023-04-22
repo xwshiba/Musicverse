@@ -37,7 +37,9 @@ export const MESSAGES = {
     [SERVER.AUTH_INSUFFICIENT]: 'Your username/password combination does not match any records, please try again.',
     [SERVER.REQUIRED_USERNAME]: 'Please enter a valid (1 to 20 letters and/or numbers) username',
     [SERVER.REQUIRED_INFO]: `Your submitted info was incorrect. Please check and send it again.`,
-    [SERVER.INVALID_INFO]: `Your submitted info was invalid. It doesn't seem to exist in our library. Please try again.`,
+    [SERVER.INVALID_INFO]: `Your submitted info was invalid. It doesn't seem to exist in our library, 
+                            or your reviews include invalid tokens. We only accept English sentences for now. 
+                            Sorry for the inconvenience. Please revise and try again.`,
     [SERVER.DUPLICATE_REVIEW]: `You have already reviewed the album. We do not allow duplicate reviews. Please revise your review.`,
     default: 'Something went wrong.  Please try again',
 };
@@ -57,5 +59,7 @@ export const ACTIONS = {
     ADD_REVIEW: 'addReview',
     GET_ITEM_DETAILS:'getItemDetails',
     UPDATE_REVIEW: 'updateReview',
+    START_LOADING_ALBUM_REVIEWS: 'startLoadingAlbumReviews',
+    REPLACE_ALBUM_REVIEWS: 'replaceAlbumReviews',
     SET_PAGE: 'setPage',
 };

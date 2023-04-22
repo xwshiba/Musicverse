@@ -1,12 +1,19 @@
 function ReviewItems({ 
     reviews,
     getItemDetails,
+    loadAlbumReviews,
 }) {
     if (!reviews || Object.keys(reviews).length === 0) {
         return (
             <p className="reviews__title">No reviews yet. Write more reviews!</p>
         );
     };
+
+    function loadAlbumDetails(albumId, reviewId) {
+        getItemDetails(albumId, reviewId);
+        loadAlbumReviews(albumId);
+    };
+
     return (
         <section className="reviews">
             <h1 className="reviews__title">Reviews</h1>
@@ -19,7 +26,7 @@ function ReviewItems({
                             key={ id }
                             className="review__item"
                             href={`#/userLibrary/reviews/${ id }`}
-                            onClick={() => getItemDetails( albumId, id )}>
+                            onClick={() => loadAlbumDetails(albumId, id)}>
                             <div className="review__album">
                                 <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                                 <span className="album__name">{name}</span>

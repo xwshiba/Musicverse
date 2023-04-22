@@ -1,10 +1,10 @@
 import AlbumItems from './AlbumItems';
-import AlbumTracks from './AlbumTracks';
 import ReviewItems from './ReviewItems';
 
 function LibraryItem({
     userLibrary,
     getItemDetails,
+    loadAlbumReviews,
 }) {
     const {albums, reviews} = userLibrary;
 
@@ -12,10 +12,12 @@ function LibraryItem({
         <>
             <AlbumItems 
                 albums={albums}
-                getItemDetails={getItemDetails}/>
+                getItemDetails={getItemDetails}
+                loadAlbumReviews={loadAlbumReviews}/>
             <ReviewItems 
                 reviews={reviews}
-                getItemDetails={getItemDetails}/>
+                getItemDetails={getItemDetails}
+                loadAlbumReviews={loadAlbumReviews}/>
         </>
     );
 }

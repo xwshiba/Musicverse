@@ -5,7 +5,7 @@ import {
 } from './constants';
 
 export const initialState = {
-    page: 'Albums',
+    page: 'Home',
     error: '',
     username: '',
     loginStatus: LOGIN_STATUS.PENDING,
@@ -18,6 +18,8 @@ export const initialState = {
     isAlbumTracksPending: false,
     albumId: '',
     reviewId: '',
+    albumReviews: {},
+    isAlbumsReviewsPending: false,
 };
 
 function reducer(state, action) {
@@ -55,6 +57,8 @@ function reducer(state, action) {
                 userLibrary: {},
                 loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
                 username: '',
+                reviewId:'',
+                page: 'Login',
             };
         
         case ACTIONS.REPORT_ERROR:
@@ -65,6 +69,7 @@ function reducer(state, action) {
                 isUserLibraryPending: false,
                 isAlbumsPending: false,
                 isAlbumTracksPending: false,
+                isAlbumsReviewsPending: false,
             };
         
         case ACTIONS.START_LOADING_ALBUMS:
@@ -163,6 +168,20 @@ function reducer(state, action) {
             return {
                 ...state,
                 page: action.page,
+            };
+        
+        case ACTIONS.START_LOADING_ALBUM_REVIEWS:
+            return {
+                ...state,
+                isAlbumsReviewsPending: true,
+                error: '',
+            };
+        
+        case ACTIONS.REPLACE_ALBUM_REVIEWS:
+            return {
+                ...state,
+                albumReviews: action.albumReviews,
+                isAlbumsReviewsPending: false,
             };
         
         default:

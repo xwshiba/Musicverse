@@ -8,6 +8,7 @@ function AlbumTracks({
     onAddReview,
     onDeleteReview,
     onUpdateReview,
+    albumReviews,
 }) {
     const { id } = albumTracks;
     return (
@@ -22,6 +23,7 @@ function AlbumTracks({
                 onDeleteAlbum={onDeleteAlbum}
                 onDeleteReview={onDeleteReview}
                 onUpdateReview={onUpdateReview}
+                albumReviews={albumReviews}
             />
         </section>
     );

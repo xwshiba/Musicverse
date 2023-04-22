@@ -1,11 +1,17 @@
 function AlbumItems({ 
     albums,
     getItemDetails,
+    loadAlbumReviews,
 }) {
     if (!albums || Object.keys(albums).length === 0) {
         return (
             <p className="albums__title">No albums in your library yet. Like more albums!</p>
         );
+    };
+
+    function loadAlbumDetails(albumId, reviewId) {
+        getItemDetails(albumId, reviewId);
+        loadAlbumReviews(albumId);
     };
 
     return (
@@ -20,7 +26,7 @@ function AlbumItems({
                             key={ id }
                             className="album__item"
                             href={`#/userLibrary/albums/${ id }`}
-                            onClick={() => getItemDetails(albumId, '')}
+                            onClick={() => loadAlbumDetails(albumId, '')}
                             >
                             <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                             <span className="album__name">{name}</span>

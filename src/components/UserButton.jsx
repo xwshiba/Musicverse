@@ -20,10 +20,10 @@ function UserButton({ username, setPage, onLogout }) {
 
     if (!username) {
         return (
-            <li className="navbar__item">
+            <li className="navbar__item navbar__user">
                 <a 
                     href="#/login" 
-                    className="navbar__subheader"
+                    className="navbar__subheader btn"
                     data-page="Login"
                     onClick={(e) => navigateAndClose(e)} >Login</a>
             </li>
@@ -31,13 +31,14 @@ function UserButton({ username, setPage, onLogout }) {
     };
 
     return (
-        <li className="navbar__item">
+        <li className="navbar__item navbar__user"
+            onClick={toggleSubmenu}>
             <a 
                 href={`#/${username}`} 
-                className="navbar__subheader"
-                onClick={toggleSubmenu} >
-                {username}^
+                className="navbar__subheader btn">
+                {username}
             </a>
+            <span className="navbar__icon gg-arrow-down-r"></span>
             <Submenu isSubmenuOpen={isSubmenuOpen} navigateAndClose={navigateAndClose} onLogout={onLogout} />
         </li>
     );

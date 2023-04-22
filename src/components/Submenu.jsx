@@ -18,7 +18,6 @@ function Submenu({ isSubmenuOpen, navigateAndClose, onLogout }) {
                     onClick={onLogout}>
                     Logout
                 </a>
-                <span className="submenu__icon"></span>
             </li>
         </ul>
     );

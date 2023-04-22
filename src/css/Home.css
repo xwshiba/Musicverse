@@ -1,0 +1,26 @@
+.home {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 4rem;
+
+    padding: 1rem;
+
+    box-shadow: var(--box-shadow);
+}
+
+.home__btn {
+    margin-left: 0;
+}
+
+.home__image {
+    display: block;
+
+    max-width: 30rem;
+
+    margin: auto;
+}
+
+.home__logo {
+    width: 100%;
+    height: 100%;
+}

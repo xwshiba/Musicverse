@@ -1,7 +1,14 @@
 import { useEffect, useReducer } from 'react';
 
 import './css/App.css';
+import './css/Icons.css';
 import './css/Forms.css';
+import './css/Nav.css';
+import './css/Submenu.css';
+import './css/AlbumBanner.css';
+
+import './css/Home.css';
+import './css/Albums.css';
 
 import reducer, {initialState} from './reducer';
 

@@ -19,23 +19,16 @@ function SearchBar({ onSearch }) {
 
     return (
         <div className="search-bar">
-            <form className="search-bar"
+            <form className="search-bar__form"
                 action="#/search"
                 method="POST"
                 onSubmit={onSubmit}>
                 <input
                     type="text"
                     className="search-bar__input forms__input"
-                    placeholder="search for albums"
+                    placeholder="search for albums, press enter to start"
                     value={userInput}
                     onChange={onChange} />
-
-                <button
-                    className="search-bar__btn forms__btn btn"
-                    type="submit"
-                    disabled={!userInput}>
-                    Search
-                </button>
             </form>
         </div>
     )

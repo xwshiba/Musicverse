@@ -1,3 +1,28 @@
+:root {
+  --clr-primary-1: hsl(205, 86%, 81%);
+
+  /* Group 1 Grey*/
+  --clr-grey-1: hsl(210, 36%, 96%);
+  --clr-grey-2: hsl(210, 22%, 49%);
+  --clr-grey-3: hsl(211, 39%, 23%);
+  --clr-grey-4: hsl(209, 61%, 16%);
+
+  /* Group 2 Grey*/
+  --clr-grey-5: hsl(210, 31%, 80%);
+
+  /* Other Colors*/
+  --clr-black: #222;
+
+  /* Colors related with visual effects*/
+  --sail-color-text: rgba(60, 66, 87, 1);
+  --box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  --border: 2px solid var(--clr-grey-2);
+
+  /* Other Attributes*/
+  --default-vertical-spacing: 0.4rem;
+  --radius: 0.5rem;
+}
+
 *,
 *::before,
 *::after {
@@ -10,32 +35,54 @@ body {
 
   margin: 0;
 
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.app {
-  margin: auto;
-  margin-top: 0.6rem;
+h1 {
+  margin: 2rem auto;
 
-  text-align: center;
+  color: var(--clr-grey-4);
+  font-size: 1.4rem;
+}
+
+h2 {
+  color: var(--clr-grey-4);
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  color: var(--clr-grey-3);
+}
+
+p {
+  line-height: 1.25;
+  font-size: 1rem;
+  color: var(--sail-color-text);
+  padding-top: var(--default-vertical-spacing);
+}
+
+li {
+  list-style-type: none;
+}
+
+.main {
+  margin: 1rem auto 6rem auto;
+  padding: 1rem 0;
 }
 
 .btn {
-  min-width: 8rem;
-  min-height: 2rem;
-  max-width: 30rem;
-
   margin: 2rem;
   padding: 0.4rem 1rem;
 
-  border: 2px solid hsl(210, 22%, 49%);
-  border-radius: 0.4rem;
+  border: var(--border);
+  border-radius: var(--radius);
 
   background-color: white;
 }
 
 .btn:hover {
-  background-color: black;
+  background-color: var(--clr-black);
 
   color: white;
 
@@ -43,8 +90,7 @@ body {
 }
 
 .status,
-.login__waiting,
-.words__waiting {
+.login__waiting {
   width: 80%;
 
   margin: auto;

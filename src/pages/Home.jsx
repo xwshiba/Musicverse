@@ -1,4 +1,4 @@
-import banner from './img/home-page-banner.jpg';
+import banner from '../img/home-page-banner.jpg';
 
 function Home({ loadAlbumsPage, username }) {
 

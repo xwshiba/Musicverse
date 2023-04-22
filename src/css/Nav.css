@@ -1,0 +1,83 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    padding: 1rem;
+
+    background: url(../img/header-background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.navbar__logo {
+    font-size: larger;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0.2rem 0.2rem var(--clr-grey-3);
+
+    cursor: pointer;
+}
+
+.navbar__logo:hover,
+.navbar__logo:focus-within,
+.navbar__logo:focus {
+    color: var(--clr-primary-1);
+    text-shadow: 0.2rem 0.2rem var(--clr-grey-4);
+}
+
+.search-bar {
+    margin-left: 4rem;
+}
+
+.search-bar__form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.search-bar__input {
+    min-width: 20rem;
+}
+
+.navbar__links {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.navbar__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-left: auto;
+
+    cursor: pointer;
+}
+
+.navbar__subheader {
+    margin: 0;
+
+    background: transparent;
+    border-color: transparent;
+
+    font-weight: 500;
+
+    color: white;
+}
+
+.navbar__subheader:hover,
+.navbar__subheader:focus-within,
+.navbar__subheader:focus {
+    background: transparent;
+}
+
+.navbar__user .navbar__subheader {
+    padding-right: 0.4rem;
+}
+
+.navbar__icon {
+    color: white;
+}

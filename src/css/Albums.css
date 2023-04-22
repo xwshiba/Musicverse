@@ -1,0 +1,50 @@
+.albums {
+    display: flex;
+    flex-direction: column;
+
+    padding: 1rem;
+
+    box-shadow: var(--box-shadow);
+}
+
+.albums__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.album__item {
+    width: 10rem;
+
+    display: flex;
+    flex-direction: column;
+
+    margin: 0.4rem;
+    padding: 1rem;
+
+    text-align: center;
+
+    border-radius: var(--radius);
+
+    background-color: var(--clr-grey-1);
+}
+
+.album__item:hover {
+    cursor: pointer;
+
+    box-shadow: var(--box-shadow);
+}
+
+.album__image {
+    border-radius: var(--radius);
+}
+
+.album__name {
+    margin-top: 1rem;
+
+    font-weight: 600;
+}
+
+.album__artist {
+    color: var(--sail-color-text);
+}

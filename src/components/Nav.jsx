@@ -28,7 +28,7 @@ function Nav({
                 <li className="navbar__item">
                     <a 
                         href="#/albums" 
-                        className="navbar__subheader"
+                        className="navbar__subheader btn"
                         data-page="Albums"
                         onClick={(e) => navigateAndLoad(e)} >Albums</a>
                 </li>

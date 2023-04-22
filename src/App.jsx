@@ -32,16 +32,16 @@ import {
   fetchAlbumTracks,
 } from './spotify-services'; // third-party services
 
-import Nav from './Nav';
-import Home from './Home';
-import Status from './Status';
-import LoginForm from './LoginForm';
-import Loading from './Loading';
-import Controls from './Controls';
-import UserLibrary from './UserLibrary';
-import Albums from './Albums';
-import AlbumTracks from './AlbumTracks';
-import ItemDetails from './ItemDetails';
+import Nav from './components/Nav';
+import Home from './pages/Home';
+import Status from './components/Status';
+import LoginForm from './pages/LoginForm';
+import Loading from './components/Loading';
+import Controls from './components/Controls';
+import UserLibrary from './pages/UserLibrary';
+import Albums from './pages/Albums';
+import AlbumTracks from './pages/AlbumTracks';
+import ItemDetails from './pages/ItemDetails';
 
 function App() {
 

@@ -9,9 +9,10 @@
 
     font-family: inherit;
     font-weight: 600;
-    color: hsl(211, 39%, 23%);
+    color: var(--clr-grey-3);
 
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--radius);
 }
 
 .forms__label {
@@ -39,14 +40,14 @@
     width: 100%;
     height: 2rem;
 
-    border: 2px solid hsl(210, 22%, 49%);
+    border: 2px solid var(--clr-grey-2);
     border-radius: 0.4rem;
 
     font-family: sans-serif;
 }
 
 .forms__input:focus {
-    border-color: black;
+    border-color: var(--clr-black);
 }
 
 .forms__input:invalid {
@@ -58,13 +59,48 @@
 .forms__btn {
     width: 80%;
 
-    margin: 0;
     padding: 0.4rem 1rem;
 }
 
+.forms__textarea {
+    border: var(--border);
+    border-radius: var(--radius);
+}
+
 .forms__logout {
+    align-items: flex-start;
+
+    margin: 0;
+    padding: 0 2rem 0 0;
+
+    box-shadow: none;
+}
+
+.forms__logout .forms__btn {
+    width: 10rem;
+}
+
+/* the review form */
+.review-form {
+    padding: 4rem 2rem;
+}
+
+.forms__review {
+    align-items: flex-start;
+
     margin: 0;
     padding: 0;
 
     box-shadow: none;
+}
+
+.forms__review .forms__label {
+    max-width: none;
+    width: 100%;
+}
+
+.forms__review .forms__btn {
+    width: 10rem;
+
+    margin-left: 0;
 }

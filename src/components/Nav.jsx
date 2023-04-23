@@ -23,7 +23,6 @@ function Nav({
                     data-page="Home"
                     onClick={(e) => setPage(e.target.dataset.page)} >Musicverse</a>
             </div>
-            <SearchBar onSearch={onSearch} />
             <ul className="navbar__links">
                 <li className="navbar__item">
                     <a 
@@ -31,9 +30,10 @@ function Nav({
                         className="navbar__subheader btn"
                         data-page="Albums"
                         onClick={(e) => navigateAndLoad(e)} >Albums</a>
-                </li>
+                </li>     
                 <UserButton username={username} setPage={setPage} onLogout={onLogout} />
             </ul>
+            <SearchBar onSearch={onSearch} />
         </nav>
     )
 };

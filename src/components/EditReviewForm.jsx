@@ -14,7 +14,7 @@ function EditReviewForm({
 
     function onChangeReview(e, userReview) {
         e.preventDefault();
-        if (userReview) {  // Don't allow blank username to try login
+        if (userReview) {  // Don't allow blank user review
             setEditViewVisibility(false);
             onUpdateReview(reviewId, userReview); // "action" function we were passed in
         };
@@ -22,11 +22,10 @@ function EditReviewForm({
     return (
         <form
             action="#/review"
-            className="forms forms__change"
+            className="forms forms__review"
             method="POST"
             onSubmit={(e) => onChangeReview(e, userReview)}>
             <label className="forms__label">
-                <span className="forms__tag">Write review</span>
                 <textarea
                     className="forms__textarea"
                     rows="8"

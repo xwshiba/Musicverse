@@ -26,6 +26,7 @@ function TracksDetail({
                 const { id, name, duration_ms } = item;
                 return (
                     <li key={id} className="album-tracks__item">
+                        <span className="album-tracks__icon gg-play-button"></span>
                         <span className="album-tracks__name">{name}</span>
                         <span className="album-tracks__duration">{formatTime(duration_ms)}</span>
                     </li>

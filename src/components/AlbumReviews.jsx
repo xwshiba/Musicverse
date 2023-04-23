@@ -28,7 +28,7 @@ function AlbumReviews({
                         <li key={id} className="review-list__item">
                             <span className="review__username">Reviewed by: {username}</span>
                             <span className="review__date">Date: {date}</span>
-                            <p className="review__content">Content: {content}</p>
+                            <p className="review__content">{content}</p>
                         </li>
                     )
                 })}

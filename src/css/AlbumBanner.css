@@ -1,0 +1,55 @@
+.album-banner {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+
+    height: 36vh;
+
+    margin-bottom: 2rem;
+    padding: 2rem;
+
+    background-color: var(--clr-grey-1);
+}
+
+.album-banner__image-wrapper {
+    height: 100%;
+}
+
+.album-banner__image {
+    height: 100%;
+}
+
+.album-banner__info {
+    margin-left: 2rem;
+}
+
+.album-banner__name {
+    font-size: xx-large;
+}
+
+.album-banner__other {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.album-banner__artist {
+    margin-right: 1rem;
+}
+
+.album-banner__artist::after {
+    content: '.';
+}
+
+.album-banner__date {
+    margin-left: 2rem;
+
+    font-size: smaller;
+    font-weight: 500;
+}
+
+.album__control {
+    margin: 2rem 0;
+}

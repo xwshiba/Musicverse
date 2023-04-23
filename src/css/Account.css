@@ -1,0 +1,55 @@
+.account {
+    padding: 1rem;
+}
+
+.controls {
+    margin: 2rem 0;
+}
+
+.controls .forms__btn {
+    margin-left: 0;
+}
+
+.reviews {
+    margin-top: 2rem;
+    padding: 1rem;
+
+    box-shadow: var(--box-shadow);
+}
+
+.reviews__content {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 0;
+}
+
+.review__item {
+    display: flex;
+    flex-direction: row;
+
+    height: 16vh;
+
+    cursor: pointer;
+}
+
+.review__item .album__image {
+    height: 100%;
+}
+
+.account .review__content {
+    display: flex;
+    flex-direction: column;
+
+    margin-left: 2rem;
+
+    white-space: nowrap;
+    text-overflow: clip;
+    overflow: hidden;
+}
+
+.account .review__album-name {
+    margin-bottom: 1rem;
+
+    font-weight: 500;
+}

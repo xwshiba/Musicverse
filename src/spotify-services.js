@@ -21,7 +21,7 @@ export function fetchAuthToken() {
 
 const sharedParams = {
     country: "US",
-    limit: 10,
+    limit: 30,
     offset: 0,
 };
 

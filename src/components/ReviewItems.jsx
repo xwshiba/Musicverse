@@ -27,13 +27,12 @@ function ReviewItems({
                             className="review__item"
                             href={`#/userLibrary/reviews/${ id }`}
                             onClick={() => loadAlbumDetails(albumId, id)}>
-                            <div className="review__album">
-                                <img className="album__image" src={images[1].url} alt="album cover 300x300" />
-                                <span className="album__name">{name}</span>
-                            </div>
+                            <img className="album__image" src={images[1].url} alt="album cover 300x300" />                                
                             <div className="review__content">
-                                <span>{ date }</span>
+                                <span className="review__album-name">{name}</span>
+                                <span>Reviewed on: { date }</span>
                                 <p>{ content }</p>
+                                <span>Click to Read More</span>
                             </div>
                         </li>
                     )

@@ -1,0 +1,51 @@
+.item-detail {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-detail__all-reviews {
+    padding: 0 2rem;
+}
+
+.item-detail__review-list {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 0;
+}
+
+.review-list__item {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+    padding: 2rem;
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--box-shadow);
+}
+
+.item-detail__review {
+    padding: 2rem;
+
+    box-shadow: var(--box-shadow);
+}
+
+.review__controls {
+    margin: 1rem 0 2rem 0;
+}
+
+.review__controls .btn {
+    min-width: 8rem;
+    margin-left: 0;
+}
+
+.item-detail .review__content {
+    display: flex;
+    flex-direction: column;
+
+    /* make sure that the text wraps when line breaks are in the content,
+    and pre-line specifically collapses multiple whitespaces into one. */
+    white-space: pre-line;
+}

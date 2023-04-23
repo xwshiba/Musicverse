@@ -1,10 +1,10 @@
 .navbar {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
 
-    padding: 1rem;
+    padding: 1rem 2rem;
 
     background: url(../img/header-background.jpg);
     background-size: cover;
@@ -28,7 +28,7 @@
 }
 
 .search-bar {
-    margin-left: 4rem;
+    margin-left: auto;
 }
 
 .search-bar__form {

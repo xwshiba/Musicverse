@@ -1,0 +1,31 @@
+.album-tracks {
+    display: flex;
+    flex-direction: column;
+}
+
+.album-tracks__tracks {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 2rem;
+}
+
+.album-tracks__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    margin: 0.4rem 2rem 0.4rem 0;
+    padding: 1rem 2rem 1rem 0;
+}
+
+.album-tracks__item:hover,
+.album-tracks__item:focus-within {
+    border-radius: var(--radius);
+
+    background-color: var(--clr-grey-1);
+}
+
+.album-tracks__duration {
+    margin-left: auto;
+}

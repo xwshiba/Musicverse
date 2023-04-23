@@ -1,3 +1,4 @@
+ /* arrow down */
  .gg-arrow-down-r {
      box-sizing: border-box;
      position: relative;
@@ -33,3 +34,28 @@
      left: 8px;
      background: currentColor
  }
+
+
+  /* play button */
+  .gg-play-button {
+      box-sizing: border-box;
+      position: relative;
+      display: block;
+      transform: scale(var(--ggs, 1));
+      width: 22px;
+      height: 22px
+  }
+
+  .gg-play-button::before {
+      content: "";
+      display: block;
+      box-sizing: border-box;
+      position: absolute;
+      width: 0;
+      height: 10px;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 6px solid;
+      top: 6px;
+      left: 9px
+  }

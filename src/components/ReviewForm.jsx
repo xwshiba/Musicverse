@@ -18,27 +18,29 @@ function ReviewForm({
     };
 
     return (
-        <form
-            action="#/review"
-            className="forms forms__change"
-            method="POST" 
-            onSubmit={(e) => onSubmitReview(e, userReview, albumInfo)}>
-            <label className="forms__label">
-                <span className="forms__tag">Write review</span>
-                <textarea
-                    className="forms__textarea"
-                    rows="8"
-                    placeholder="Share your reviews, thoughts and please be kind:)"
-                    name="review" 
-                    onChange={onChange}/>
-            </label>
-            <button
-                type="submit"
-                className="forms__btn btn"
-            >
-                Submit
-            </button>
-        </form>
+        <div className="review-form">
+            <h2>Write Your Reviews</h2>
+            <form
+                action="#/review"
+                className="forms forms__review"
+                method="POST" 
+                onSubmit={(e) => onSubmitReview(e, userReview, albumInfo)}>
+                <label className="forms__label">
+                    <textarea
+                        className="forms__textarea"
+                        rows="8"
+                        placeholder="Share your reviews, thoughts and please be kind:)"
+                        name="review" 
+                        onChange={onChange}/>
+                </label>
+                <button
+                    type="submit"
+                    className="forms__btn btn"
+                >
+                    Submit
+                </button>
+            </form>
+        </div>
     );
 };
 

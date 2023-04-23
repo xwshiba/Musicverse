@@ -9,6 +9,9 @@ import './css/AlbumBanner.css';
 
 import './css/Home.css';
 import './css/Albums.css';
+import './css/AlbumTracks.css';
+import './css/ItemDetail.css';
+import './css/Account.css'
 
 import reducer, {initialState} from './reducer';
 
@@ -302,13 +305,13 @@ function App() {
         {state.loginStatus === LOGIN_STATUS.IS_LOGGED_IN && state.page === 'Account' && (
           <div className="account">
             <h1>Welcome, {state.username}!</h1>
+            <Controls onLogout={onLogout} />
             <UserLibrary
               isUserLibraryPending={state.isUserLibraryPending}
               userLibrary={state.userLibrary}
               getItemDetails={getItemDetails}
               loadAlbumReviews={loadAlbumReviews}
             />
-            <Controls onLogout={onLogout} />
           </div>
         )}
         {state.page === 'Home' && 

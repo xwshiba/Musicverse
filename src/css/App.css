@@ -67,12 +67,13 @@ li {
 }
 
 .main {
-  margin: 1rem auto 6rem auto;
-  padding: 1rem 0;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .btn {
-  margin: 2rem;
+  max-width: 30rem;
+  margin: 0 2rem;
   padding: 0.4rem 1rem;
 
   border: var(--border);
@@ -90,12 +91,14 @@ li {
 }
 
 .status,
-.login__waiting {
-  width: 80%;
-
-  margin: auto;
-  margin-bottom: 0.4rem;
+.login__waiting,
+.albums__waiting {
+  margin: 2rem;
+  padding: 2rem;
 
   color: red;
   text-align: center;
+
+  box-shadow: var(--box-shadow);
+  border-radius: var(--radius);
 }

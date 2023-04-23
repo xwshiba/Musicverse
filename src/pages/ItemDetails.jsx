@@ -64,8 +64,10 @@ function ItemDetails({
                                     onClick={() => onDeleteReview(possibleReviewId)}
                                 >Delete</button>
                             </div>
-                            <span className="review__date">Date: {date}</span>
-                            <p className="review__content">Content: {content}</p>
+                            <span className="review__date">Review Date: {date}</span>
+                            <div className="review__content">
+                                <p className="review__content">{content}</p>
+                            </div>
                         </>)
                     }
                 </div>

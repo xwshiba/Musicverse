@@ -64,3 +64,7 @@ There's always room for improvements. I am listing them here for my own document
 - architecture
     - The project is using useReducer to update state via "action" concepts. However, it hasn't used useContext to handle the props passing hell yet.
     - Some code blocks are duplicated. Could use more effort to abstract them out.
+- not mobile friendly
+    - Only works on desktop screens. Especially true for the Nav bar.
+- accessibility
+    - Tried to use accessible color contrasts. But some pieces a11y requirements are missing.

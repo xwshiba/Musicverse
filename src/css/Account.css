@@ -30,7 +30,14 @@
 
     height: 16vh;
 
+    margin-bottom: 1rem;
+    padding: 1rem;
+
     cursor: pointer;
+
+    border-radius: var(--radius);
+
+    background-color: var(--clr-grey-1);
 }
 
 .review__item .album__image {

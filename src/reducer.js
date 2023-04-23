@@ -58,7 +58,7 @@ function reducer(state, action) {
                 loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
                 username: '',
                 reviewId: '',
-                page: 'Login',
+                page: 'Home',
             };
 
         case ACTIONS.REPORT_ERROR:

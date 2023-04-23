@@ -54,9 +54,9 @@ function ItemDetails({
                 onUpdateReview={onUpdateReview}
                 setEditViewVisibility={setEditViewVisibility}
                 onDeleteReview={onDeleteReview} />
-            <AlbumReviews 
-                albumReviews={albumReviews} 
-                userReviewId={possibleReviewId} 
+            <AlbumReviews
+                albumReviews={albumReviews}
+                userReviewId={possibleReviewId}
                 fullyOpenId={fullyOpenId}
                 setFullyOpenId={setFullyOpenId} />
             {!userReview && <ReviewForm

@@ -6,8 +6,6 @@ const uuid = require('uuid').v4;
 // without using the `new` operator
 // and return it
 function makeUserLibrary() {
-    // These are hardcoded initial state when we restart the server
-
     const userLibrary = {};
     const albums = {}; // albums will use id as a key
     const reviews = {}; // reviews will use uuid as a key, can also search by albumId
@@ -59,9 +57,6 @@ function makeUserLibrary() {
     };
 
     userLibrary.containsReview = function containsReview(id) {
-        // This !! syntax coerces the value to a boolean
-        // First by giving us the reverse of the truthy/falsy value,
-        // then by reversing it to true/false
         return !!reviews[id];
     };
 

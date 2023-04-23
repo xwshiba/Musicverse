@@ -27,10 +27,10 @@ function UserLibrary({
         <div className="user-library">
             {show === SHOW.PENDING && <Loading className="library__waiting">Loading User Library...</Loading>}
             {(show === SHOW.EMPTY || show === SHOW.USERLIBRARY) &&
-                <LibraryItem 
+                <LibraryItem
                     userLibrary={userLibrary}
                     getItemDetails={getItemDetails}
-                    loadAlbumReviews={loadAlbumReviews}/>}
+                    loadAlbumReviews={loadAlbumReviews} />}
         </div>
     );
 };

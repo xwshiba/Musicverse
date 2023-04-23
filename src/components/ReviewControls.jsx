@@ -1,5 +1,5 @@
-function ReviewControls ({
-    setEditViewVisibility, 
+function ReviewControls({
+    setEditViewVisibility,
     onDeleteReview,
     possibleReviewId
 }) {

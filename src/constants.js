@@ -57,7 +57,7 @@ export const ACTIONS = {
     REPLACE_ALBUM_TRACKS: 'replaceAlbumTracks',
     START_SEARCH_ALBUMS: 'startSearchAlbums',
     ADD_REVIEW: 'addReview',
-    GET_ITEM_DETAILS:'getItemDetails',
+    GET_ITEM_DETAILS: 'getItemDetails',
     UPDATE_REVIEW: 'updateReview',
     START_LOADING_ALBUM_REVIEWS: 'startLoadingAlbumReviews',
     REPLACE_ALBUM_REVIEWS: 'replaceAlbumReviews',

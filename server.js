@@ -12,7 +12,7 @@ const userLibrary = require('./user-library'); // acts as the database portion r
 const albumReviews = require('./album-reviews'); // acts as the global database
 
 app.use(cookieParser());
-app.use(express.static('./build'));
+app.use(express.static('./build')); // dev/prod proxy settings
 app.use(express.json());
 
 app.get('/api/v1/session', (req, res) => {
@@ -66,12 +66,12 @@ app.delete('/api/v1/session', (req, res) => {
 
     if (sid) {
         res.clearCookie('sid');
-    }
+    };
 
     if (username) {
         // Delete the session, but not the user data
         sessions.deleteSession(sid);
-    }
+    };
 
     // We don't report any error if sid or session didn't exist
     // Because that means we already have what we want
@@ -80,7 +80,8 @@ app.delete('/api/v1/session', (req, res) => {
 
 app.get('/api/v1/userLibrary', (req, res) => {
     // Session checks for these are very repetitive - a good place to abstract out
-    // when users get their own libraries
+
+    // when users get to their account pages
     const sid = req.cookies.sid;
     const username = sid ? sessions.getSessionUser(sid) : '';
 
@@ -106,12 +107,11 @@ app.post('/api/v1/userLibrary/albums', (req, res) => {
     const { albumInfo } = req.body;
     const userLibrary = users.getUserData(username);
 
-    // need to add some sort of validation
     if (!Object.keys(albumInfo).length === 0 || !albumInfo.id) { // if it's empty object
         res.status(400).json({ error: 'required-info' });
         return;
     };
-    
+
     const id = userLibrary.addAlbum(albumInfo);
     res.json(userLibrary.getAlbum(id));
 });
@@ -198,7 +198,7 @@ app.patch('/api/v1/userLibrary/reviews/:id', (req, res) => {
     if (!sid || !users.isValidUsername(username)) {
         res.status(401).json({ error: 'auth-missing' });
         return;
-    }
+    };
 
     const { id } = req.params;
     const { content } = req.body;

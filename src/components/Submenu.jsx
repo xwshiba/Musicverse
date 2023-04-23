@@ -3,11 +3,11 @@ function Submenu({ isSubmenuOpen, navigateAndClose, onLogout }) {
     return (
         <ul className={`${isSubmenuOpen ? 'submenu submenu--show' : 'submenu'}`}>
             <li className="submenu__item">
-                <a 
-                    href="#/Account" 
+                <a
+                    href="#/Account"
                     data-page="Account"
                     onClick={(e) => navigateAndClose(e)}>
-                        Account
+                    Account
                 </a>
                 <span className="submenu__icon"></span>
             </li>

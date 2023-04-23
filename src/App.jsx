@@ -1,5 +1,4 @@
-import { useEffect, useReducer } from 'react';
-
+// import relates with styles
 import './css/App.css';
 import './css/Icons.css';
 import './css/Forms.css';
@@ -13,7 +12,8 @@ import './css/AlbumTracks.css';
 import './css/ItemDetail.css';
 import './css/Account.css'
 
-import reducer, {initialState} from './reducer';
+import { useEffect, useReducer } from 'react';
+import reducer, { initialState } from './reducer';
 
 import {
   LOGIN_STATUS,
@@ -69,7 +69,7 @@ function App() {
   // clean and readable because we have all of these state-management functions here
 
   function onLogin(username) {
-    dispatch({type: ACTIONS.START_LOADING_USER_LIBRARY});
+    dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchLogin(username)
       .then(fetchedUserLibrary => {
@@ -102,12 +102,11 @@ function App() {
         dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedAlbums.albums.items }); // array
       })
       .catch(err => {
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
 
-  function loadAlbumTracks(id){
+  function loadAlbumTracks(id) {
     dispatch({ type: ACTIONS.START_LOADING_ALBUM_TRACKS, page: 'AlbumTracks' });
 
     fetchAuthToken()
@@ -118,7 +117,6 @@ function App() {
         dispatch({ type: ACTIONS.REPLACE_ALBUM_TRACKS, albumTracks: fetchedAlbumTracks });
       })
       .catch(err => {
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
@@ -131,7 +129,6 @@ function App() {
         dispatch({ type: ACTIONS.REPLACE_ALBUM_REVIEWS, albumReviews: fetchedAlbumReviews.albumReviews });
       })
       .catch(err => {
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
@@ -147,7 +144,6 @@ function App() {
         dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedSearchedAlbums.albums.items }); // array
       })
       .catch(err => {
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       })
   };
@@ -164,7 +160,6 @@ function App() {
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
       });
   };
@@ -179,7 +174,7 @@ function App() {
       .then(userLibrary => {
         dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
         // if albumInfo is deleted, just switch page
-        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account'} );
+        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
       })
       .catch(err => {
         // must report session expire and force logout
@@ -202,7 +197,6 @@ function App() {
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
   };
@@ -240,7 +234,6 @@ function App() {
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        console.log(err);
         dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
       });
   };
@@ -258,7 +251,7 @@ function App() {
         return Promise.reject(err); // Pass any other error unchanged
       })
       .then(userLibrary => {
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary});
+        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
         dispatch({ type: ACTIONS.SET_PAGE, page: 'Home' });
       })
       .catch(err => {
@@ -293,11 +286,11 @@ function App() {
     <div className="app">
       <main className="main">
         <Nav
-          onSearch={onSearch} 
-          username={state.username} 
+          onSearch={onSearch}
+          username={state.username}
           setPage={setPage}
           loadAlbumsPage={loadAlbumsPage}
-          onLogout={onLogout} /> 
+          onLogout={onLogout} />
         {/* can use useContext */}
         {state.error && <Status error={state.error} />}
         {state.loginStatus === LOGIN_STATUS.PENDING && <Loading className="login__waiting">Loading user...</Loading>}
@@ -314,22 +307,22 @@ function App() {
             />
           </div>
         )}
-        {state.page === 'Home' && 
-          <Home 
-            loadAlbumsPage={loadAlbumsPage} 
+        {state.page === 'Home' &&
+          <Home
+            loadAlbumsPage={loadAlbumsPage}
             username={state.username} />}
         {state.isAlbumsPending === true && state.page === 'Albums' && <Loading className="albums__waiting">Loading Albums...</Loading>}
-        {state.isAlbumsPending === false && state.page === 'Albums' && 
-          <Albums 
-            prompt = {state.prompt} 
-            albums = {state.albums} 
+        {state.isAlbumsPending === false && state.page === 'Albums' &&
+          <Albums
+            prompt={state.prompt}
+            albums={state.albums}
             loadAlbumTracks={loadAlbumTracks}
             loadAlbumReviews={loadAlbumReviews}
           />}
         {state.isAlbumTracksPending === true && state.page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
-        {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' && 
-          <AlbumTracks 
-            albumTracks={state.albumTracks} 
+        {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' &&
+          <AlbumTracks
+            albumTracks={state.albumTracks}
             onSaveAlbum={onSaveAlbum}
             onDeleteAlbum={onDeleteAlbum}
             userLibrary={state.userLibrary}
@@ -337,8 +330,8 @@ function App() {
             onDeleteReview={onDeleteReview}
             onUpdateReview={onUpdateReview}
             albumReviews={state.albumReviews}
-             />}
-        {state.page === 'ItemDetails' && <ItemDetails 
+          />}
+        {state.page === 'ItemDetails' && <ItemDetails
           userLibrary={state.userLibrary}
           albumId={state.albumId}
           reviewId={state.reviewId}
@@ -348,7 +341,7 @@ function App() {
           onDeleteReview={onDeleteReview}
           onUpdateReview={onUpdateReview}
           albumReviews={state.albumReviews}
-          />}
+        />}
       </main>
     </div>
   );

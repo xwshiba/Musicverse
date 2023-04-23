@@ -8,7 +8,7 @@ function ReviewDetails({
     const { username, content, date } = userReview;
     return (
         <div className="review-details"
-            onClick = {() => setShowContent(!showContent)}>
+            onClick={() => setShowContent(!showContent)}>
             <span className="review__username">Reviewed by: {username}</span>
             <span className="review__date">Date: {date}</span>
             <p className={showContent ? "review__content--active" : "review__content"}>{content}</p>

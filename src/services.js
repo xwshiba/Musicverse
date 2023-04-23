@@ -1,3 +1,5 @@
+// This file contains the fetch services to my own backend
+// Some infos are redudant and can be abstract out
 export function fetchAlbumReviews(id) {
     return fetch(`/api/v1/albums/${id}/reviews`, {
         method: 'GET',

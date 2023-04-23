@@ -1,6 +1,6 @@
 function TracksDetail({
     albumTracks,
-}){
+}) {
     if (!albumTracks || Object.keys(albumTracks).length === 0) {
         return;
     };
@@ -18,8 +18,8 @@ function TracksDetail({
     };
 
     const { tracks } = albumTracks;
-    const {items} = tracks;
-    
+    const { items } = tracks;
+
     return (
         <ul className="album-tracks__tracks">
             {items.map((item) => {

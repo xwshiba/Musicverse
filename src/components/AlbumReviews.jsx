@@ -35,14 +35,14 @@ function AlbumReviews({
                     };
 
                     return (
-                        <li 
-                            key={id} 
+                        <li
+                            key={id}
                             className="review-list__item"
-                            onClick = {() => toggleReview(id)} >
+                            onClick={() => toggleReview(id)} >
                             <span className="review__username">Reviewed by: {username}</span>
                             <span className="review__date">Date: {date}</span>
                             <p className={id === fullyOpenId ? "review__content--active" : "review__content"}>{content}</p>
-                            <span className="content__instructions">Click To {id === fullyOpenId ? 'Fold': 'Read More'}</span>
+                            <span className="content__instructions">Click To {id === fullyOpenId ? 'Fold' : 'Read More'}</span>
                         </li>
                     )
                 })}

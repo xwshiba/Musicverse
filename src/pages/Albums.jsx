@@ -1,8 +1,8 @@
-function Albums({ 
-    prompt, 
-    albums, 
+function Albums({
+    prompt,
+    albums,
     loadAlbumTracks,
-    loadAlbumReviews 
+    loadAlbumReviews
 }) {
     if (Object.keys(albums).length === 0) {
         return (
@@ -17,14 +17,14 @@ function Albums({
 
     return (
         <section className="albums">
-            <h1 className="albums__title">{ prompt }</h1>
+            <h1 className="albums__title">{prompt}</h1>
             <ul className="albums__content">
                 {albums.map((album) => {
                     const { id, images, name, artists } = album;
                     // images and artists are arrays
                     return (
-                        <li 
-                            key={id} 
+                        <li
+                            key={id}
                             className="album__item"
                             onClick={() => loadAlbumDetails(id)}
                             href={`#/albums/${id}`}>

@@ -23,13 +23,13 @@ export const initialState = {
 };
 
 function reducer(state, action) {
-    switch(action.type) {
+    switch (action.type) {
 
         case ACTIONS.LOG_IN:
             return {
                 ...state,
                 error: '',
-                loginStatus:LOGIN_STATUS.IS_LOGGED_IN,
+                loginStatus: LOGIN_STATUS.IS_LOGGED_IN,
                 username: action.username,
                 page: action.page,
             };
@@ -38,7 +38,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 error: '',
-                isUserLibraryPending:true,
+                isUserLibraryPending: true,
             };
 
         case ACTIONS.REPLACE_USER_LIBRARY:
@@ -57,10 +57,10 @@ function reducer(state, action) {
                 userLibrary: {},
                 loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
                 username: '',
-                reviewId:'',
+                reviewId: '',
                 page: 'Login',
             };
-        
+
         case ACTIONS.REPORT_ERROR:
             // We could move the "pick the message" logic from Status.jsx here. Better? It depends.
             return {
@@ -71,7 +71,7 @@ function reducer(state, action) {
                 isAlbumTracksPending: false,
                 isAlbumsReviewsPending: false,
             };
-        
+
         case ACTIONS.START_LOADING_ALBUMS:
             return {
                 ...state,
@@ -80,7 +80,7 @@ function reducer(state, action) {
                 page: action.page,
                 prompt: action.prompt,
             };
-        
+
         case ACTIONS.REPLACE_ALBUMS:
             return {
                 ...state,
@@ -88,7 +88,7 @@ function reducer(state, action) {
                 isAlbumsPending: false,
                 albums: action.albums,
             };
-        
+
         case ACTIONS.START_LOADING_ALBUM_TRACKS:
             return {
                 ...state,
@@ -97,7 +97,7 @@ function reducer(state, action) {
                 page: action.page,
                 prompt: '',
             };
-        
+
         case ACTIONS.REPLACE_ALBUM_TRACKS:
             return {
                 ...state,
@@ -105,7 +105,7 @@ function reducer(state, action) {
                 isAlbumTracksPending: false,
                 albumTracks: action.albumTracks,
             };
-        
+
         case ACTIONS.START_SEARCH_ALBUMS:
             return {
                 ...state,
@@ -114,20 +114,20 @@ function reducer(state, action) {
                 page: action.page,
                 prompt: action.prompt,
             };
-        
+
         case ACTIONS.SAVE_ALBUM:
             return {
                 ...state,
                 userLibrary: { // because userLibrary is an object, we have to make an altered copy
                     ...state.userLibrary, // copy the existing library...
-                    albums: { 
+                    albums: {
                         ...state.userLibrary.albums,
                         [action.savedAlbum.id]: action.savedAlbum, // ...but override this one
                     },
                 },
                 isUserLibraryPending: false,
             };
-        
+
         case ACTIONS.ADD_REVIEW:
             return {
                 ...state,
@@ -150,7 +150,7 @@ function reducer(state, action) {
                 error: '',
                 albumTracks: {}, // otherwise might show the cached tracks
             };
-        
+
         case ACTIONS.UPDATE_REVIEW:
             return {
                 ...state,
@@ -169,21 +169,21 @@ function reducer(state, action) {
                 ...state,
                 page: action.page,
             };
-        
+
         case ACTIONS.START_LOADING_ALBUM_REVIEWS:
             return {
                 ...state,
                 isAlbumsReviewsPending: true,
                 error: '',
             };
-        
+
         case ACTIONS.REPLACE_ALBUM_REVIEWS:
             return {
                 ...state,
                 albumReviews: action.albumReviews,
                 isAlbumsReviewsPending: false,
             };
-        
+
         default:
             throw new Error({ error: CLIENT.UNKNOWN_ACTION, detail: action }); // reporting detail for debugging aid, not shown to user
 

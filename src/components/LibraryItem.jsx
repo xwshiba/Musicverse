@@ -6,18 +6,18 @@ function LibraryItem({
     getItemDetails,
     loadAlbumReviews,
 }) {
-    const {albums, reviews} = userLibrary;
+    const { albums, reviews } = userLibrary;
 
     return (
         <>
-            <AlbumItems 
+            <AlbumItems
                 albums={albums}
                 getItemDetails={getItemDetails}
-                loadAlbumReviews={loadAlbumReviews}/>
-            <ReviewItems 
+                loadAlbumReviews={loadAlbumReviews} />
+            <ReviewItems
                 reviews={reviews}
                 getItemDetails={getItemDetails}
-                loadAlbumReviews={loadAlbumReviews}/>
+                loadAlbumReviews={loadAlbumReviews} />
         </>
     );
 }

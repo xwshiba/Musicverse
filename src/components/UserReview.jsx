@@ -5,7 +5,7 @@ import ReviewDetails from './ReviewDetails';
 function UserReview({
     userReview,
     editViewVisibility,
-    possibleReviewId,   
+    possibleReviewId,
     onUpdateReview,
     setEditViewVisibility,
     onDeleteReview,

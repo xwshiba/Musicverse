@@ -63,3 +63,4 @@ There's always room for improvements. I am listing them here for my own document
     - Ideally the site could use the infinite scroll pagination. However it hasn't had that function for now.
 - architecture
     - The project is using useReducer to update state via "action" concepts. However, it hasn't used useContext to handle the props passing hell yet.
+    - Some code blocks are duplicated. Could use more effort to abstract them out.

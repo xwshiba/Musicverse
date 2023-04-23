@@ -13,7 +13,6 @@ function SearchBar({ onSearch }) {
             // We could enforce more requirements, but I'm keeping this simple
             onSearch(userInput); // "action" function we were passed in
             setUserInput('');
-            // need to sanitize here
         }
     };
 

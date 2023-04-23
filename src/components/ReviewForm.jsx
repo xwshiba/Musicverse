@@ -23,15 +23,15 @@ function ReviewForm({
             <form
                 action="#/review"
                 className="forms forms__review"
-                method="POST" 
+                method="POST"
                 onSubmit={(e) => onSubmitReview(e, userReview, albumInfo)}>
                 <label className="forms__label">
                     <textarea
                         className="forms__textarea"
                         rows="8"
                         placeholder="Share your reviews, thoughts and please be kind:)"
-                        name="review" 
-                        onChange={onChange}/>
+                        name="review"
+                        onChange={onChange} />
                 </label>
                 <button
                     type="submit"

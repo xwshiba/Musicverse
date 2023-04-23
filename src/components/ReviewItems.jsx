@@ -1,4 +1,4 @@
-function ReviewItems({ 
+function ReviewItems({
     reviews,
     getItemDetails,
     loadAlbumReviews,
@@ -23,16 +23,16 @@ function ReviewItems({
                     const { id: albumId, images, name } = albumInfo;
                     return (
                         <li
-                            key={ id }
+                            key={id}
                             className="review__item"
-                            href={`#/userLibrary/reviews/${ id }`}
+                            href={`#/userLibrary/reviews/${id}`}
                             onClick={() => loadAlbumDetails(albumId, id)}>
-                            <img className="album__image" src={images[1].url} alt="album cover 300x300" />                                
+                            <img className="album__image" src={images[1].url} alt="album cover 300x300" />
                             <div className="review__content">
                                 <span className="review__album-name">{name}</span>
-                                <span>Reviewed on: { date }</span>
-                                <p>{ content }</p>
-                                <span>Click to Read More</span>
+                                <span>Reviewed on: {date}</span>
+                                <p>{content}</p>
+                                <span className="content__instructions">Click to Read More</span>
                             </div>
                         </li>
                     )

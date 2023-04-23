@@ -4,8 +4,8 @@ import AlbumBanner from "../components/AlbumBanner";
 import ReviewForm from "../components/ReviewForm";
 import TracksDetail from "../components/TracksDetail";
 import AlbumControls from "../components/AlbumControls";
-import EditReviewForm from '../components/EditReviewForm';
 import AlbumReviews from '../components/AlbumReviews';
+import UserReview from '../components/UserReview';
 
 function ItemDetails({
     reviewId,
@@ -20,6 +20,7 @@ function ItemDetails({
     albumReviews,
 }) {
     const [editViewVisibility, setEditViewVisibility] = useState(false);
+    const [fullyOpenId, setFullyOpenId] = useState('');
 
     function getReviewByAlbum(albumId) {
         const { reviews } = userLibrary;
@@ -33,51 +34,9 @@ function ItemDetails({
     const existedReview = getReviewByAlbum(albumId);
     const possibleReviewId = reviewId || existedReview;
 
-    if (possibleReviewId) { // reviews already contains albumInfo in this case
-        const { content, date, albumInfo } = userLibrary?.reviews[possibleReviewId];
+    const userReview = userLibrary?.reviews?.[possibleReviewId];
 
-        return (
-            <div className="item-detail">
-                <AlbumBanner albumInfo={albumInfo} />
-                <AlbumControls
-                    albumId={userLibrary?.albums?.[albumId]?.id}
-                    onDeleteAlbum={onDeleteAlbum}
-                    onSaveAlbum={onSaveAlbum}
-                    albumInfo={albumInfo} />
-                <TracksDetail albumTracks={albumTracks} />
-                <div className="item-detail__review">
-                    <h2>Your Review</h2>
-                    {editViewVisibility ?
-                        <EditReviewForm
-                            reviewId={possibleReviewId}
-                            content={content}
-                            onUpdateReview={onUpdateReview}
-                            setEditViewVisibility={setEditViewVisibility} /> :
-                        (<>
-                            <div className="review__controls">
-                                <button
-                                    className="btn"
-                                    onClick={() => setEditViewVisibility(true)}
-                                >Edit</button>
-                                <button
-                                    className="btn"
-                                    onClick={() => onDeleteReview(possibleReviewId)}
-                                >Delete</button>
-                            </div>
-                            <span className="review__date">Review Date: {date}</span>
-                            <div className="review__content">
-                                <p className="review__content">{content}</p>
-                            </div>
-                        </>)
-                    }
-                </div>
-                <AlbumReviews albumReviews={albumReviews} userReviewId={possibleReviewId} />
-            </div>
-        );
-    };
-    // in this case no user reviews only display album Info
-    // cover user saved albums and general album tracks review requests   
-    const albumInfo = userLibrary?.albums?.[albumId] || albumTracks;
+    const albumInfo = userLibrary?.albums?.[albumId] || albumTracks || userReview.albumInfo;
 
     return (
         <div className="item-detail">
@@ -88,10 +47,21 @@ function ItemDetails({
                 onSaveAlbum={onSaveAlbum}
                 albumInfo={albumInfo} />
             <TracksDetail albumTracks={albumTracks} />
-            <AlbumReviews albumReviews={albumReviews} userReviewId=''/>
-            <ReviewForm
+            <UserReview
+                userReview={userReview}
+                editViewVisibility={editViewVisibility}
+                possibleReviewId={possibleReviewId}
+                onUpdateReview={onUpdateReview}
+                setEditViewVisibility={setEditViewVisibility}
+                onDeleteReview={onDeleteReview} />
+            <AlbumReviews 
+                albumReviews={albumReviews} 
+                userReviewId={possibleReviewId} 
+                fullyOpenId={fullyOpenId}
+                setFullyOpenId={setFullyOpenId} />
+            {!userReview && <ReviewForm
                 onAddReview={onAddReview}
-                albumInfo={albumInfo} />            
+                albumInfo={albumInfo} />}
         </div>
     );
 };

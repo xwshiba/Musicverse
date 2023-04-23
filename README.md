@@ -1,70 +1,42 @@
-# Getting Started with Create React App
+# Getting Started
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+The code is runnable with `npm install`; `npm run build`; `npm start` in this react project directory.
 
-In the project directory, you can run:
+## Site Description
 
-### `npm start`
+This site is a personal website that showcases my resume and development skills.
+Detail descriptions of each page can be found at the website "About" page.
+Hopefully I can get a developer position with the help of this website.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Loading Indicator
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+This site contains two loading indicators in "Sign In" and Sign Out" pages.
+- You can find them in the form submission button
+  - "Sign In" button in "Sign In" page
+  - "Sign Out" button in "Sign Out" page
 
-### `npm test`
+### Sign In Accounts
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- dog
+  - User "dog" is a special account. Any attempt to login as username "dog" will fail with an "invalidPassword" error.
 
-### `npm run build`
+### License
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- All images are from Unsplash.
+  - Unsplash grants user an irrevocable, nonexclusive, worldwide copyright license to download, copy, modify, distribute, perform, and use photos from Unsplash for free, including for commercial purposes, without permission from or attributing the photographer or Unsplash. This license does not include the right to compile photos from Unsplash to replicate a similar or competing service.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+  - More licensing terms can be found [here](https://facebook.github.io/create-react-app/docs/getting-started).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- All icons are from [css.gg](https://css.gg/).
+  - MIT License information can be found [here](https://css.gg/doc/licence).
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Known Issues
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+There are some issues exist. However, resolving these issues is not in the final requirement. I am listing them here for my own documentation.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- hyperlink
+  - The site doesn't have any routing design.
+    - If you click a sublink that doesn't have any content but a hyperlink, the site will show the previous page content with a new hyperlink.

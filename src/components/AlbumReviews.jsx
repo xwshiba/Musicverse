@@ -1,6 +1,8 @@
 function AlbumReviews({
     albumReviews,
     userReviewId,
+    fullyOpenId,
+    setFullyOpenId,
 }) {
     if (!albumReviews || Object.keys(albumReviews).length === 0 ||
         (Object.keys(albumReviews).length === 1 && (userReviewId in albumReviews))
@@ -14,6 +16,14 @@ function AlbumReviews({
         );
     };
 
+    function toggleReview(id) {
+        if (id === fullyOpenId) {
+            setFullyOpenId('');
+        } else {
+            setFullyOpenId(id);
+        }
+    };
+
     return (
         <div className="item-detail__all-reviews">
             <h2>See What Others Think About This Album</h2>
@@ -25,10 +35,14 @@ function AlbumReviews({
                     };
 
                     return (
-                        <li key={id} className="review-list__item">
+                        <li 
+                            key={id} 
+                            className="review-list__item"
+                            onClick = {() => toggleReview(id)} >
                             <span className="review__username">Reviewed by: {username}</span>
                             <span className="review__date">Date: {date}</span>
-                            <p className="review__content">{content}</p>
+                            <p className={id === fullyOpenId ? "review__content--active" : "review__content"}>{content}</p>
+                            <span className="content__instructions">Click To {id === fullyOpenId ? 'Fold': 'Read More'}</span>
                         </li>
                     )
                 })}

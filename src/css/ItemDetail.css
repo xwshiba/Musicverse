@@ -3,30 +3,8 @@
     flex-direction: column;
 }
 
-.item-detail__all-reviews {
-    padding: 0 2rem;
-}
-
-.item-detail__review-list {
-    display: flex;
-    flex-direction: column;
-
-    padding-left: 0;
-}
-
-.review-list__item {
-    display: flex;
-    flex-direction: column;
-
-    margin-bottom: 1rem;
-    padding: 2rem;
-
-    border-radius: var(--radius);
-
-    box-shadow: var(--box-shadow);
-}
-
 .item-detail__review {
+    margin: 2rem;
     padding: 2rem;
 
     box-shadow: var(--box-shadow);
@@ -41,11 +19,58 @@
     margin-left: 0;
 }
 
-.item-detail .review__content {
+.review-details {
     display: flex;
     flex-direction: column;
 
+    cursor: pointer;
+}
+
+.review__username {
+    margin-bottom: 1rem;
+}
+
+.item-detail__all-reviews {
+    padding: 0 2rem;
+}
+
+.item-detail__review-list {
+    display: flex;
+    flex-direction: column;
+
+    padding-left: 0;
+}
+
+.review-list__item,
+.review-list__item--active {
+    display: flex;
+    flex-direction: column;
+
+    margin-bottom: 1rem;
+    padding: 2rem;
+
+    cursor: pointer;
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--box-shadow);
+}
+
+.review__content {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.review__content--active {
     /* make sure that the text wraps when line breaks are in the content,
     and pre-line specifically collapses multiple whitespaces into one. */
     white-space: pre-line;
+}
+
+.content__instructions {
+    margin: 0;
+
+    color: var(--clr-grey-4);
+    font-weight: 600;
 }

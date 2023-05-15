@@ -68,3 +68,10 @@ There's always room for improvements. I am listing them here for my own document
     - Only works on desktop screens. Especially true for the Nav bar.
 - accessibility
     - Tried to use accessible color contrasts. But some pieces a11y requirements are missing.
+   
+## Next Steps
+
+- Transfer for development scale-up
+    - Switch back-end from JavaScript to TypeScript to enforce type security
+    - Switch CRA to Next.js for better support
+    - Change from CSS to SASS or SCSS

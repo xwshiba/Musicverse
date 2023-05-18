@@ -1,6 +1,6 @@
 ## Site Description
 
-Musicverse is a social platform that allows users to keep track of all the music user would like to save and grow their passion for music with other users. 
+Musicverse is a social platform that allows users to keep track of all the music users would like to save and grow their passion for music with other users. 
 
 Users can write reviews, save albums and view other users' reviews in this community.
 

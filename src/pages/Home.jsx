@@ -16,7 +16,7 @@ function Home({ loadAlbumsPage, username }) {
                     onClick={loadAlbumsPage}>Browse the Albums</button>
             </div>
             <div className="home__image">
-                <img className="home__logo" src={banner} alt="a music roo with instruments" />
+                <img className="home__logo" src={banner.src} alt="a music roo with instruments" />
             </div>
         </section>
     );

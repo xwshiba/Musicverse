@@ -1,8 +1,8 @@
 // This file contains the fetch services to Spotify
 // use .env file for the tokens
 const authTokenBody = `grant_type=client_credentials&client_id=` +
-    `${process.env.REACT_APP_CLIENT_ID}` +
-    `&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`;
+    `${process.env.NEXT_PUBLIC_CLIENT_ID}` +
+    `&client_secret=${process.env.NEXT_PUBLIC_CLIENT_SECRET}`;
 
 // Spotify requires extra step to get API tokens that will expire in 1 hour
 export function fetchAuthToken() {

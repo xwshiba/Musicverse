@@ -1,3 +1,6 @@
+import Image from "next/image";
+
+
 function ReviewItems({
     reviews,
     getItemDetails,
@@ -27,7 +30,11 @@ function ReviewItems({
                             className="review__item"
                             href={`#/userLibrary/reviews/${id}`}
                             onClick={() => loadAlbumDetails(albumId, id)}>
-                            <img className="album__image" src={images[1].url} alt="album cover 300x300" />
+                            <Image
+                                className="album__image"
+                                src={images[1].url}
+                                alt="album cover 300x300"
+                            />
                             <div className="review__content">
                                 <span className="review__album-name">{name}</span>
                                 <span>Reviewed on: {date}</span>

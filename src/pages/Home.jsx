@@ -21,7 +21,6 @@ function Home({ loadAlbumsPage, username }) {
                     className="home__logo"
                     src={bannerImg}
                     alt="a music room with instruments"
-                    fill={true}
                 />
             </div>
         </section>

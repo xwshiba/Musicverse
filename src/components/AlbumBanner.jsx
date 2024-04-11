@@ -8,11 +8,12 @@ function AlbumBanner({
 
     return (
         <div className="album-banner">
-            <div className="album-banner__image-wrapper">
+            <div className="album-banner__image">
                 <Image
-                    className="album-banner__image"
                     src={images[0].url}
                     alt="album cover"
+                    width={300}
+                    height={300}
                 />
             </div>
             <div className="album-banner__info">

@@ -12,12 +12,9 @@
     background-color: var(--clr-grey-1);
 }
 
-.album-banner__image-wrapper {
+.album-banner__image img{
     height: 100%;
-}
-
-.album-banner__image {
-    height: 100%;
+    border-radius: var(--radius);
 }
 
 .album-banner__info {

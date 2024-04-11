@@ -12,9 +12,9 @@ Hope this site is enjoyable to you.
 
 ## Getting Started
 
-The frontend of the project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The frontend of the project was bootstrapped with [Next.js](https://nextjs.org/).
 
-The backend is using JavaScript.
+The backend is using JavaScript. Future plan: TypeScript.
 
 Some services are from [Spotify](https://spotify.com). The tokens format is included in the `.env.example` file.
 
@@ -72,6 +72,6 @@ There's always room for improvements. I am listing them here for my own document
 ## Next Steps
 
 - Transfer for development scale-up
+    - ~~ Switch CRA to Next.js for better support ~~
     - Switch back-end from JavaScript to TypeScript to enforce type security
-    - Switch CRA to Next.js for better support
     - Change from CSS to SASS or SCSS

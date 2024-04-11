@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-import AlbumBanner from "../components/AlbumBanner";
-import ReviewForm from "../components/ReviewForm";
-import TracksDetail from "../components/TracksDetail";
-import AlbumControls from "../components/AlbumControls";
-import AlbumReviews from '../components/AlbumReviews';
-import UserReview from '../components/UserReview';
+import AlbumBanner from "./AlbumBanner";
+import ReviewForm from "./ReviewForm";
+import TracksDetail from "./TracksDetail";
+import AlbumControls from "./AlbumControls";
+import AlbumReviews from './AlbumReviews';
+import UserReview from './UserReview';
 
 function ItemDetails({
     reviewId,

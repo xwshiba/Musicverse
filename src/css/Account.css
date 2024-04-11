@@ -40,8 +40,10 @@
     background-color: var(--clr-grey-1);
 }
 
-.review__item .album__image {
+.review__image img{
     height: 100%;
+    width: auto;
+    border-radius: var(--radius);
 }
 
 .account .review__content {

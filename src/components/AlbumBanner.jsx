@@ -1,3 +1,6 @@
+import Image from 'next/image';
+
+
 function AlbumBanner({
     albumInfo,
 }) {
@@ -5,8 +8,13 @@ function AlbumBanner({
 
     return (
         <div className="album-banner">
-            <div className="album-banner__image-wrapper">
-                <img className="album-banner__image" src={images[0].url} alt="album cover" />
+            <div className="album-banner__image">
+                <Image
+                    src={images[0].url}
+                    alt="album cover"
+                    width={300}
+                    height={300}
+                />
             </div>
             <div className="album-banner__info">
                 <span className="album-banner__type">{album_type}</span>

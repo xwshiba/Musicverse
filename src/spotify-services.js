@@ -1,8 +1,10 @@
 // This file contains the fetch services to Spotify
 // use .env file for the tokens
 const authTokenBody = `grant_type=client_credentials&client_id=` +
-    `${process.env.REACT_APP_CLIENT_ID}` +
-    `&client_secret=${process.env.REACT_APP_CLIENT_SECRET}`;
+    `${process.env.NEXT_PUBLIC_CLIENT_ID}` +
+    `&client_secret=${process.env.NEXT_PUBLIC_CLIENT_SECRET}`;
+
+const baseUrl = 'https://api.spotify.com/v1';
 
 // Spotify requires extra step to get API tokens that will expire in 1 hour
 export function fetchAuthToken() {
@@ -35,7 +37,7 @@ const sharedParamsUrl =
     `offset=${sharedParams.offset}`;
 
 export function fetchNewAlbums(accessToken, tokenType) {
-    return fetch(`https://api.spotify.com/v1/browse/new-releases?` +
+    return fetch(`${baseUrl}/browse/new-releases?` +
         `${sharedParamsUrl}`, {
         method: 'GET',
         headers: {
@@ -54,7 +56,7 @@ export function fetchNewAlbums(accessToken, tokenType) {
 };
 
 export function fetchAlbumTracks(accessToken, tokenType, id) {
-    return fetch(`https://api.spotify.com/v1/albums/${id}`, {
+    return fetch(`${baseUrl}/albums/${id}`, {
         method: 'GET',
         headers: {
             Authorization: `${tokenType} ${accessToken}`
@@ -73,7 +75,7 @@ export function fetchAlbumTracks(accessToken, tokenType, id) {
 
 export function fetchSearch(query, accessToken, tokenType) {
     // user's input will be sanitized by spotify services
-    return fetch(`https://api.spotify.com/v1/search?q=${query}&type=album&` +
+    return fetch(`${baseUrl}/search?q=${query}&type=album&` +
         `${sharedParamsUrl}`, {
         method: 'GET',
         headers: {

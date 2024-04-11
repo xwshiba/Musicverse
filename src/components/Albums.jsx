@@ -1,3 +1,6 @@
+import Image from "next/image";
+
+
 function Albums({
     prompt,
     albums,
@@ -28,7 +31,15 @@ function Albums({
                             className="album__item"
                             onClick={() => loadAlbumDetails(id)}
                             href={`#/albums/${id}`}>
-                            <img className="album__image" src={images[1].url} alt="album cover 300x300" />
+                            <div className="album__image">
+                                <Image
+                                    className="album__image"
+                                    src={images[0].url}
+                                    alt="album cover 300x300"
+                                    width = {300}
+                                    height = {300}
+                                />
+                            </div>
                             <span className="album__name">{name}</span>
                             <div className="album__artists">
                                 {artists.map((artist) => {

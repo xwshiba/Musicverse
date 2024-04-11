@@ -44,15 +44,15 @@ import {
 } from './spotify-services'; // third-party services
 
 import Nav from './components/Nav';
-import Home from './pages/Home';
+import Home from './components/Home';
 import Status from './components/Status';
-import LoginForm from './pages/LoginForm';
+import LoginForm from './components/LoginForm';
 import Loading from './components/Loading';
 import Controls from './components/Controls';
-import UserLibrary from './pages/UserLibrary';
-import Albums from './pages/Albums';
-import AlbumTracks from './pages/AlbumTracks';
-import ItemDetails from './pages/ItemDetails';
+import UserLibrary from './components/UserLibrary';
+import Albums from './components/Albums';
+import AlbumTracks from './components/AlbumTracks';
+import ItemDetails from './components/ItemDetails';
 
 function App() {
 

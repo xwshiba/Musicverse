@@ -1,5 +1,5 @@
-import Loading from '../components/Loading';
-import LibraryItem from '../components/LibraryItem';
+import Loading from './Loading';
+import LibraryItem from './LibraryItem';
 
 function UserLibrary({
     isUserLibraryPending,

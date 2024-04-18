@@ -19,6 +19,25 @@ const users = require('./users');
 const userLibrary = require('./user-library'); // acts as the database portion relates with the user
 const albumReviews = require('./album-reviews'); // acts as the global database
 
+/************* helper functions *************/
+
+/**
+ * Retrieves the session details from the request.
+ */
+function getSessionDetails(req) {
+    const sid = req.cookies.sid;
+    const username = sid ? sessions.getSessionUser(sid) : '';
+    return { sid, username };
+};
+
+/**
+ * Sends an error response with the specified status code and error message.
+ */
+function sendError(res, statusCode, errorMessage) {
+    res.status(statusCode).json({ error: errorMessage });
+};
+
+/************* handle sessions *************/
 
 app.prepare().then(() => {
     const server = express();
@@ -30,11 +49,9 @@ app.prepare().then(() => {
 
     // backend routes
     server.get('/api/v1/session', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const {sid, username} = getSessionDetails(req);
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         res.json({ username });
@@ -51,13 +68,11 @@ app.prepare().then(() => {
         const { username } = req.body;
 
         if (!users.isValidUsername(username)) {
-            res.status(400).json({ error: 'required-username' });
-            return;
+            return sendError(res, 400, 'required-username');
         };
 
         if (username === 'dog') {
-            res.status(403).json({ error: 'auth-insufficient' });
-            return;
+            return sendError(res, 403, 'auth-insufficient');
         };
 
         const sid = sessions.addSession(username);
@@ -75,8 +90,7 @@ app.prepare().then(() => {
     });
 
     server.delete('/api/v1/session', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const {sid, username} = getSessionDetails(req);
 
         if (sid) {
             res.clearCookie('sid');
@@ -96,12 +110,10 @@ app.prepare().then(() => {
         // Session checks for these are very repetitive - a good place to abstract out
 
         // when users get to their account pages
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
 
         if (!sid || !username) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         res.json({
@@ -111,19 +123,17 @@ app.prepare().then(() => {
     });
 
     server.post('/api/v1/userLibrary/albums', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
+
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         const { albumInfo } = req.body;
         const userLibrary = users.getUserData(username);
 
         if (!Object.keys(albumInfo).length === 0 || !albumInfo.id) { // if it's empty object
-            res.status(400).json({ error: 'required-info' });
-            return;
+            return sendError(res, 400, 'required-info');
         };
 
         const id = userLibrary.addAlbum(albumInfo);
@@ -131,11 +141,10 @@ app.prepare().then(() => {
     });
 
     server.delete('/api/v1/userLibrary/albums/:id', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
+
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         const { id } = req.params;
@@ -149,30 +158,26 @@ app.prepare().then(() => {
     });
 
     server.post('/api/v1/userLibrary/reviews', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
+
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         const { content, reviewedAlbumInfo } = req.body;
         const userLibrary = users.getUserData(username);
 
         if (!content || !reviewedAlbumInfo) { // reject if either is empty
-            res.status(400).json({ error: 'required-info' });
-            return;
+            return sendError(res, 400, 'required-info');
         };
 
         if (!users.isValidReview(content)) { // reject if review contains bad tokens
-            res.status(400).json({ error: 'invalid-info' });
-            return;
+            return sendError(res, 400, 'invalid-info');
         };
 
         const exists = userLibrary.getReviewByAlbum(reviewedAlbumInfo.id);
         if (exists) { // prevent review again
-            res.status(400).json({ error: 'duplicate-review' });
-            return;
+            return sendError(res, 400, 'duplicate-review');
         };
 
         const id = userLibrary.addReview(content, reviewedAlbumInfo, username);
@@ -185,11 +190,10 @@ app.prepare().then(() => {
     });
 
     server.delete('/api/v1/userLibrary/reviews/:id', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
+
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         const { id } = req.params;
@@ -207,32 +211,28 @@ app.prepare().then(() => {
     });
 
     server.patch('/api/v1/userLibrary/reviews/:id', (req, res) => {
-        const sid = req.cookies.sid;
-        const username = sid ? sessions.getSessionUser(sid) : '';
+        const { sid, username } = getSessionDetails(req);
+
         if (!sid || !users.isValidUsername(username)) {
-            res.status(401).json({ error: 'auth-missing' });
-            return;
+            return sendError(res, 401, 'auth-missing');
         };
 
         const { id } = req.params;
         const { content } = req.body;
 
         if (!content) { // reject if either is empty
-            res.status(400).json({ error: 'required-info' });
-            return;
+            return sendError(res, 400, 'required-info');
         };
 
         if (!users.isValidReview(content)) { // reject if review contains bad tokens
-            res.status(400).json({ error: 'invalid-info' });
-            return;
+            return sendError(res, 400, 'invalid-info');
         };
 
         const userLibrary = users.getUserData(username);
         const exists = userLibrary.containsReview(id);
 
         if (!exists) {
-            res.status(404).json({ error: `invalid-info` });
-            return;
+            return sendError(res, 404, 'invalid-info');
         };
         userLibrary.updateReview(id, content);
 

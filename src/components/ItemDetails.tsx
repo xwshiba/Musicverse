@@ -49,13 +49,13 @@ function ItemDetails({
     };
 
     const existedReview = getReviewByAlbum(albumId);
-    const possibleReviewId = reviewId || existedReview;
+    const possibleReviewId = reviewId || existedReview; // empty string or reviewId
 
-    const userReview = userLibrary?.reviews?.[possibleReviewId];
+    const targetReview = userLibrary?.reviews?.[possibleReviewId];
 
     const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || {
         ...albumTracks,
-        ...userReview?.albumInfo,
+        ...targetReview?.albumInfo,
     };
 
     return (
@@ -68,7 +68,7 @@ function ItemDetails({
                 albumInfo={albumInfo} />
             <TracksDetail albumTracks={albumTracks} />
             <UserReview
-                userReview={userReview}
+                userReview={targetReview}
                 editViewVisibility={editViewVisibility}
                 possibleReviewId={possibleReviewId}
                 onUpdateReview={onUpdateReview}
@@ -79,7 +79,7 @@ function ItemDetails({
                 userReviewId={possibleReviewId}
                 fullyOpenId={fullyOpenId}
                 setFullyOpenId={setFullyOpenId} />
-            {!userReview && <ReviewForm
+            {!targetReview && <ReviewForm
                 onAddReview={onAddReview}
                 albumInfo={albumInfo} />}
         </div>

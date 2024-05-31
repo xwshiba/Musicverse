@@ -9,7 +9,7 @@ interface UserReviewProps {
     userReview: Review;
     editViewVisibility: boolean;
     possibleReviewId: string;
-    onUpdateReview: (reviewId: string, review: string) => void;
+    onUpdateReview: (albumId: string, review: string) => void;
     setEditViewVisibility: (visibility: boolean) => void;
     onDeleteReview: (reviewId: string) => void;
 };

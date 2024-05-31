@@ -8,8 +8,8 @@ interface AlbumTracksProps {
     onDeleteAlbum: (albumId: string) => void;
     userLibrary: UserLibrary;
     onAddReview: (albumId: string, review: string) => void;
-    onDeleteReview: (albumId: string, reviewId: string) => void;
-    onUpdateReview: (albumId: string, reviewId: string, review: string) => void;
+    onDeleteReview: (reviewId: string) => void;
+    onUpdateReview: (albumId: string, review: string) => void;
     albumReviews: AllReviews;
 };
 

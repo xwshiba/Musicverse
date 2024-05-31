@@ -1,4 +1,4 @@
-import { AlbumInfo } from '../types';
+import { AlbumInfo } from '@/types';
 
 
 interface AlbumControlsProps {

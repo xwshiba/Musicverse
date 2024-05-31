@@ -2,8 +2,8 @@
 // will need to go through user-library check first
 // and save to the whole database here
 
-const albumReviews = {};
-const allReviews = {};
+const albumReviews = {}; // contains all reviews for all albums
+const allReviews = {}; // contains all reviews for a single album
 
 albumReviews.getAllReviews = function getAllReviews(albumId) {
     return allReviews[albumId];

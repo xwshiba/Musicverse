@@ -1,9 +1,20 @@
+import { AlbumInfo } from '../types';
+
+
+interface AlbumControlsProps {
+    albumId: string;
+    onDeleteAlbum: (albumId: string) => void;
+    onSaveAlbum: (albumInfo: any) => void;
+    albumInfo: AlbumInfo;
+};
+
 function AlbumControls({
     albumId,
     onDeleteAlbum,
     onSaveAlbum,
     albumInfo,
-}) {
+} : AlbumControlsProps) {
+
     return (
         <div className="album__control">
             {albumId ? (

@@ -1,13 +1,18 @@
 import { useState } from 'react';
 
-function SearchBar({ onSearch }) {
-    const [userInput, setUserInput] = useState('');
 
-    function onChange(e) {
+interface SearchBarProps {
+    onSearch: (userInput: string) => void;
+};
+
+function SearchBar({ onSearch } : SearchBarProps) {
+    const [userInput, setUserInput] = useState<string>('');
+
+    function onChange(e: React.ChangeEvent<HTMLInputElement>) {
         setUserInput(e.target.value);
     };
 
-    function onSubmit(e) {
+    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault(); // Remember this! Can be very confusing if page reloads
         if (userInput) {  // Don't allow blank username to try login
             // We could enforce more requirements, but I'm keeping this simple

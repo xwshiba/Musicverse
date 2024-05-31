@@ -1,5 +1,18 @@
 import ItemDetails from "./ItemDetails";
 
+import { AlbumTracks, AllReviews, UserLibrary } from "@/types";
+
+interface AlbumTracksProps {
+    albumTracks: AlbumTracks;
+    onSaveAlbum: (albumId: string) => void;
+    onDeleteAlbum: (albumId: string) => void;
+    userLibrary: UserLibrary;
+    onAddReview: (albumId: string, review: string) => void;
+    onDeleteReview: (albumId: string, reviewId: string) => void;
+    onUpdateReview: (albumId: string, reviewId: string, review: string) => void;
+    albumReviews: AllReviews;
+};
+
 function AlbumTracks({
     albumTracks,
     onSaveAlbum,
@@ -9,8 +22,9 @@ function AlbumTracks({
     onDeleteReview,
     onUpdateReview,
     albumReviews,
-}) {
+}: AlbumTracksProps) {
     const { id } = albumTracks;
+
     return (
         <section className="album-tracks">
             <ItemDetails

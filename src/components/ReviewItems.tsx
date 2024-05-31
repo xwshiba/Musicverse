@@ -1,11 +1,17 @@
 import Image from "next/image";
 
 
+interface ReviewItemsProps {
+    reviews: any; // revise later to be more specific
+    getItemDetails: (albumId: string, reviewId: string) => void;
+    loadAlbumReviews: (albumId: string) => void;
+};
+
 function ReviewItems({
     reviews,
     getItemDetails,
     loadAlbumReviews,
-}) {
+} : ReviewItemsProps) {
     if (!reviews || Object.keys(reviews).length === 0) {
         return (
             <p className="reviews__title">No reviews yet. Write more reviews!</p>
@@ -28,7 +34,6 @@ function ReviewItems({
                         <li
                             key={id}
                             className="review__item"
-                            href={`#/userLibrary/reviews/${id}`}
                             onClick={() => loadAlbumDetails(albumId, id)}>
                             <div className="review__image">
                                 <Image

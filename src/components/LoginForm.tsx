@@ -1,20 +1,25 @@
 import { useState } from 'react';
 
 // The "onLogin" below is not an automatic event
-// such events only happen on JSX representing native HTML elements
+// such events only happen on TSX representing native HTML elements
 // Here it just a prop name like any other
+
+interface LoginFormProps {
+    onLogin: (username: string) => void;
+};
+
 function LoginForm({ onLogin }) {
     // This state is local to this component
     // it is used only inside this component
     // until login is complete
     // when we call the passed action function
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState<string>('');
 
-    function onChange(e) {
+    function onChange(e : React.ChangeEvent<HTMLInputElement>) {
         setUsername(e.target.value);
     };
 
-    function onSubmit(e) {
+    function onSubmit(e : React.FormEvent<HTMLFormElement>) {
         e.preventDefault(); // Remember this! Can be very confusing if page reloads
         if (username) {  // Don't allow blank username to try login
             // We could enforce more requirements, but I'm keeping this simple

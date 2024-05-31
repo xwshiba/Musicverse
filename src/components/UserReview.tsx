@@ -1,6 +1,18 @@
+import { Review } from '@/types';
+
 import EditReviewForm from './EditReviewForm';
 import ReviewControls from './ReviewControls';
 import ReviewDetails from './ReviewDetails';
+
+
+interface UserReviewProps {
+    userReview: Review;
+    editViewVisibility: boolean;
+    possibleReviewId: string;
+    onUpdateReview: (reviewId: string, review: string) => void;
+    setEditViewVisibility: (visibility: boolean) => void;
+    onDeleteReview: (reviewId: string) => void;
+};
 
 function UserReview({
     userReview,
@@ -9,7 +21,8 @@ function UserReview({
     onUpdateReview,
     setEditViewVisibility,
     onDeleteReview,
-}) {
+} : UserReviewProps) {
+
     if (!userReview) {
         return '';
     };

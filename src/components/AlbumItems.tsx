@@ -1,18 +1,25 @@
 import Image from 'next/image';
 
 
+interface AlbumItemsProps {
+    albums: any; // revise later to be more specific
+    getItemDetails: (albumId: string, reviewId: string) => void;
+    loadAlbumReviews: (albumId: string) => void;
+};
+
 function AlbumItems({
     albums,
     getItemDetails,
     loadAlbumReviews,
-}) {
+}: AlbumItemsProps) {
+
     if (!albums || Object.keys(albums).length === 0) {
         return (
             <p className="albums__title">No albums in your library yet. Like more albums!</p>
         );
     };
 
-    function loadAlbumDetails(albumId, reviewId) {
+    function loadAlbumDetails(albumId: string, reviewId : string) {
         getItemDetails(albumId, reviewId);
         loadAlbumReviews(albumId);
     };
@@ -21,14 +28,15 @@ function AlbumItems({
         <section className="albums">
             <h1 className="albums__title">Saved Albums</h1>
             <ul className="albums__content">
+
                 {Object.keys(albums).map((albumId) => {
+
                     const { id, images, name, artists } = albums[albumId];
                     // images and artists are arrays
                     return (
                         <li
                             key={id}
                             className="album__item"
-                            href={`#/userLibrary/albums/${id}`}
                             onClick={() => loadAlbumDetails(albumId, '')}
                         >
                             <div className="album__image">

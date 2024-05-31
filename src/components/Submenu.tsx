@@ -1,4 +1,10 @@
-function Submenu({ isSubmenuOpen, navigateAndClose, onLogout }) {
+interface SubmenuProps {
+    isSubmenuOpen: boolean;
+    navigateAndClose: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+    onLogout: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+};
+
+function Submenu({ isSubmenuOpen, navigateAndClose, onLogout } : SubmenuProps) {
 
     return (
         <ul className={`${isSubmenuOpen ? 'submenu submenu--show' : 'submenu'}`}>

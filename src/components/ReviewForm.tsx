@@ -1,18 +1,26 @@
 import { useState } from 'react';
 
+import { AlbumInfo } from '../types';
+
+
+interface ReviewFormProps {
+    onAddReview: (userReview: string, albumInfo: AlbumInfo) => void;
+    albumInfo: AlbumInfo;
+};
+
 function ReviewForm({
     onAddReview,
     albumInfo,
 }) {
     const [userReview, setUserReview] = useState('');
 
-    function onChange(e) {
+    function onChange(e : React.ChangeEvent<HTMLTextAreaElement>) {
         setUserReview(e.target.value);
     };
 
-    function onSubmitReview(e, userReview, albumInfo) {
+    function onSubmitReview(e: React.FormEvent<HTMLFormElement> , userReview : string, albumInfo : AlbumInfo) {
         e.preventDefault();
-        if (userReview) {  // Don't allow blank username to try login
+        if (userReview.trim()) {  // Don't allow blank username to try login
             onAddReview(userReview, albumInfo); // "action" function we were passed in
         };
     };
@@ -28,7 +36,7 @@ function ReviewForm({
                 <label className="forms__label">
                     <textarea
                         className="forms__textarea"
-                        rows="8"
+                        rows={8}
                         placeholder="Share your reviews, thoughts and please be kind:)"
                         name="review"
                         onChange={onChange} />

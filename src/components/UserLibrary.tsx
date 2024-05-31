@@ -1,12 +1,22 @@
+import { UserLibrary } from '@/types';
+
 import Loading from './Loading';
 import LibraryItem from './LibraryItem';
+
+
+interface UserLibraryProps {
+    isUserLibraryPending: boolean;
+    userLibrary: UserLibrary;
+    getItemDetails: (id: string) => void;
+    loadAlbumReviews: (id: string) => void;
+};
 
 function UserLibrary({
     isUserLibraryPending,
     userLibrary,
     getItemDetails,
     loadAlbumReviews,
-}) {
+} : UserLibraryProps) {
     // All this code before the return is to make the return easier to skim
     const SHOW = {  // a constant used only in this component
         PENDING: 'pending',
@@ -14,7 +24,7 @@ function UserLibrary({
         USERLIBRARY: 'userLibrary',
     };
 
-    let show;
+    let show : string = '';
     if (isUserLibraryPending) {
         show = SHOW.PENDING;
     } else if (!userLibrary) {

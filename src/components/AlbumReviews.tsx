@@ -1,9 +1,20 @@
+import { AllReviews } from '@/types';
+
+interface AlbumReviewsProps {
+    albumReviews: AllReviews;
+    userReviewId: string;
+    fullyOpenId: string;
+    setFullyOpenId: React.Dispatch<React.SetStateAction<string>>;
+}
+
+
 function AlbumReviews({
     albumReviews,
     userReviewId,
     fullyOpenId,
     setFullyOpenId,
-}) {
+} : AlbumReviewsProps) {
+    
     if (!albumReviews || Object.keys(albumReviews).length === 0 ||
         (Object.keys(albumReviews).length === 1 && (userReviewId in albumReviews))
         // also, if user review is the only review...
@@ -16,7 +27,7 @@ function AlbumReviews({
         );
     };
 
-    function toggleReview(id) {
+    function toggleReview(id : string) {
         if (id === fullyOpenId) {
             setFullyOpenId('');
         } else {

@@ -1,17 +1,29 @@
 import SearchBar from './SearchBar';
 import UserButton from './UserButton';
 
+interface NavProps {
+    onSearch: (search: string) => void;
+    username: string;
+    setPage: (page: string) => void;
+    loadAlbumsPage: () => void;
+    onLogout: () => void;
+};
+
 function Nav({
     onSearch,
     username,
     setPage,
     loadAlbumsPage,
     onLogout
-}) {
+} : NavProps) {
 
-    const navigateAndLoad = (e) => {
-        setPage(e.target.dataset.page);
-        loadAlbumsPage();
+    const navigateAndLoad = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        const target = e.target as HTMLAnchorElement;
+        const page = target.dataset.page;
+        if (page) {
+            setPage(page);
+            loadAlbumsPage();
+        };
     };
 
     return (
@@ -21,7 +33,7 @@ function Nav({
                     className="navbar__logo"
                     href="#/home"
                     data-page="Home"
-                    onClick={(e) => setPage(e.target.dataset.page)} >Musicverse</a>
+                    onClick={(e) => setPage(e.currentTarget.dataset.page || '')} >Musicverse</a>
             </div>
             <ul className="navbar__links">
                 <li className="navbar__item">

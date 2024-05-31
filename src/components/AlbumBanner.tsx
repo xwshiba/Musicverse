@@ -1,9 +1,16 @@
 import Image from 'next/image';
 
+import { AlbumInfo } from '@/types';
+
+
+interface AlbumBannerProps {
+    albumInfo: AlbumInfo;
+};
 
 function AlbumBanner({
     albumInfo,
-}) {
+} : AlbumBannerProps) {
+
     const { name, images, artists, album_type, release_date } = albumInfo;
 
     return (

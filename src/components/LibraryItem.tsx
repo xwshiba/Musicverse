@@ -1,11 +1,21 @@
 import AlbumItems from './AlbumItems';
 import ReviewItems from './ReviewItems';
 
+import { UserLibrary } from '@/types';
+
+
+interface LibraryItemProps {
+    userLibrary: UserLibrary;
+    getItemDetails: (id: string) => void;
+    loadAlbumReviews: (id: string) => void;
+};
+
 function LibraryItem({
     userLibrary,
     getItemDetails,
     loadAlbumReviews,
-}) {
+} : LibraryItemProps) {
+    
     const { albums, reviews } = userLibrary;
 
     return (

@@ -1,11 +1,27 @@
 import { useState } from 'react';
 
+import { AlbumInfo, AlbumTracks, AllReviews, UserLibrary } from '@/types';
+
 import AlbumBanner from "./AlbumBanner";
 import ReviewForm from "./ReviewForm";
 import TracksDetail from "./TracksDetail";
 import AlbumControls from "./AlbumControls";
 import AlbumReviews from './AlbumReviews';
 import UserReview from './UserReview';
+
+
+interface ItemDetailsProps {
+    reviewId: string;
+    albumId: string;
+    userLibrary: UserLibrary;
+    onAddReview: (albumId: string, review: string) => void;
+    albumTracks: AlbumTracks;
+    onSaveAlbum: (albumId: string) => void;
+    onDeleteAlbum: (albumId: string) => void;
+    onDeleteReview: (albumId: string) => void;
+    onUpdateReview: (albumId: string, review: string) => void;
+    albumReviews: AllReviews;
+};
 
 function ItemDetails({
     reviewId,
@@ -18,14 +34,15 @@ function ItemDetails({
     onDeleteReview,
     onUpdateReview,
     albumReviews,
-}) {
-    const [editViewVisibility, setEditViewVisibility] = useState(false);
-    const [fullyOpenId, setFullyOpenId] = useState('');
+} : ItemDetailsProps) {
 
-    function getReviewByAlbum(albumId) {
+    const [editViewVisibility, setEditViewVisibility] = useState<boolean>(false);
+    const [fullyOpenId, setFullyOpenId] = useState<string>('');
+
+    function getReviewByAlbum(albumId : string) {
         const { reviews } = userLibrary;
         for (let id in reviews) {
-            if (reviews[id].albumInfo.id === albumId) {
+            if (reviews[id]?.albumInfo?.id === albumId) {
                 return id;
             };
         };
@@ -36,7 +53,10 @@ function ItemDetails({
 
     const userReview = userLibrary?.reviews?.[possibleReviewId];
 
-    const albumInfo = userLibrary?.albums?.[albumId] || albumTracks || userReview.albumInfo;
+    const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || {
+        ...albumTracks,
+        ...userReview?.albumInfo,
+    };
 
     return (
         <div className="item-detail">

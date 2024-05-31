@@ -1,9 +1,17 @@
 import { useState } from 'react';
 
+import { Review } from '@/types';
+
+
+interface ReviewDetailsProps {
+    userReview: Review;
+};
+
 function ReviewDetails({
     userReview,
-}) {
-    const [showContent, setShowContent] = useState(false);
+} : ReviewDetailsProps) {
+
+    const [showContent, setShowContent] = useState<boolean>(false);
 
     const { username, content, date } = userReview;
     return (

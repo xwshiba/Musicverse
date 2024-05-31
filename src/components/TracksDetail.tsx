@@ -1,11 +1,18 @@
+import { AlbumTracks } from '@/types';
+
+
+interface TracksDetailProps {
+    albumTracks: AlbumTracks | null;
+};
+
 function TracksDetail({
     albumTracks,
-}) {
+} : TracksDetailProps) {
     if (!albumTracks || Object.keys(albumTracks).length === 0) {
-        return;
+        return null;
     };
 
-    const formatTime = milliseconds => { // a referenced function to translate milliseconds
+    const formatTime = (milliseconds : number) : string => { // a referenced function to translate milliseconds
         const seconds = Math.floor((milliseconds / 1000) % 60);
         const minutes = Math.floor((milliseconds / 1000 / 60) % 60);
         const hours = Math.floor((milliseconds / 1000 / 60 / 60) % 24);

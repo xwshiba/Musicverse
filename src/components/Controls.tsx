@@ -1,3 +1,7 @@
+interface ControlsProps {
+    onLogout: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
 function Controls({ onLogout }) {
     return (
         <div className="controls">

@@ -1,37 +1,45 @@
 import { useState } from 'react';
 
+interface EditReviewFormProps {
+    reviewId: string;
+    content: string;
+    onUpdateReview: (reviewId: string, content: string) => void;
+    setEditViewVisibility: (visibility: boolean) => void;
+};
+
 function EditReviewForm({
     reviewId,
     content,
     onUpdateReview,
     setEditViewVisibility,
 }) {
-    const [userReview, setUserReview] = useState('');
+    const [userReview, setUserReview] = useState<string>(content);
 
-    function onChange(e) {
+    function onChange(e : React.ChangeEvent<HTMLTextAreaElement>) {
         setUserReview(e.target.value);
     };
 
-    function onChangeReview(e, userReview) {
+    function onChangeReview(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        if (userReview) {  // Don't allow blank user review
+        if (userReview.trim()) {  // Don't allow blank user review
             setEditViewVisibility(false);
             onUpdateReview(reviewId, userReview); // "action" function we were passed in
         };
     };
+
     return (
         <form
             action="#/review"
             className="forms forms__review"
             method="POST"
-            onSubmit={(e) => onChangeReview(e, userReview)}>
+            onSubmit={onChangeReview}>
             <label className="forms__label">
                 <textarea
                     className="forms__textarea"
-                    rows="8"
+                    rows={8}
                     placeholder="Share your reviews, thoughts and please be kind:)"
                     name="review"
-                    defaultValue={content}
+                    value={userReview}
                     onChange={onChange} />
             </label>
             <div className="edit-review__control">
@@ -42,6 +50,7 @@ function EditReviewForm({
                     Submit
                 </button>
                 <button
+                    type="button"
                     className="forms__btn btn"
                     onClick={() => setEditViewVisibility(false)}
                 >

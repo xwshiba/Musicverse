@@ -2,8 +2,14 @@ import { useState } from 'react';
 
 import Submenu from './Submenu';
 
+interface UserButtonProps {
+    username: string;
+    setPage: (page: string) => void;
+    onLogout: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+};
+
 function UserButton({ username, setPage, onLogout }) {
-    const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
+    const [isSubmenuOpen, setIsSubmenuOpen] = useState<boolean>(false);
 
     const toggleSubmenu = () => {
         setIsSubmenuOpen(!isSubmenuOpen);
@@ -13,9 +19,14 @@ function UserButton({ username, setPage, onLogout }) {
         setIsSubmenuOpen(false);
     };
 
-    const navigateAndClose = (e) => {
-        setPage(e.target.dataset.page);
-        closeSubmenu();
+    const navigateAndClose = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        const target = e.target as HTMLAnchorElement;
+        const page = target.dataset.page;
+
+        if (page) {
+            setPage(page);
+            closeSubmenu();
+        };
     };
 
     if (!username) {

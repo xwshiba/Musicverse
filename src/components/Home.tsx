@@ -1,7 +1,13 @@
 import Image from "next/image";
 import bannerImg from '../img/home-page-banner.jpg';
 
-function Home({ loadAlbumsPage, username }) {
+
+interface HomeProps {
+    loadAlbumsPage: () => void;
+    username: string;
+};
+
+function Home({ loadAlbumsPage, username } : HomeProps) {
 
     return (
         <section className="home">

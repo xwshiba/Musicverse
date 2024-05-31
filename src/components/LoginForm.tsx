@@ -8,7 +8,7 @@ interface LoginFormProps {
     onLogin: (username: string) => void;
 };
 
-function LoginForm({ onLogin }) {
+function LoginForm({ onLogin } : LoginFormProps) {
     // This state is local to this component
     // it is used only inside this component
     // until login is complete

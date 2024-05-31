@@ -13,7 +13,7 @@ import './css/ItemDetail.css';
 import './css/Account.css'
 
 import { useEffect, useReducer } from 'react';
-import reducer, { initialState } from './reducer';
+import reducer, { initialState } from './reducer.ts';
 
 
 import {
@@ -74,11 +74,26 @@ function App() {
 
     fetchLogin(username)
       .then(fetchedUserLibrary => {
-        dispatch({ type: ACTIONS.LOG_IN, username, page: 'Account' });
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary: fetchedUserLibrary });
+        dispatch({ 
+          type: ACTIONS.LOG_IN, 
+          payload: {
+            username,
+            page: 'Account'
+          }
+        });
+        dispatch({ 
+          type: ACTIONS.REPLACE_USER_LIBRARY, 
+          payload: {
+            userLibrary: fetchedUserLibrary
+          }
+        });
       })
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({ 
+          type: ACTIONS.REPORT_ERROR, 
+          payload: {
+            error: err?.error 
+          }});
       });
   };
 
@@ -87,38 +102,77 @@ function App() {
     dispatch({ type: ACTIONS.LOG_OUT });
     fetchLogout() // We don't really care about results
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
-    dispatch({ type: ACTIONS.SET_PAGE, page: 'Home' });
+    dispatch({ 
+      type: ACTIONS.SET_PAGE, 
+      payload: {
+        page: 'Home'
+      }
+    });
   };
 
   function loadAlbumsPage() {
-    dispatch({ type: ACTIONS.START_LOADING_ALBUMS, page: 'Albums', prompt: 'New Albums' });
+    dispatch({ 
+      type: ACTIONS.START_LOADING_ALBUMS, 
+      payload: {
+        page: 'Albums', prompt: 'New Albums' 
+      }});
 
     fetchAuthToken()
       .then(tokenInfo => {
         return fetchNewAlbums(tokenInfo.access_token, tokenInfo.token_type);
       })
       .then(fetchedAlbums => {
-        dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedAlbums.albums.items }); // array
+        dispatch({ 
+          type: ACTIONS.REPLACE_ALBUMS, 
+          payload: {
+            albums: fetchedAlbums.albums.items // array
+          }
+        }); 
       })
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       })
   };
 
   function loadAlbumTracks(id) {
-    dispatch({ type: ACTIONS.START_LOADING_ALBUM_TRACKS, page: 'AlbumTracks' });
+    dispatch({ 
+      type: ACTIONS.START_LOADING_ALBUM_TRACKS, 
+      payload: {
+        page: 'AlbumTracks'
+      }
+    });
 
     fetchAuthToken()
       .then(tokenInfo => {
         return fetchAlbumTracks(tokenInfo.access_token, tokenInfo.token_type, id);
       })
       .then(fetchedAlbumTracks => {
-        dispatch({ type: ACTIONS.REPLACE_ALBUM_TRACKS, albumTracks: fetchedAlbumTracks });
+        dispatch({ 
+          type: ACTIONS.REPLACE_ALBUM_TRACKS, 
+          payload: {
+            albumTracks: fetchedAlbumTracks
+          }
+        });
       })
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       })
   };
 
@@ -127,25 +181,50 @@ function App() {
 
     fetchAlbumReviews(id)
       .then(fetchedAlbumReviews => {
-        dispatch({ type: ACTIONS.REPLACE_ALBUM_REVIEWS, albumReviews: fetchedAlbumReviews.albumReviews });
+        dispatch({ 
+          type: ACTIONS.REPLACE_ALBUM_REVIEWS, 
+          payload: {
+            albumReviews: fetchedAlbumReviews.albumReviews 
+          }
+        });
       })
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       })
   };
 
   function onSearch(query) {
-    dispatch({ type: ACTIONS.START_SEARCH_ALBUMS, page: 'Albums', prompt: 'Searched Results' });
+    dispatch({ 
+      type: ACTIONS.START_SEARCH_ALBUMS, 
+      payload: {
+        page: 'Albums', prompt: 'Searched Results'
+      }
+    });
 
     fetchAuthToken()
       .then(tokenInfo => {
         return fetchSearch(query, tokenInfo.access_token, tokenInfo.token_type);
       })
       .then(fetchedSearchedAlbums => {
-        dispatch({ type: ACTIONS.REPLACE_ALBUMS, albums: fetchedSearchedAlbums.albums.items }); // array
+        dispatch({ 
+          type: ACTIONS.REPLACE_ALBUMS, 
+          payload: { 
+            albums: fetchedSearchedAlbums.albums.items 
+          }
+        }); // array
       })
       .catch(err => {
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       })
   };
 
@@ -154,14 +233,24 @@ function App() {
 
     fetchSaveAlbum(albumInfo)
       .then(fetchedSavedAlbum => {
-        dispatch({ type: ACTIONS.SAVE_ALBUM, savedAlbum: fetchedSavedAlbum });
+        dispatch({ 
+          type: ACTIONS.SAVE_ALBUM, 
+          payload: {
+            savedAlbum: fetchedSavedAlbum 
+          }
+        });
       })
       .catch(err => {
         // must report session expire and force logout
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error });
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
   };
 
@@ -173,16 +262,28 @@ function App() {
         return fetchUserLibrary(); // Return the promise so we can chain
       })
       .then(userLibrary => {
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
+        dispatch({ 
+          type: ACTIONS.REPLACE_USER_LIBRARY, 
+          payload: {
+            userLibrary }
+        });
         // if albumInfo is deleted, just switch page
-        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
+        dispatch({ 
+          type: ACTIONS.SET_PAGE, 
+          payload: {page: 'Account' }
+        });
       })
       .catch(err => {
         // must report session expire and force logout
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
   };
 
@@ -191,14 +292,22 @@ function App() {
 
     fetchAddReview(content, reviewedAlbumInfo)
       .then(fetchedAddedReview => {
-        dispatch({ type: ACTIONS.ADD_REVIEW, addedReview: fetchedAddedReview });
+        dispatch({ 
+          type: ACTIONS.ADD_REVIEW,
+          payload: { addedReview: fetchedAddedReview } 
+        });
       })
       .catch(err => {
         // must report session expire and force logout
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
   };
 
@@ -210,16 +319,29 @@ function App() {
         return fetchUserLibrary(); // Return the promise so we can chain
       })
       .then(userLibrary => {
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
+        dispatch({ 
+          type: ACTIONS.REPLACE_USER_LIBRARY, 
+          payload: {
+            userLibrary
+          }
+        });
         // if review is deleted, just switch page
-        dispatch({ type: ACTIONS.SET_PAGE, page: 'Account' });
+        dispatch({ 
+          type: ACTIONS.SET_PAGE, 
+          payload: { page: 'Account' }
+        });
       })
       .catch(err => {
         // must report session expire and force logout
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
   };
 
@@ -228,21 +350,36 @@ function App() {
 
     fetchUpdateReview(id, content)
       .then(fetchedUpdatedReview => {
-        dispatch({ type: ACTIONS.UPDATE_REVIEW, updatedReview: fetchedUpdatedReview });
+        dispatch({ 
+          type: ACTIONS.UPDATE_REVIEW, 
+          payload: { 
+            updatedReview: fetchedUpdatedReview 
+          }
+        });
       })
       .catch(err => {
         // must report session expire and force logout
         if (err?.error === SERVER.AUTH_MISSING) {
           dispatch({ type: ACTIONS.LOG_OUT });
         };
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });      
       });
   };
 
   function checkForSession() {
     fetchSession()
       .then(session => { // The returned object from the service call
-        dispatch({ type: ACTIONS.LOG_IN, username: session.username });
+        dispatch({ 
+          type: ACTIONS.LOG_IN, 
+          payload: {
+            username: session.username 
+          }
+        });
         return fetchUserLibrary(); // By returning this promise we can chain the original promise
       })
       .catch(err => {
@@ -252,8 +389,18 @@ function App() {
         return Promise.reject(err); // Pass any other error unchanged
       })
       .then(userLibrary => {
-        dispatch({ type: ACTIONS.REPLACE_USER_LIBRARY, userLibrary });
-        dispatch({ type: ACTIONS.SET_PAGE, page: 'Home' });
+        dispatch({ 
+          type: ACTIONS.REPLACE_USER_LIBRARY, 
+          payload: {
+            userLibrary
+          }
+        });
+        dispatch({ 
+          type: ACTIONS.SET_PAGE, 
+          payload: {
+            page: 'Home' 
+          }
+        });
       })
       .catch(err => {
         if (err?.error === CLIENT.NO_SESSION) { // expected "error"
@@ -262,16 +409,29 @@ function App() {
           return;
         }
         // For unexpected errors, report them
-        dispatch({ type: ACTIONS.REPORT_ERROR, error: err?.error })
+        dispatch({
+          type: ACTIONS.REPORT_ERROR,
+          payload: {
+            error: err?.error
+          }
+        });
       });
   };
 
   function getItemDetails(albumId, reviewId) {
-    dispatch({ type: ACTIONS.GET_ITEM_DETAILS, albumId, reviewId, page: 'ItemDetails' });
+    dispatch({ 
+      type: ACTIONS.GET_ITEM_DETAILS, 
+      payload: {
+        albumId, reviewId, page: 'ItemDetails' 
+      }
+    });
   };
 
   function setPage(page) {
-    dispatch({ type: ACTIONS.SET_PAGE, page });
+    dispatch({ 
+      type: ACTIONS.SET_PAGE, 
+      payload: {page} 
+    });
   };
 
   // Here we use a useEffect to perform the initial loading

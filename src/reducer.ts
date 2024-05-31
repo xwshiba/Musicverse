@@ -4,13 +4,43 @@ import {
     ACTIONS,
 } from './constants';
 
+import {
+    UserLibrary,
+    Album,
+    AlbumTracks,
+    AlbumReviews,
+} from './types';
+
+
+// Define the state shape
+export interface State {
+    page: string;
+    error: string;
+    username: string;
+    loginStatus: LOGIN_STATUS;
+    isUserLibraryPending: boolean;
+    userLibrary: UserLibrary;
+    prompt: string;
+    albums: Album | {};
+    isAlbumsPending: boolean;
+    albumTracks: AlbumTracks | {};
+    isAlbumTracksPending: boolean;
+    albumId: string;
+    reviewId: string;
+    albumReviews: AlbumReviews | {};
+    isAlbumsReviewsPending: boolean;
+}
+
 export const initialState = {
     page: 'Home',
     error: '',
     username: '',
     loginStatus: LOGIN_STATUS.PENDING,
     isUserLibraryPending: false,
-    userLibrary: {},
+    userLibrary: {
+        albums: {},
+        reviews: {}
+    },
     prompt: '',
     albums: {},
     isAlbumsPending: false,
@@ -22,7 +52,13 @@ export const initialState = {
     isAlbumsReviewsPending: false,
 };
 
-function reducer(state, action) {
+// Define the actions
+interface Action<T = any> {
+    type: ACTIONS;
+    payload?: T;
+};
+
+function reducer(state: State, action: Action): State {
     switch (action.type) {
 
         case ACTIONS.LOG_IN:
@@ -30,8 +66,8 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 loginStatus: LOGIN_STATUS.IS_LOGGED_IN,
-                username: action.username,
-                page: action.page,
+                username: action.payload?.username,
+                page: action.payload?.page,
             };
 
         case ACTIONS.START_LOADING_USER_LIBRARY:  // actions are the change in state, not how that change happened
@@ -46,7 +82,7 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isUserLibraryPending: false,
-                userLibrary: action.userLibrary,
+                userLibrary: action.payload?.userLibrary,
             };
 
         case ACTIONS.LOG_OUT:
@@ -54,7 +90,10 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isUserLibraryPending: false,
-                userLibrary: {},
+                userLibrary: {
+                    albums: {},
+                    reviews: {}
+                },
                 loginStatus: LOGIN_STATUS.NOT_LOGGED_IN,
                 username: '',
                 reviewId: '',
@@ -65,7 +104,7 @@ function reducer(state, action) {
             // We could move the "pick the message" logic from Status.jsx here. Better? It depends.
             return {
                 ...state,
-                error: action.error || 'ERROR', // ERROR is just to ensure a truthy value
+                error: action.payload?.error || 'ERROR', // ERROR is just to ensure a truthy value
                 isUserLibraryPending: false,
                 isAlbumsPending: false,
                 isAlbumTracksPending: false,
@@ -77,8 +116,8 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isAlbumsPending: true,
-                page: action.page,
-                prompt: action.prompt,
+                page: action.payload?.page,
+                prompt: action.payload?.prompt,
             };
 
         case ACTIONS.REPLACE_ALBUMS:
@@ -86,7 +125,7 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isAlbumsPending: false,
-                albums: action.albums,
+                albums: action.payload?.albums,
             };
 
         case ACTIONS.START_LOADING_ALBUM_TRACKS:
@@ -94,7 +133,7 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isAlbumTracksPending: true,
-                page: action.page,
+                page: action.payload?.page,
                 prompt: '',
             };
 
@@ -103,7 +142,7 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isAlbumTracksPending: false,
-                albumTracks: action.albumTracks,
+                albumTracks: action.payload?.albumTracks,
             };
 
         case ACTIONS.START_SEARCH_ALBUMS:
@@ -111,63 +150,67 @@ function reducer(state, action) {
                 ...state,
                 error: '',
                 isAlbumsPending: true,
-                page: action.page,
-                prompt: action.prompt,
+                page: action.payload?.page,
+                prompt: action.payload?.prompt,
             };
 
         case ACTIONS.SAVE_ALBUM:
-            return {
-                ...state,
-                userLibrary: { // because userLibrary is an object, we have to make an altered copy
-                    ...state.userLibrary, // copy the existing library...
-                    albums: {
-                        ...state.userLibrary.albums,
-                        [action.savedAlbum.id]: action.savedAlbum, // ...but override this one
+                return {
+                    ...state,
+                    userLibrary: { // because userLibrary is an object, we have to make an altered copy
+                        ...state.userLibrary, // copy the existing library...
+                        albums: {
+                            ...state.userLibrary.albums,
+                            [action.payload?.savedAlbum.id]: action.payload?.savedAlbum, // ...but override this one
+                        },
                     },
-                },
-                isUserLibraryPending: false,
-            };
+                    isUserLibraryPending: false,
+                };
 
         case ACTIONS.ADD_REVIEW:
-            return {
-                ...state,
-                userLibrary: {
-                    ...state.userLibrary,
-                    reviews: {
-                        ...state.userLibrary.reviews,
-                        [action.addedReview.id]: action.addedReview,
+                return {
+                    ...state,
+                    userLibrary: {
+                        ...state.userLibrary,
+                        reviews: {
+                            ...state.userLibrary.reviews,
+                            [action.payload?.addedReview.id]: action.payload?.addedReview,
+                        },
                     },
-                },
-                isUserLibraryPending: false,
-            };
+                    isUserLibraryPending: false,
+                };
 
         case ACTIONS.GET_ITEM_DETAILS:
             return {
                 ...state,
-                albumId: action.albumId,
-                reviewId: action.reviewId,
-                page: action.page,
+                albumId: action.payload?.albumId,
+                reviewId: action.payload?.reviewId,
+                page: action.payload?.page,
                 error: '',
                 albumTracks: {}, // otherwise might show the cached tracks
             };
 
         case ACTIONS.UPDATE_REVIEW:
-            return {
-                ...state,
-                userLibrary: {
-                    ...state.userLibrary,
-                    reviews: {
-                        ...state.userLibrary.reviews,
-                        [action.updatedReview.id]: action.updatedReview,
+            if ('reviews' in state.userLibrary) {  // Handle the case where `userLibrary` does not have `reviews`
+                return {
+                    ...state,
+                    userLibrary: {
+                        ...state.userLibrary,
+                        reviews: {
+                            ...state.userLibrary.reviews,
+                            [action.payload?.updatedReview.id]: action.payload?.updatedReview,
+                        },
                     },
-                },
-                isUserLibraryPending: false,
+                    isUserLibraryPending: false,
+                };
+
+                return state;
             };
 
         case ACTIONS.SET_PAGE:
             return {
                 ...state,
-                page: action.page,
+                page: action.payload?.page,
             };
 
         case ACTIONS.START_LOADING_ALBUM_REVIEWS:
@@ -180,14 +223,14 @@ function reducer(state, action) {
         case ACTIONS.REPLACE_ALBUM_REVIEWS:
             return {
                 ...state,
-                albumReviews: action.albumReviews,
+                albumReviews: action.payload?.albumReviews,
                 isAlbumsReviewsPending: false,
             };
 
         default:
-            throw new Error({ error: CLIENT.UNKNOWN_ACTION, detail: action }); // reporting detail for debugging aid, not shown to user
+            throw new Error(JSON.stringify({ error: CLIENT.UNKNOWN_ACTION, detail: action })); // reporting detail for debugging aid, not shown to user
 
-    };
-};
+    }
+}
 
 export default reducer;

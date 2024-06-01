@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-import { Artist } from '../types';
+import { Artist, SpotifyAlbumTracks, SpotifyReturnedAlbums } from '../types';
 
 
 interface AlbumsProps {
     prompt: string;
-    albums: any[]; // revise later to be more specific
+    albums: SpotifyReturnedAlbums;
     loadAlbumTracks: (id: string) => void;
     loadAlbumReviews: (id: string) => void;
 };
@@ -16,6 +16,8 @@ function Albums({
     loadAlbumTracks,
     loadAlbumReviews
 } : AlbumsProps) {
+
+    const albumsArray = albums?.items || [];
     
     if (Object.keys(albums).length === 0) {
         return (
@@ -32,7 +34,7 @@ function Albums({
         <section className="albums">
             <h1 className="albums__title">{prompt}</h1>
             <ul className="albums__content">
-                {albums.map((album) => {
+                {albumsArray.map((album) => {
                     const { id, images, name, artists } = album;
                     // images and artists are arrays
                     return (

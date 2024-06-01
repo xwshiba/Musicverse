@@ -2,20 +2,15 @@
 // Some infos are redudant and can be abstract out
 
 import { 
+    FetchRequestOptions,
+    FetchError,
+
     AlbumInfo, 
     AlbumReviews, 
     DeleteResponse, 
     Review, 
     UserLibrary 
 } from "./types";
-
-export interface FetchRequestOptions extends RequestInit {
-    headers?: HeadersInit;
-};
-
-export interface FetchError {
-    error: string;
-};
 
 // variables
 const api = '/api/v1';
@@ -28,15 +23,16 @@ const headers = {
 async function fetchRequest<T>(url : string, options : FetchRequestOptions) : Promise<T> {
     try {
         const response = await fetch(url, options);
+
         if (response.ok) {
             return await response.json() as T;
-        }
+        };
         
         const error = await response.json();
         return Promise.reject(error as FetchError);
     } catch {
         return Promise.reject({ error: 'network-error' } as FetchError);
-    }
+    };
 };
 
 

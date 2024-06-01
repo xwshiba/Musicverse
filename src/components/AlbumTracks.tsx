@@ -1,8 +1,10 @@
 import ItemDetails from "./ItemDetails";
 
-import { AlbumTracks, AllReviews, UserLibrary } from "@/types";
+import { AlbumTracks, AllReviews, SpotifyReturnedAlbums, UserLibrary } from "@/types";
 
 interface AlbumTracksProps {
+    albumId: string;
+    albums: SpotifyReturnedAlbums;
     albumTracks: AlbumTracks;
     onSaveAlbum: (albumId: string) => void;
     onDeleteAlbum: (albumId: string) => void;
@@ -14,6 +16,8 @@ interface AlbumTracksProps {
 };
 
 function AlbumTracks({
+    albumId,
+    albums,
     albumTracks,
     onSaveAlbum,
     onDeleteAlbum,
@@ -23,12 +27,12 @@ function AlbumTracks({
     onUpdateReview,
     albumReviews,
 }: AlbumTracksProps) {
-    const { id } = albumTracks;
 
     return (
         <section className="album-tracks">
             <ItemDetails
-                albumId={id}
+                albums={albums}
+                albumId={albumId}
                 reviewId=''
                 userLibrary={userLibrary}
                 onAddReview={onAddReview}

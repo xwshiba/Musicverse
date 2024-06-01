@@ -132,7 +132,7 @@ function App() {
         dispatch({ 
           type: ACTIONS.REPLACE_ALBUMS, 
           payload: {
-            albums: fetchedAlbums.albums.items // array
+            albums: fetchedAlbums.albums
           }
         }); 
       })
@@ -162,7 +162,13 @@ function App() {
         dispatch({ 
           type: ACTIONS.REPLACE_ALBUM_TRACKS, 
           payload: {
-            albumTracks: fetchedAlbumTracks
+            id,
+            albumTracks: {
+              id,
+              tracks: {
+                items: fetchedAlbumTracks.items
+              }
+            }
           }
         });
       })
@@ -214,9 +220,9 @@ function App() {
         dispatch({ 
           type: ACTIONS.REPLACE_ALBUMS, 
           payload: { 
-            albums: fetchedSearchedAlbums.albums.items 
+            albums: fetchedSearchedAlbums.albums
           }
-        }); // array
+        });
       })
       .catch(err => {
         dispatch({
@@ -483,6 +489,8 @@ function App() {
         {state.isAlbumTracksPending === true && state.page === 'AlbumTracks' && <Loading className="albums__waiting">Loading Tracks...</Loading>}
         {state.isAlbumTracksPending === false && state.page === 'AlbumTracks' &&
           <AlbumTracks
+            albumId={state.albumId}
+            albums={state.albums}
             albumTracks={state.albumTracks}
             onSaveAlbum={onSaveAlbum}
             onDeleteAlbum={onDeleteAlbum}

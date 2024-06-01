@@ -6,9 +6,9 @@ import {
 
 import {
     UserLibrary,
-    Album,
     AlbumTracks,
     AlbumReviews,
+    SpotifyReturnedAlbums,
 } from './types';
 
 
@@ -21,7 +21,7 @@ export interface State {
     isUserLibraryPending: boolean;
     userLibrary: UserLibrary;
     prompt: string;
-    albums: Album | {};
+    albums: SpotifyReturnedAlbums | {};
     isAlbumsPending: boolean;
     albumTracks: AlbumTracks | {};
     isAlbumTracksPending: boolean;
@@ -138,10 +138,11 @@ function reducer(state: State, action: Action): State {
             };
 
         case ACTIONS.REPLACE_ALBUM_TRACKS:
-            return {
+            return {                
                 ...state,
                 error: '',
                 isAlbumTracksPending: false,
+                albumId: action.payload?.id,
                 albumTracks: action.payload?.albumTracks,
             };
 

@@ -1,6 +1,27 @@
 // Include types that will be used multiple times in the application
 
+// Fetch related types
+export interface FetchRequestOptions extends RequestInit {
+    headers?: HeadersInit;
+};
+
+export interface FetchError {
+    error: string;
+};
+
+
+// other server response types
+export interface DeleteResponse {
+    message: string;
+};
+
+
 // Spotify API related types
+export interface AuthTokenResponse {
+    access_token: string;
+    token_type: string;
+};
+
 export interface Artist {
     id: string;
     name: string;
@@ -16,6 +37,10 @@ export interface AlbumInfo {
     tracks?: { items: TrackItem[] }; // Optional to handle both albumInfo and albumTracks
 };
 
+export interface SpotifyReturnedAlbums {
+    items: AlbumInfo[];
+};
+
 export interface Album {
     [key: string]: AlbumInfo;
 };
@@ -24,6 +49,16 @@ export interface TrackItem {
     id: string;
     name: string;
     duration_ms: number;
+};
+
+export interface SpotifyAlbumTracks {
+    items: TrackItem[];
+};
+
+export interface SpotifySearch {
+    albums: {
+        items: AlbumInfo[];
+    };
 };
 
 export interface AlbumTracks {
@@ -61,9 +96,4 @@ export interface AllReviews {
 
 export interface AlbumReviews {
     [key: string]: AllReviews;
-};
-
-// other server response types
-export interface DeleteResponse {
-    message: string;
 };

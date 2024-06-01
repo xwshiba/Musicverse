@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AlbumInfo, AlbumTracks, AllReviews, UserLibrary } from '@/types';
+import { AlbumInfo, AlbumTracks, AllReviews, UserLibrary, SpotifyReturnedAlbums } from '@/types';
 
 import AlbumBanner from "./AlbumBanner";
 import ReviewForm from "./ReviewForm";
@@ -11,6 +11,7 @@ import UserReview from './UserReview';
 
 
 interface ItemDetailsProps {
+    albums: SpotifyReturnedAlbums;
     reviewId: string;
     albumId: string;
     userLibrary: UserLibrary;
@@ -24,6 +25,7 @@ interface ItemDetailsProps {
 };
 
 function ItemDetails({
+    albums,
     reviewId,
     albumId,
     userLibrary,
@@ -53,7 +55,8 @@ function ItemDetails({
 
     const targetReview = userLibrary?.reviews?.[possibleReviewId];
 
-    const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || {
+    const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || 
+        albums.items.find((album) => album.id === albumId) || {
         ...albumTracks,
         ...targetReview?.albumInfo,
     };

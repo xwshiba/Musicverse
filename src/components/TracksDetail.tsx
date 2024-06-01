@@ -1,4 +1,4 @@
-import { AlbumTracks } from '@/types';
+import { AlbumTracks, SpotifyAlbumTracks } from '@/types';
 
 
 interface TracksDetailProps {

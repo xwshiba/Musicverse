@@ -56,7 +56,7 @@ function ItemDetails({
     const targetReview = userLibrary?.reviews?.[possibleReviewId];
 
     const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || 
-        albums.items.find((album) => album.id === albumId) || {
+        albums?.items?.find((album) => album.id === albumId) || {
         ...albumTracks,
         ...targetReview?.albumInfo,
     };

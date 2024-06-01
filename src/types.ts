@@ -62,3 +62,8 @@ export interface AllReviews {
 export interface AlbumReviews {
     [key: string]: AllReviews;
 };
+
+// other server response types
+export interface DeleteResponse {
+    message: string;
+};

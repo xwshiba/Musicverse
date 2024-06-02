@@ -72,6 +72,8 @@ There's always room for improvements. I am listing them here for my own document
 ## Next Steps
 
 - Transfer for development scale-up
-    - ~~ Switch CRA to Next.js for better support ~~
-    - Switch back-end from JavaScript to TypeScript to enforce type security
+    - ~~Switch CRA to Next.js for better support~~
+    - ~~Revise front-end from JavaScript / JSX to TypeScript / TSX for type security~~
+    - Revise back-end from JavaScript to Python / Go for more powerful oop support
+    - Add tests to reduce manual and repeated testing efforts
     - Change from CSS to SASS or SCSS

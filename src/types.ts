@@ -94,6 +94,6 @@ export interface AllReviews { // contains all reviews for a single album
     [key: string]: Review;
 };
 
-export interface AlbumReviews { // contains all reviews for all albums
+export interface AlbumReviews { // contains all reviews for all albums, only used by the server. Shouldn't be used anywhere in the client.
     [key: string]: AllReviews;
 };

@@ -1,8 +1,10 @@
 import Image from "next/image";
 
+import { ServerUserReviews } from "@/types";
+
 
 interface ReviewItemsProps {
-    reviews: any; // revise later to be more specific
+    reviews: ServerUserReviews;
     getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (albumId: string) => void;
 };
@@ -18,7 +20,7 @@ function ReviewItems({
         );
     };
 
-    function loadAlbumDetails(albumId, reviewId) {
+    function loadAlbumDetails(albumId : string, reviewId : string) {
         getItemDetails(albumId, reviewId);
         loadAlbumReviews(albumId);
     };

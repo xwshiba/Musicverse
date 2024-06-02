@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
-import { Review } from '@/types';
+import { ServerSingleReview } from '@/types';
 
 
 interface ReviewDetailsProps {
-    userReview: Review;
+    userReview: ServerSingleReview;
 };
 
 function ReviewDetails({

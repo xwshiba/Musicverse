@@ -1,7 +1,7 @@
 // This file contains the fetch services to Spotify
 // use .env file for the tokens
 
-import { FetchRequestOptions, FetchError, AuthTokenResponse, SpotifyReturnedAlbums, SpotifyAlbumTracks, SpotifySearch } from './types';
+import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyReturnedAlbums, SpotifyAlbumTracks, SpotifySearch } from './types';
 
 const baseUrl = 'https://api.spotify.com/v1';
 
@@ -40,7 +40,7 @@ async function fetchRequest<T>(url: string, options: FetchRequestOptions): Promi
 
 // All Spotify fetch services below
 // Spotify requires extra step to get API tokens that will expire in 1 hour
-export async function fetchAuthToken(): Promise<AuthTokenResponse> {
+export async function fetchAuthToken(): Promise<SpotifyAuthTokenResponse> {
     const options: FetchRequestOptions = {
         method: 'POST',
         headers: {
@@ -48,7 +48,7 @@ export async function fetchAuthToken(): Promise<AuthTokenResponse> {
         },
         body: `${authTokenBody}`,
     };
-    return fetchRequest<AuthTokenResponse>('https://accounts.spotify.com/api/token', options);
+    return fetchRequest<SpotifyAuthTokenResponse>('https://accounts.spotify.com/api/token', options);
 };
 
 

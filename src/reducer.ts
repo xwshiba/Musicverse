@@ -5,9 +5,10 @@ import {
 } from './constants';
 
 import {
-    UserLibrary,
-    AlbumTracks,
-    AllReviews,
+    ErrorKeys,
+    ServerUserLibrary,
+    ServerAlbumTracks,
+    ServerAlbumReviews,
     SpotifyReturnedAlbums,
 } from './types';
 
@@ -15,19 +16,19 @@ import {
 // Define the state shape
 export interface State {
     page: string;
-    error: string;
+    error: ErrorKeys;
     username: string;
     loginStatus: LOGIN_STATUS;
     isUserLibraryPending: boolean;
-    userLibrary: UserLibrary;
+    userLibrary: ServerUserLibrary;
     prompt: string;
     albums: SpotifyReturnedAlbums;
     isAlbumsPending: boolean;
-    albumTracks: AlbumTracks;
+    albumTracks: ServerAlbumTracks;
     isAlbumTracksPending: boolean;
     albumId: string;
     reviewId: string;
-    albumReviews: AllReviews;
+    albumReviews: ServerAlbumReviews;
     isAlbumsReviewsPending: boolean;
 }
 

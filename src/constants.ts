@@ -47,6 +47,7 @@ export const MESSAGES = {
     default: 'Something went wrong.  Please try again',
 };
 
+
 export enum ACTIONS {
     LOG_IN = 'logIn',
     LOG_OUT = 'logOut',

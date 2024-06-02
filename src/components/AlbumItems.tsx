@@ -1,8 +1,10 @@
 import Image from 'next/image';
 
+import { ServerAlbums } from '@/types';
+
 
 interface AlbumItemsProps {
-    albums: any; // revise later to be more specific
+    albums: ServerAlbums;
     getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (albumId: string) => void;
 };

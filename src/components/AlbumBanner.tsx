@@ -1,10 +1,10 @@
 import Image from 'next/image';
 
-import { AlbumInfo } from '@/types';
+import { ServerAlbumInfo } from '@/types';
 
 
 interface AlbumBannerProps {
-    albumInfo: AlbumInfo;
+    albumInfo: ServerAlbumInfo;
 };
 
 function AlbumBanner({

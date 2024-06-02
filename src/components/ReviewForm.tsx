@@ -1,24 +1,24 @@
 import { useState } from 'react';
 
-import { AlbumInfo } from '@/types';
+import { ServerAlbumInfo } from '@/types';
 
 
 interface ReviewFormProps {
-    onAddReview: (userReview: string, albumInfo: AlbumInfo) => void;
-    albumInfo: AlbumInfo;
+    onAddReview: (userReview: string, albumInfo: ServerAlbumInfo) => void;
+    albumInfo: ServerAlbumInfo;
 };
 
 function ReviewForm({
     onAddReview,
     albumInfo,
-}) {
+} : ReviewFormProps) {
     const [userReview, setUserReview] = useState('');
 
     function onChange(e : React.ChangeEvent<HTMLTextAreaElement>) {
         setUserReview(e.target.value);
     };
 
-    function onSubmitReview(e: React.FormEvent<HTMLFormElement> , userReview : string, albumInfo : AlbumInfo) {
+    function onSubmitReview(e: React.FormEvent<HTMLFormElement> , userReview : string, albumInfo : ServerAlbumInfo) {
         e.preventDefault();
         if (userReview.trim()) {  // Don't allow blank username to try login
             onAddReview(userReview, albumInfo); // "action" function we were passed in

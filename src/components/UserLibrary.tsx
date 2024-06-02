@@ -1,4 +1,4 @@
-import { UserLibrary } from '@/types';
+import { ServerUserLibrary } from '@/types';
 
 import Loading from './Loading';
 import LibraryItem from './LibraryItem';
@@ -6,7 +6,7 @@ import LibraryItem from './LibraryItem';
 
 interface UserLibraryProps {
     isUserLibraryPending: boolean;
-    userLibrary: UserLibrary;
+    userLibrary: ServerUserLibrary;
     getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (id: string) => void;
 };

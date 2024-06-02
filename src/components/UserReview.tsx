@@ -1,4 +1,4 @@
-import { Review } from '@/types';
+import { ServerSingleReview } from '@/types';
 
 import EditReviewForm from './EditReviewForm';
 import ReviewControls from './ReviewControls';
@@ -6,7 +6,7 @@ import ReviewDetails from './ReviewDetails';
 
 
 interface UserReviewProps {
-    userReview: Review;
+    userReview: ServerSingleReview | null;
     editViewVisibility: boolean;
     possibleReviewId: string;
     onUpdateReview: (albumId: string, review: string) => void;

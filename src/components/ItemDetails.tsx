@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { AlbumInfo, AlbumTracks, AllReviews, UserLibrary, SpotifyReturnedAlbums } from '@/types';
+import { ServerAlbumInfo, ServerAlbumTracks, ServerAlbumReviews, ServerUserLibrary, SpotifyReturnedAlbums } from '@/types';
 
 import AlbumBanner from "./AlbumBanner";
 import ReviewForm from "./ReviewForm";
@@ -14,14 +14,14 @@ interface ItemDetailsProps {
     albums: SpotifyReturnedAlbums;
     reviewId: string;
     albumId: string;
-    userLibrary: UserLibrary;
-    onAddReview: (albumId: string, albumInfo: AlbumInfo) => void;
-    albumTracks: AlbumTracks;
-    onSaveAlbum: (albumInfo: AlbumInfo) => void;
+    userLibrary: ServerUserLibrary;
+    onAddReview: (albumId: string, albumInfo: ServerAlbumInfo) => void;
+    albumTracks: ServerAlbumTracks;
+    onSaveAlbum: (albumInfo: ServerAlbumInfo) => void;
     onDeleteAlbum: (albumId: string) => void;
     onDeleteReview: (albumId: string) => void;
     onUpdateReview: (albumId: string, review: string) => void;
-    albumReviews: AllReviews;
+    albumReviews: ServerAlbumReviews;
 };
 
 function ItemDetails({
@@ -48,14 +48,16 @@ function ItemDetails({
                 return id;
             };
         };
+        return ''; // Return an empty string if no review is found
     };
 
     const existedReview = getReviewByAlbum(albumId);
     const possibleReviewId = reviewId || existedReview; // empty string or reviewId
 
-    const targetReview = userLibrary?.reviews?.[possibleReviewId];
+    // Ensure possibleReviewId is a valid string before using it
+    const targetReview = possibleReviewId ? userLibrary?.reviews?.[possibleReviewId] : null;
 
-    const albumInfo: AlbumInfo = userLibrary?.albums?.[albumId] || 
+    const albumInfo: ServerAlbumInfo = userLibrary?.albums?.[albumId] || 
         albums?.items?.find((album) => album.id === albumId) || {
         ...albumTracks,
         ...targetReview?.albumInfo,

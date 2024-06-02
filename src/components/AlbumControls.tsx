@@ -1,11 +1,11 @@
-import { AlbumInfo } from '@/types';
+import { ServerAlbumInfo } from '@/types';
 
 
 interface AlbumControlsProps {
     albumId: string;
     onDeleteAlbum: (albumId: string) => void;
-    onSaveAlbum: (albumInfo: AlbumInfo) => void;
-    albumInfo: AlbumInfo;
+    onSaveAlbum: (albumInfo: ServerAlbumInfo) => void;
+    albumInfo: ServerAlbumInfo;
 };
 
 function AlbumControls({

@@ -12,7 +12,7 @@ function EditReviewForm({
     content,
     onUpdateReview,
     setEditViewVisibility,
-}) {
+} : EditReviewFormProps) {
     const [userReview, setUserReview] = useState<string>(content);
 
     function onChange(e : React.ChangeEvent<HTMLTextAreaElement>) {

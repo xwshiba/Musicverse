@@ -5,11 +5,11 @@ import {
     FetchRequestOptions,
     FetchError,
 
-    AlbumInfo, 
-    AllReviews, 
-    DeleteResponse, 
-    Review, 
-    UserLibrary 
+    ServerAlbumInfo, 
+    ServerAlbumReviews, 
+    ServerDeleteResponse, 
+    ServerSingleReview, 
+    ServerUserLibrary 
 } from "./types";
 
 // variables
@@ -46,22 +46,22 @@ export async function fetchSession(): Promise<{username: string}> {
     return fetchRequest<{username: string}>(`${api}/session`, options);
 };
 
-export async function fetchAlbumReviews(id: string): Promise<AllReviews> {
+export async function fetchAlbumReviews(id: string): Promise<ServerAlbumReviews> {
     const options: FetchRequestOptions = {
         method: 'GET',
         headers,
     };
-    return fetchRequest<AllReviews>(`${api}/albums/${id}/reviews`, options);
+    return fetchRequest<ServerAlbumReviews>(`${api}/albums/${id}/reviews`, options);
 };
 
-export async function fetchLogin(username : string):Promise<UserLibrary> {
+export async function fetchLogin(username : string):Promise<ServerUserLibrary> {
     const options: FetchRequestOptions = {
         method: 'POST',
         headers,
         credentials: 'include',
         body: JSON.stringify({ username }),
     };
-    return fetchRequest<UserLibrary>(`${api}/session`, options);
+    return fetchRequest<ServerUserLibrary>(`${api}/session`, options);
 };
 
 export async function fetchLogout(): Promise<{ username: string }> {
@@ -71,55 +71,55 @@ export async function fetchLogout(): Promise<{ username: string }> {
     return fetchRequest<{ username: string }>(`${api}/session`, options);
 };
 
-export async function fetchUserLibrary(): Promise<UserLibrary> {
+export async function fetchUserLibrary(): Promise<ServerUserLibrary> {
     const options: FetchRequestOptions = {
         method: 'GET',
         headers,
         credentials: 'include',
     };
-    return fetchRequest<UserLibrary>(`${api}/userLibrary`, options);
+    return fetchRequest<ServerUserLibrary>(`${api}/userLibrary`, options);
 };
 
-export async function fetchSaveAlbum(albumInfo : AlbumInfo) : Promise<AlbumInfo> {
+export async function fetchSaveAlbum(albumInfo : ServerAlbumInfo) : Promise<ServerAlbumInfo> {
     const options: FetchRequestOptions = {
         method: 'POST',
         headers,
         credentials: 'include',
         body: JSON.stringify({ albumInfo }),
     };
-    return fetchRequest<AlbumInfo>(`${api}/userLibrary/albums`, options);
+    return fetchRequest<ServerAlbumInfo>(`${api}/userLibrary/albums`, options);
 };
 
-export async function fetchDeleteAlbum(id : string): Promise<DeleteResponse> {
+export async function fetchDeleteAlbum(id : string): Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
     };
-    return fetchRequest<DeleteResponse>(`${api}/userLibrary/albums/${id}`, options);
+    return fetchRequest<ServerDeleteResponse>(`${api}/userLibrary/albums/${id}`, options);
 };
 
-export async function fetchAddReview(content : string, reviewedAlbumInfo : AlbumInfo): Promise<Review>{
+export async function fetchAddReview(content : string, reviewedAlbumInfo : ServerAlbumInfo): Promise<ServerSingleReview>{
     const options: FetchRequestOptions = {
         method: 'POST',
         headers,
         credentials: 'include',
         body: JSON.stringify({ content, reviewedAlbumInfo }),
     };
-    return fetchRequest<Review>(`${api}/userLibrary/reviews`, options);
+    return fetchRequest<ServerSingleReview>(`${api}/userLibrary/reviews`, options);
 };
 
-export async function fetchDeleteReview(id : string) : Promise<DeleteResponse> {
+export async function fetchDeleteReview(id : string) : Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
     };
-    return fetchRequest<DeleteResponse>(`${api}/userLibrary/reviews/${id}`, options);
+    return fetchRequest<ServerDeleteResponse>(`${api}/userLibrary/reviews/${id}`, options);
 };
 
-export async function fetchUpdateReview(id : string, content : string) : Promise<Review> {
+export async function fetchUpdateReview(id : string, content : string) : Promise<ServerSingleReview> {
     const options: FetchRequestOptions = {
         method: 'PATCH',
         headers,
         credentials: 'include',
         body: JSON.stringify({ content }),
     };
-    return fetchRequest<Review>(`${api}/userLibrary/reviews/${id}`, options);
+    return fetchRequest<ServerSingleReview>(`${api}/userLibrary/reviews/${id}`, options);
 };

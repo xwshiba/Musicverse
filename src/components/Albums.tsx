@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { Artist, SpotifyAlbumTracks, SpotifyReturnedAlbums } from '../types';
+import { ServerArtist, SpotifyReturnedAlbums } from '@/types';
 
 
 interface AlbumsProps {
@@ -53,7 +53,7 @@ function Albums({
                             </div>
                             <span className="album__name">{name}</span>
                             <div className="album__artists">
-                                {artists.map((artist : Artist) => {
+                                {artists.map((artist : ServerArtist) => {
                                     const { id, name } = artist;
                                     return (
                                         <span key={id} className="album__artist">{name}</span>

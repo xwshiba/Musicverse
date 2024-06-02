@@ -1,8 +1,8 @@
-import { AlbumTracks, SpotifyAlbumTracks } from '@/types';
+import { ServerAlbumTracks} from '@/types';
 
 
 interface TracksDetailProps {
-    albumTracks: AlbumTracks | null;
+    albumTracks: ServerAlbumTracks | null;
 };
 
 function TracksDetail({

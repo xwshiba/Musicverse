@@ -8,7 +8,7 @@ interface UserButtonProps {
     onLogout: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-function UserButton({ username, setPage, onLogout }) {
+function UserButton({ username, setPage, onLogout } : UserButtonProps) {
     const [isSubmenuOpen, setIsSubmenuOpen] = useState<boolean>(false);
 
     const toggleSubmenu = () => {

@@ -12,6 +12,8 @@ import './css/AlbumTracks.css';
 import './css/ItemDetail.css';
 import './css/Account.css'
 
+import { ServerAlbumInfo } from './types';
+
 import { useEffect, useReducer } from 'react';
 import reducer, { initialState } from './reducer';
 
@@ -55,7 +57,7 @@ import UserLibrary from './components/UserLibrary';
 import Albums from './components/Albums';
 import AlbumTracks from './components/AlbumTracks';
 import ItemDetails from './components/ItemDetails';
-import { AlbumInfo } from './types';
+
 
 function App() {
 
@@ -100,7 +102,8 @@ function App() {
       });
   };
 
-  function onLogout(e : React.MouseEvent<HTMLAnchorElement>) {
+  function onLogout(e: React.MouseEvent<HTMLAnchorElement> | React.FormEvent<HTMLFormElement>) { 
+    // controls has a form, userbutton has an anchor
     e.preventDefault();
     dispatch({ type: ACTIONS.LOG_OUT });
     fetchLogout() // We don't really care about results
@@ -237,7 +240,7 @@ function App() {
       })
   };
 
-  function onSaveAlbum(albumInfo : AlbumInfo) {
+  function onSaveAlbum(albumInfo : ServerAlbumInfo) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchSaveAlbum(albumInfo)
@@ -296,7 +299,7 @@ function App() {
       });
   };
 
-  function onAddReview(content : string, reviewedAlbumInfo : AlbumInfo) {
+  function onAddReview(content : string, reviewedAlbumInfo : ServerAlbumInfo) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchAddReview(content, reviewedAlbumInfo)

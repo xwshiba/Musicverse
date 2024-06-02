@@ -1,7 +1,8 @@
-import { MESSAGES } from '../constants';
+import { MESSAGES} from '@/constants';
+import { ErrorKeys } from '@/types';
 
 interface StatusProps {
-    error: string;
+    error: ErrorKeys;
 }
 
 function Status({ error } : StatusProps) {

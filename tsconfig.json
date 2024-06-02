@@ -7,7 +7,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false, // please change to true once all files are converted to TypeScript
+    "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",

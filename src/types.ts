@@ -1,5 +1,7 @@
 // Include types that will be used multiple times in the application
 
+import { MESSAGES } from '@/constants';
+
 // Fetch related types
 export interface FetchRequestOptions extends RequestInit {
     headers?: HeadersInit;
@@ -11,89 +13,91 @@ export interface FetchError {
 
 
 // other server response types
-export interface DeleteResponse {
+export interface ServerDeleteResponse {
     message: string;
 };
 
+export type ErrorKeys = keyof typeof MESSAGES | '';
 
-// Spotify API related types
-export interface AuthTokenResponse {
+
+// Spotify & Server API related types
+export interface SpotifyAuthTokenResponse {
     access_token: string;
     token_type: string;
 };
 
-export interface Artist {
+export interface ServerArtist {
     id: string;
     name: string;
 };
 
-export interface AlbumInfo {
+export interface ServerAlbumInfo {
     id: string;
     name: string;
     images: { url: string }[];
-    artists: Artist[];
+    artists: ServerArtist[];
     album_type: string;
     release_date: string;
-    tracks?: { items: TrackItem[] }; // Optional to handle both albumInfo and albumTracks
+    tracks?: { items: ServerTrackItem[] }; // Optional to handle both albumInfo and albumTracks
 };
 
 export interface SpotifyReturnedAlbums {
-    items: AlbumInfo[];
+    items: ServerAlbumInfo[];
 };
 
-export interface Album {
-    [key: string]: AlbumInfo;
+export interface ServerAlbums {
+    [key: string]: ServerAlbumInfo;
 };
 
-export interface TrackItem {
+export interface ServerTrackItem {
     id: string;
     name: string;
     duration_ms: number;
 };
 
 export interface SpotifyAlbumTracks {
-    items: TrackItem[];
+    items: ServerTrackItem[];
 };
 
 export interface SpotifySearch {
     albums: {
-        items: AlbumInfo[];
+        items: ServerAlbumInfo[];
     };
 };
 
-export interface AlbumTracks {
+export interface ServerAlbumTracks {
     id: string;
     tracks: {
-        items: TrackItem[];
+        items: ServerTrackItem[];
     };
 };
 
 
 // User related types, match user-libary.js file
-export interface Review { // single review
+export interface ServerSingleReview { // single review
     id: string;
     content: string;
     date: string;
-    albumInfo: AlbumInfo;
+    albumInfo: ServerAlbumInfo;
     username: string;
 };
 
-export interface UserReview {
-    [key: string]: Review; // multiple reviews
+export interface ServerUserReviews {
+    [key: string]: ServerSingleReview; // multiple reviews
 };
 
-export interface UserLibrary {
-    albums: Album;
-    reviews: UserReview;
+export interface ServerUserLibrary {
+    albums: ServerAlbums;
+    reviews: ServerUserReviews;
 };
 
 
 // album reviews related types, match album-reviews.js file
 
-export interface AllReviews { // contains all reviews for a single album
-    [key: string]: Review;
+export interface ServerAlbumReviews { // contains all reviews for a single album
+    [key: string]: ServerSingleReview;
 };
 
-export interface AlbumReviews { // contains all reviews for all albums, only used by the server. Shouldn't be used anywhere in the client.
-    [key: string]: AllReviews;
+export interface ServerAllAlbumReviews { // contains all reviews for all albums, only used by the server. Shouldn't be used anywhere in the client.
+    [key: string]: ServerAlbumReviews;
 };

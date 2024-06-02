@@ -1,7 +1,7 @@
-import { AllReviews } from '@/types';
+import { ServerAlbumReviews } from '@/types';
 
 interface AlbumReviewsProps {
-    albumReviews: AllReviews;
+    albumReviews: ServerAlbumReviews;
     userReviewId: string;
     fullyOpenId: string;
     setFullyOpenId: React.Dispatch<React.SetStateAction<string>>;

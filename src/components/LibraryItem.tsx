@@ -1,11 +1,11 @@
 import AlbumItems from './AlbumItems';
 import ReviewItems from './ReviewItems';
 
-import { UserLibrary } from '@/types';
+import { ServerUserLibrary } from '@/types';
 
 
 interface LibraryItemProps {
-    userLibrary: UserLibrary;
+    userLibrary: ServerUserLibrary;
     getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (id: string) => void;
 };

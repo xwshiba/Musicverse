@@ -43,6 +43,7 @@ export const MESSAGES = {
                             or your reviews include invalid tokens. We only accept English sentences for now. 
                             Sorry for the inconvenience. Please revise and try again.`,
     [SERVER.DUPLICATE_REVIEW]: `You have already reviewed the album. We do not allow duplicate reviews. Please revise your review.`,
+    ERROR: 'Something went wrong.  Please try again',
     default: 'Something went wrong.  Please try again',
 };
 

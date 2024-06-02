@@ -90,10 +90,10 @@ export interface UserLibrary {
 
 // album reviews related types, match album-reviews.js file
 
-export interface AllReviews {
+export interface AllReviews { // contains all reviews for a single album
     [key: string]: Review;
 };
 
-export interface AlbumReviews {
+export interface AlbumReviews { // contains all reviews for all albums
     [key: string]: AllReviews;
 };

@@ -6,7 +6,7 @@ import {
     FetchError,
 
     AlbumInfo, 
-    AlbumReviews, 
+    AllReviews, 
     DeleteResponse, 
     Review, 
     UserLibrary 
@@ -46,12 +46,12 @@ export async function fetchSession(): Promise<{username: string}> {
     return fetchRequest<{username: string}>(`${api}/session`, options);
 };
 
-export async function fetchAlbumReviews(id: string): Promise<AlbumReviews> {
+export async function fetchAlbumReviews(id: string): Promise<AllReviews> {
     const options: FetchRequestOptions = {
         method: 'GET',
         headers,
     };
-    return fetchRequest<AlbumReviews>(`${api}/albums/${id}/reviews`, options);
+    return fetchRequest<AllReviews>(`${api}/albums/${id}/reviews`, options);
 };
 
 export async function fetchLogin(username : string):Promise<UserLibrary> {

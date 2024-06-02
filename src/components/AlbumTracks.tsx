@@ -1,15 +1,15 @@
 import ItemDetails from "./ItemDetails";
 
-import { AlbumTracks, AllReviews, SpotifyReturnedAlbums, UserLibrary } from "@/types";
+import { Album, AlbumInfo, AlbumTracks, AllReviews, SpotifyReturnedAlbums, UserLibrary } from "@/types";
 
 interface AlbumTracksProps {
     albumId: string;
     albums: SpotifyReturnedAlbums;
     albumTracks: AlbumTracks;
-    onSaveAlbum: (albumId: string) => void;
+    onSaveAlbum: (albumInfo: AlbumInfo) => void;
     onDeleteAlbum: (albumId: string) => void;
     userLibrary: UserLibrary;
-    onAddReview: (albumId: string, review: string) => void;
+    onAddReview: (albumId: string, albumInfo: AlbumInfo) => void;
     onDeleteReview: (reviewId: string) => void;
     onUpdateReview: (albumId: string, review: string) => void;
     albumReviews: AllReviews;

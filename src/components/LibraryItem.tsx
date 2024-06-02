@@ -6,7 +6,7 @@ import { UserLibrary } from '@/types';
 
 interface LibraryItemProps {
     userLibrary: UserLibrary;
-    getItemDetails: (id: string) => void;
+    getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (id: string) => void;
 };
 

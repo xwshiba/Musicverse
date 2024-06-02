@@ -4,7 +4,7 @@ import { AlbumInfo } from '@/types';
 interface AlbumControlsProps {
     albumId: string;
     onDeleteAlbum: (albumId: string) => void;
-    onSaveAlbum: (albumInfo: any) => void;
+    onSaveAlbum: (albumInfo: AlbumInfo) => void;
     albumInfo: AlbumInfo;
 };
 

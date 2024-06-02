@@ -7,7 +7,7 @@ import LibraryItem from './LibraryItem';
 interface UserLibraryProps {
     isUserLibraryPending: boolean;
     userLibrary: UserLibrary;
-    getItemDetails: (id: string) => void;
+    getItemDetails: (albumId: string, reviewId: string) => void;
     loadAlbumReviews: (id: string) => void;
 };
 

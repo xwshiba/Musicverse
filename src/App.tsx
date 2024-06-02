@@ -13,7 +13,7 @@ import './css/ItemDetail.css';
 import './css/Account.css'
 
 import { useEffect, useReducer } from 'react';
-import reducer, { initialState } from './reducer.ts';
+import reducer, { initialState } from './reducer';
 
 
 import {
@@ -43,6 +43,8 @@ import {
   fetchAlbumTracks,
 } from './spotify-services'; // third-party services
 
+import { State, Action } from './reducer';
+
 import Nav from './components/Nav';
 import Home from './components/Home';
 import Status from './components/Status';
@@ -53,12 +55,13 @@ import UserLibrary from './components/UserLibrary';
 import Albums from './components/Albums';
 import AlbumTracks from './components/AlbumTracks';
 import ItemDetails from './components/ItemDetails';
+import { AlbumInfo } from './types';
 
 function App() {
 
   // All our global state is from the reducer
   // Some "local" state will remain in various components
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducer < React.Reducer < State, Action>> (reducer, initialState);
 
   // We also pass "action" functions that do things and update state
   // The top level state has a BUNCH of these
@@ -69,7 +72,7 @@ function App() {
   // For now, recognize the benefit of keeping the JSX returned at the bottom of this component
   // clean and readable because we have all of these state-management functions here
 
-  function onLogin(username) {
+  function onLogin(username : string) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchLogin(username)
@@ -97,7 +100,7 @@ function App() {
       });
   };
 
-  function onLogout(e) {
+  function onLogout(e : React.MouseEvent<HTMLAnchorElement>) {
     e.preventDefault();
     dispatch({ type: ACTIONS.LOG_OUT });
     fetchLogout() // We don't really care about results
@@ -146,7 +149,7 @@ function App() {
       })
   };
 
-  function loadAlbumTracks(id) {
+  function loadAlbumTracks(id : string) {
     dispatch({ 
       type: ACTIONS.START_LOADING_ALBUM_TRACKS, 
       payload: {
@@ -182,7 +185,7 @@ function App() {
       })
   };
 
-  function loadAlbumReviews(id) {
+  function loadAlbumReviews(id : string) {
     dispatch({ type: ACTIONS.START_LOADING_ALBUM_REVIEWS });
 
     fetchAlbumReviews(id)
@@ -204,7 +207,7 @@ function App() {
       })
   };
 
-  function onSearch(query) {
+  function onSearch(query : string) {
     dispatch({ 
       type: ACTIONS.START_SEARCH_ALBUMS, 
       payload: {
@@ -234,7 +237,7 @@ function App() {
       })
   };
 
-  function onSaveAlbum(albumInfo) {
+  function onSaveAlbum(albumInfo : AlbumInfo) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchSaveAlbum(albumInfo)
@@ -260,7 +263,7 @@ function App() {
       });
   };
 
-  function onDeleteAlbum(id) {
+  function onDeleteAlbum(id : string) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchDeleteAlbum(id)
@@ -293,7 +296,7 @@ function App() {
       });
   };
 
-  function onAddReview(content, reviewedAlbumInfo) {
+  function onAddReview(content : string, reviewedAlbumInfo : AlbumInfo) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchAddReview(content, reviewedAlbumInfo)
@@ -317,7 +320,7 @@ function App() {
       });
   };
 
-  function onDeleteReview(id) {
+  function onDeleteReview(id : string) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchDeleteReview(id)
@@ -351,7 +354,7 @@ function App() {
       });
   };
 
-  function onUpdateReview(id, content) {
+  function onUpdateReview(id : string, content : string) {
     dispatch({ type: ACTIONS.START_LOADING_USER_LIBRARY });
 
     fetchUpdateReview(id, content)
@@ -424,7 +427,7 @@ function App() {
       });
   };
 
-  function getItemDetails(albumId, reviewId) {
+  function getItemDetails(albumId : string, reviewId : string) {
     dispatch({ 
       type: ACTIONS.GET_ITEM_DETAILS, 
       payload: {
@@ -433,7 +436,7 @@ function App() {
     });
   };
 
-  function setPage(page) {
+  function setPage(page : string) {
     dispatch({ 
       type: ACTIONS.SET_PAGE, 
       payload: {page} 
@@ -501,6 +504,8 @@ function App() {
             albumReviews={state.albumReviews}
           />}
         {state.page === 'ItemDetails' && <ItemDetails
+          albumTracks={state.albumTracks}
+          albums={state.albums}
           userLibrary={state.userLibrary}
           albumId={state.albumId}
           reviewId={state.reviewId}

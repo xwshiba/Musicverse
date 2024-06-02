@@ -1,7 +1,7 @@
 import { MESSAGES } from '../constants';
 
 interface StatusProps {
-    error: keyof typeof MESSAGES | null;
+    error: string;
 }
 
 function Status({ error } : StatusProps) {

@@ -52,14 +52,14 @@ export async function fetchAuthToken(): Promise<AuthTokenResponse> {
 };
 
 
-export async function fetchNewAlbums(accessToken: string, tokenType: string): Promise<SpotifyReturnedAlbums> {
+export async function fetchNewAlbums(accessToken: string, tokenType: string): Promise<SpotifySearch> {
     const options: FetchRequestOptions = {
         method: 'GET',
         headers: {
             Authorization: `${tokenType} ${accessToken}`
         },
     };
-    return fetchRequest<SpotifyReturnedAlbums>(`${baseUrl}/browse/new-releases?` +
+    return fetchRequest<SpotifySearch>(`${baseUrl}/browse/new-releases?` +
         `${sharedParamsUrl}`, options);
 };
 

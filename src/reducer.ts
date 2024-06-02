@@ -7,7 +7,7 @@ import {
 import {
     UserLibrary,
     AlbumTracks,
-    AlbumReviews,
+    AllReviews,
     SpotifyReturnedAlbums,
 } from './types';
 
@@ -21,17 +21,17 @@ export interface State {
     isUserLibraryPending: boolean;
     userLibrary: UserLibrary;
     prompt: string;
-    albums: SpotifyReturnedAlbums | {};
+    albums: SpotifyReturnedAlbums;
     isAlbumsPending: boolean;
-    albumTracks: AlbumTracks | {};
+    albumTracks: AlbumTracks;
     isAlbumTracksPending: boolean;
     albumId: string;
     reviewId: string;
-    albumReviews: AlbumReviews | {};
+    albumReviews: AllReviews;
     isAlbumsReviewsPending: boolean;
 }
 
-export const initialState = {
+export const initialState : State = {
     page: 'Home',
     error: '',
     username: '',
@@ -42,9 +42,9 @@ export const initialState = {
         reviews: {}
     },
     prompt: '',
-    albums: {},
+    albums: { items: [] },
     isAlbumsPending: false,
-    albumTracks: {},
+    albumTracks: { id: '', tracks: { items: [] } },
     isAlbumTracksPending: false,
     albumId: '',
     reviewId: '',
@@ -53,7 +53,7 @@ export const initialState = {
 };
 
 // Define the actions
-interface Action<T = any> {
+export interface Action<T = any> {
     type: ACTIONS;
     payload?: T;
 };
@@ -188,7 +188,7 @@ function reducer(state: State, action: Action): State {
                 reviewId: action.payload?.reviewId,
                 page: action.payload?.page,
                 error: '',
-                albumTracks: {}, // otherwise might show the cached tracks
+                albumTracks: { id: '', tracks: { items: [] } }, // otherwise might show the cached tracks
             };
 
         case ACTIONS.UPDATE_REVIEW:

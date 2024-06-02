@@ -15,9 +15,9 @@ interface ItemDetailsProps {
     reviewId: string;
     albumId: string;
     userLibrary: UserLibrary;
-    onAddReview: (albumId: string, review: string) => void;
+    onAddReview: (albumId: string, albumInfo: AlbumInfo) => void;
     albumTracks: AlbumTracks;
-    onSaveAlbum: (albumId: string) => void;
+    onSaveAlbum: (albumInfo: AlbumInfo) => void;
     onDeleteAlbum: (albumId: string) => void;
     onDeleteReview: (albumId: string) => void;
     onUpdateReview: (albumId: string, review: string) => void;

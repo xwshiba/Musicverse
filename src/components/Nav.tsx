@@ -6,7 +6,7 @@ interface NavProps {
     username: string;
     setPage: (page: string) => void;
     loadAlbumsPage: () => void;
-    onLogout: () => void;
+    onLogout: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
 function Nav({

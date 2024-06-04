@@ -1,14 +1,14 @@
 // This file contains the fetch services to Spotify
 // use .env file for the tokens
 
-import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyReturnedAlbums, SpotifyAlbumTracks, SpotifySearch } from './types';
+import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyAlbumTracks, SpotifySearch } from './types';
 
 const baseUrl = 'https://api.spotify.com/v1';
 
 // params required by Spotify
 const authTokenBody = `grant_type=client_credentials&client_id=` +
-    `${process.env.NEXT_PUBLIC_CLIENT_ID}` +
-    `&client_secret=${process.env.NEXT_PUBLIC_CLIENT_SECRET}`;
+    `${process.env.NEXT_PRIVATE_CLIENT_ID}` +
+    `&client_secret=${process.env.NEXT_PRIVATE_CLIENT_SECRET}`;
 
 const sharedParams = {
     country: "US",

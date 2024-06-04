@@ -10,6 +10,7 @@
         "uuid": "^9.0.0"
     },
     "scripts": {
-        "start": "PORT=4000 node server.js"
+        "dev": "PORT=4000 node server.js",
+        "start": "node server.js"
     }
 }

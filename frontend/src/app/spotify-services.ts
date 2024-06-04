@@ -6,10 +6,6 @@ import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyAlbum
 const baseUrl = 'https://api.spotify.com/v1';
 
 // params required by Spotify
-const authTokenBody = `grant_type=client_credentials&client_id=` +
-    `${process.env.NEXT_PRIVATE_CLIENT_ID}` +
-    `&client_secret=${process.env.NEXT_PRIVATE_CLIENT_SECRET}`;
-
 const sharedParams = {
     country: "US",
     limit: 30,
@@ -23,7 +19,7 @@ const sharedParamsUrl =
 
 
 // fetchRequest is a helper function to handle fetch requests
-async function fetchRequest<T>(url: string, options: FetchRequestOptions): Promise<T> {
+async function fetchRequest<T>(url: string, options: FetchRequestOptions = {}): Promise<T> {
     try {
         const response = await fetch(url, options);
 
@@ -38,17 +34,11 @@ async function fetchRequest<T>(url: string, options: FetchRequestOptions): Promi
     };
 };
 
+
 // All Spotify fetch services below
 // Spotify requires extra step to get API tokens that will expire in 1 hour
 export async function fetchAuthToken(): Promise<SpotifyAuthTokenResponse> {
-    const options: FetchRequestOptions = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: `${authTokenBody}`,
-    };
-    return fetchRequest<SpotifyAuthTokenResponse>('https://accounts.spotify.com/api/token', options);
+    return fetchRequest<SpotifyAuthTokenResponse>('/api/spotify-token');
 };
 
 

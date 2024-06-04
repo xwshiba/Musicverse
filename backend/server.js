@@ -21,6 +21,9 @@ app.use(express.static('./build')); // dev/prod proxy settings
 app.use(express.json());
 
 
+// handle spotify token fetching
+require('dotenv').config();
+
 /************* helper functions *************/
 
 /**
@@ -41,6 +44,32 @@ function sendError(res, statusCode, errorMessage) {
 
 /************* handle sessions *************/
 // backend routes
+app.get('/api/spotify-token', async (req, res) => {
+    const authTokenBody = `grant_type=client_credentials&client_id=` +
+        `${process.env.SPOTIFY_CLIENT_ID}` +
+        `&client_secret=${process.env.SPOTIFY_CLIENT_SECRET}`;
+
+    try {
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: authTokenBody,
+        });
+
+        if (!response.ok) {
+            sendError(res, response.status, 'Failed to fetch Spotify token');
+            return;
+        };
+
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        sendError(res, 500, 'Internal Server Error');
+    }
+});
+
 app.get('/api/v1/session', (req, res) => {
     const { sid, username } = getSessionDetails(req);
     if (!sid || !users.isValidUsername(username)) {

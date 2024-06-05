@@ -114,7 +114,7 @@ app.post('/api/v1/session', (req, res) => {
         users.addUserData(username, userLibrary.makeUserLibrary());
     };
 
-    res.cookie('sid', sid, { httpOnly: true, sameSite: 'strict' });
+    res.cookie('sid', sid, { httpOnly: true, sameSite: 'None', secure: true });
     res.json({
         albums: users.getUserData(username).getAlbums(),
         reviews: users.getUserData(username).getReviews()
@@ -160,11 +160,10 @@ app.post('/api/v1/userLibrary/albums', (req, res) => {
     if (!sid || !users.isValidUsername(username)) {
         return sendError(res, 401, 'auth-missing');
     };
-
     const { albumInfo } = req.body;
     const userLibrary = users.getUserData(username);
 
-    if (Object.keys(albumInfo).length === 0 || !albumInfo.id) { // if it's empty object
+    if (!Object.keys(albumInfo).length === 0 || !albumInfo.id) { // if it's empty object
         return sendError(res, 400, 'required-info');
     };
 

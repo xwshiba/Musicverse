@@ -1,0 +1,37 @@
+{
+    "name": "musicverse-frontend",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "next": "^14.2.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "serve": "^14.2.0",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@next/eslint-plugin-next": "^14.1.4",
+        "@types/react": "18.3.3",
+        "eslint": "^8.57.0",
+        "eslint-config-next": "14.1.4",
+        "typescript": "5.4.5"
+    }
+}

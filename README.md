@@ -20,7 +20,7 @@ Some services are from [Spotify](https://spotify.com). The tokens format is incl
 
 Please create / copy the `.env` file in this directory to start exploring the site.
 
-The code is runnable with `npm install`; `npm run build`; `npm start` in this react project directory.
+The code is runnable with `yarn install`; `yarn build`; `yarn start` in this react project directory.
 
 ### Security
 

@@ -1,44 +1,22 @@
 {
-  "name": "musicverse",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "cookie-parser": "^1.4.6",
-    "express": "^4.18.2",
-    "http-proxy-middleware": "^2.0.6",
-    "next": "^14.2.0",
-    "node": "^21.7.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "serve": "^14.2.0",
-    "uuid": "^9.0.0",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "PORT=4000 node server.js",
-    "dev": "next dev",
-    "build": "next build",
-    "lint": "next lint"
-  },
-  "proxy": "http://localhost:4000",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+    "name": "musicverse",
+    "version": "0.1.0",
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@next/eslint-plugin-next": "^14.1.4",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "14.1.4"
-  }
+    "scripts": {
+        "start:frontend": "yarn workspace musicverse-frontend start",
+        "start:backend": "yarn workspace musicverse-backend start",
+        "dev:frontend": "yarn workspace musicverse-frontend dev",
+        "dev:backend": "yarn workspace musicverse-backend start",
+        "build:frontend": "yarn workspace musicverse-frontend build",
+        "build:backend": "echo 'No build step for backend'",
+        "start": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
+        "build": "yarn build:frontend && yarn build:backend"
+    },
+    "devDependencies": {
+        "concurrently": "^7.2.1"
+    }
 }

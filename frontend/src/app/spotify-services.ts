@@ -3,7 +3,9 @@
 
 import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyAlbumTracks, SpotifySearch } from './types';
 
-const baseUrl = 'https://api.spotify.com/v1';
+const spotifyBaseUrl = 'https://api.spotify.com/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
+
 
 // params required by Spotify
 const sharedParams = {
@@ -38,7 +40,7 @@ async function fetchRequest<T>(url: string, options: FetchRequestOptions = {}): 
 // All Spotify fetch services below
 // Spotify requires extra step to get API tokens that will expire in 1 hour
 export async function fetchAuthToken(): Promise<SpotifyAuthTokenResponse> {
-    return fetchRequest<SpotifyAuthTokenResponse>('/api/spotify-token');
+    return fetchRequest<SpotifyAuthTokenResponse>(`${apiBaseUrl}/spotify-token`);
 };
 
 
@@ -49,7 +51,7 @@ export async function fetchNewAlbums(accessToken: string, tokenType: string): Pr
             Authorization: `${tokenType} ${accessToken}`
         },
     };
-    return fetchRequest<SpotifySearch>(`${baseUrl}/browse/new-releases?` +
+    return fetchRequest<SpotifySearch>(`${spotifyBaseUrl}/browse/new-releases?` +
         `${sharedParamsUrl}`, options);
 };
 
@@ -60,7 +62,7 @@ export async function fetchAlbumTracks(accessToken: string, tokenType: string, i
             Authorization: `${tokenType} ${accessToken}`
         },
     };
-    return fetchRequest<SpotifyAlbumTracks>(`${baseUrl}/albums/${id}/tracks`, options);
+    return fetchRequest<SpotifyAlbumTracks>(`${spotifyBaseUrl}/albums/${id}/tracks`, options);
 };
 
 export async function fetchSearch(query: string, accessToken: string, tokenType: string): Promise<SpotifySearch> {
@@ -71,5 +73,5 @@ export async function fetchSearch(query: string, accessToken: string, tokenType:
             Authorization: `${tokenType} ${accessToken}`
         },
     };
-    return fetchRequest<SpotifySearch>(`${baseUrl}/search?q=${query}&type=album&` + `${sharedParamsUrl}`, options);
+    return fetchRequest<SpotifySearch>(`${spotifyBaseUrl}/search?q=${query}&type=album&` + `${sharedParamsUrl}`, options);
 };

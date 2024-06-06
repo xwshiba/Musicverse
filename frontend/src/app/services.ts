@@ -13,7 +13,7 @@ import {
 } from "./types";
 
 // variables
-const api = '/api/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
 const headers = {
     'content-type': 'application/json',
 };
@@ -43,7 +43,7 @@ export async function fetchSession(): Promise<{username: string}> {
         headers,
         credentials: 'include',
     };
-    return fetchRequest<{username: string}>(`${api}/session`, options);
+    return fetchRequest<{username: string}>(`${apiBaseUrl}/session`, options);
 };
 
 export async function fetchAlbumReviews(id: string): Promise<ServerAlbumReviews> {
@@ -51,7 +51,7 @@ export async function fetchAlbumReviews(id: string): Promise<ServerAlbumReviews>
         method: 'GET',
         headers,
     };
-    return fetchRequest<ServerAlbumReviews>(`${api}/albums/${id}/reviews`, options);
+    return fetchRequest<ServerAlbumReviews>(`${apiBaseUrl}/albums/${id}/reviews`, options);
 };
 
 export async function fetchLogin(username : string):Promise<ServerUserLibrary> {
@@ -61,14 +61,14 @@ export async function fetchLogin(username : string):Promise<ServerUserLibrary> {
         credentials: 'include',
         body: JSON.stringify({ username }),
     };
-    return fetchRequest<ServerUserLibrary>(`${api}/session`, options);
+    return fetchRequest<ServerUserLibrary>(`${apiBaseUrl}/session`, options);
 };
 
 export async function fetchLogout(): Promise<{ username: string }> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
     };
-    return fetchRequest<{ username: string }>(`${api}/session`, options);
+    return fetchRequest<{ username: string }>(`${apiBaseUrl}/session`, options);
 };
 
 export async function fetchUserLibrary(): Promise<ServerUserLibrary> {
@@ -77,7 +77,7 @@ export async function fetchUserLibrary(): Promise<ServerUserLibrary> {
         headers,
         credentials: 'include',
     };
-    return fetchRequest<ServerUserLibrary>(`${api}/userLibrary`, options);
+    return fetchRequest<ServerUserLibrary>(`${apiBaseUrl}/userLibrary`, options);
 };
 
 export async function fetchSaveAlbum(albumInfo : ServerAlbumInfo) : Promise<ServerAlbumInfo> {
@@ -87,14 +87,14 @@ export async function fetchSaveAlbum(albumInfo : ServerAlbumInfo) : Promise<Serv
         credentials: 'include',
         body: JSON.stringify({ albumInfo }),
     };
-    return fetchRequest<ServerAlbumInfo>(`${api}/userLibrary/albums`, options);
+    return fetchRequest<ServerAlbumInfo>(`${apiBaseUrl}/userLibrary/albums`, options);
 };
 
 export async function fetchDeleteAlbum(id : string): Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
     };
-    return fetchRequest<ServerDeleteResponse>(`${api}/userLibrary/albums/${id}`, options);
+    return fetchRequest<ServerDeleteResponse>(`${apiBaseUrl}/userLibrary/albums/${id}`, options);
 };
 
 export async function fetchAddReview(content : string, reviewedAlbumInfo : ServerAlbumInfo): Promise<ServerSingleReview>{
@@ -104,14 +104,14 @@ export async function fetchAddReview(content : string, reviewedAlbumInfo : Serve
         credentials: 'include',
         body: JSON.stringify({ content, reviewedAlbumInfo }),
     };
-    return fetchRequest<ServerSingleReview>(`${api}/userLibrary/reviews`, options);
+    return fetchRequest<ServerSingleReview>(`${apiBaseUrl}/userLibrary/reviews`, options);
 };
 
 export async function fetchDeleteReview(id : string) : Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
     };
-    return fetchRequest<ServerDeleteResponse>(`${api}/userLibrary/reviews/${id}`, options);
+    return fetchRequest<ServerDeleteResponse>(`${apiBaseUrl}/userLibrary/reviews/${id}`, options);
 };
 
 export async function fetchUpdateReview(id : string, content : string) : Promise<ServerSingleReview> {
@@ -121,5 +121,5 @@ export async function fetchUpdateReview(id : string, content : string) : Promise
         credentials: 'include',
         body: JSON.stringify({ content }),
     };
-    return fetchRequest<ServerSingleReview>(`${api}/userLibrary/reviews/${id}`, options);
+    return fetchRequest<ServerSingleReview>(`${apiBaseUrl}/userLibrary/reviews/${id}`, options);
 };

@@ -1,12 +1,22 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const { createProxyMiddleware } = require('http-proxy-middleware');
-
+const cors = require('cors');
 
 const app = express();
 // PORT=4000 node server.js
 // lets us run on a different port from the dev server from `npm start`
 const PORT = process.env.PORT || 4000;
+
+
+// Use CORS middleware to allow requests from your frontend
+const corsOptions = {
+    origin: process.env.FRONT_END_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, // Allow credentials (cookies, etc.) to be included
+};
+
+app.use(cors(corsOptions));
 
 
 const sessions = require('./sessions');
@@ -44,7 +54,7 @@ function sendError(res, statusCode, errorMessage) {
 
 /************* handle sessions *************/
 // backend routes
-app.get('/api/spotify-token', async (req, res) => {
+app.get('/api/v1/spotify-token', async (req, res) => {
     const authTokenBody = `grant_type=client_credentials&client_id=` +
         `${process.env.SPOTIFY_CLIENT_ID}` +
         `&client_secret=${process.env.SPOTIFY_CLIENT_SECRET}`;
@@ -104,7 +114,7 @@ app.post('/api/v1/session', (req, res) => {
         users.addUserData(username, userLibrary.makeUserLibrary());
     };
 
-    res.cookie('sid', sid);
+    res.cookie('sid', sid, { httpOnly: true, sameSite: 'None', secure: true });
     res.json({
         albums: users.getUserData(username).getAlbums(),
         reviews: users.getUserData(username).getReviews()
@@ -150,7 +160,6 @@ app.post('/api/v1/userLibrary/albums', (req, res) => {
     if (!sid || !users.isValidUsername(username)) {
         return sendError(res, 401, 'auth-missing');
     };
-
     const { albumInfo } = req.body;
     const userLibrary = users.getUserData(username);
 

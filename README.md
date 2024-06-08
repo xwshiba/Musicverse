@@ -12,7 +12,7 @@ Hope this site is enjoyable to you.
 
 ## Getting Started
 
-The frontend of the project was bootstrapped with [Next.js](https://nextjs.org/).
+The frontend of the project was bootstrapped with [Next.js](https://nextjs.org/) using React and TypeScript.
 
 The backend is using JavaScript. Future plan: TypeScript.
 
@@ -20,7 +20,7 @@ Some services are from [Spotify](https://spotify.com). The tokens format is incl
 
 Please create / copy the `.env` file in this directory to start exploring the site.
 
-The code is runnable with `yarn install`; `yarn build`; `yarn start` in this react project directory.
+The code is runnable with `yarn install`; `yarn build`; `yarn start` in project directory root.
 
 ### Security
 
@@ -63,7 +63,6 @@ There's always room for improvements. I am listing them here for my own document
     - Ideally the site could use the infinite scroll pagination. However it hasn't had that function for now.
 - architecture
     - The project is using useReducer to update state via "action" concepts. However, it hasn't used useContext to handle the props passing hell yet.
-    - Some code blocks are duplicated. Could use more effort to abstract them out.
 - not mobile friendly
     - Only works on desktop screens. Especially true for the Nav bar.
 - accessibility
@@ -74,7 +73,7 @@ There's always room for improvements. I am listing them here for my own document
 - Transfer for development scale-up
     - ~~Switch CRA to Next.js for better support~~
     - ~~Revise front-end from JavaScript / JSX to TypeScript / TSX for type security~~
-    - Deploy the app to be live on web
+    - ~~Deploy the app to be live on web~~
     - Revise back-end from JavaScript to Python / Go for more powerful oop support
     - Add tests to reduce manual and repeated testing efforts
     - Change from CSS to SASS or SCSS

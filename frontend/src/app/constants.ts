@@ -22,6 +22,8 @@ export enum SERVER {
     REQUIRED_INFO = 'required-info',
     INVALID_INFO = 'invalid-info',
     DUPLICATE_REVIEW = 'duplicate-review',
+    TOKEN_ERROR = 'token-error',
+    INTERNAL_ERROR = 'internal-error',
 };
 
 export enum CLIENT {
@@ -43,6 +45,8 @@ export const MESSAGES = {
                             or your reviews include invalid tokens. We only accept English sentences for now. 
                             Sorry for the inconvenience. Please revise and try again.`,
     [SERVER.DUPLICATE_REVIEW]: `You have already reviewed the album. We do not allow duplicate reviews. Please revise your review.`,
+    [SERVER.TOKEN_ERROR]: `Our server is experiencing some issues. Please try again later.`,
+    [SERVER.INTERNAL_ERROR]: `Our server is experiencing some issues. Please try again later.`,
     ERROR: 'Something went wrong.  Please try again',
     default: 'Something went wrong.  Please try again',
 };

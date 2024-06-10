@@ -13,7 +13,7 @@ import {
 } from "./types";
 
 // variables
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v2';
 const headers = {
     'content-type': 'application/json',
 };

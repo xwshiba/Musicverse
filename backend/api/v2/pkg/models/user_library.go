@@ -16,6 +16,15 @@ type AlbumInfo struct {
 	AlbumType   string   `json:"album_type"`
 }
 
+func (ai AlbumInfo) IsEmpty() bool {
+	return ai.ID == "" && 
+	ai.Name == "" && 
+	len(ai.Artists) == 0 && 
+	len(ai.Images) == 0 && 
+	ai.ReleaseDate == "" && 
+	ai.AlbumType == ""
+}
+
 type Review struct {
 	ID        string    `json:"id"`
 	Content   string    `json:"content"`
@@ -95,7 +104,7 @@ func (ul *UserLibrary) ContainsReview(id string) bool {
 	return exists
 }
 
-func (ul *UserLibrary) GetReviewById(id string) (Review, bool) {
+func (ul *UserLibrary) GetReviewByID(id string) (Review, bool) {
 	ul.mu.RLock()
 	defer ul.mu.RUnlock()
 	review, exists := ul.reviews[id]

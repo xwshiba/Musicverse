@@ -139,8 +139,6 @@ app.delete('/api/v1/session', (req, res) => {
 });
 
 app.get('/api/v1/userLibrary', (req, res) => {
-    // Session checks for these are very repetitive - a good place to abstract out
-
     // when users get to their account pages
     const { sid, username } = getSessionDetails(req);
 

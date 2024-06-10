@@ -14,10 +14,12 @@ import (
 )
 
 // Function to get Spotify token
-func GetSpotifyToken(w http.ResponseWriter, r *http.Request) {
+func HandleGetSpotifyToken(w http.ResponseWriter, r *http.Request) {
+
     clientID := os.Getenv("SPOTIFY_CLIENT_ID")
     clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
-    authTokenBody := "grant_type=client_credentials&client_id=" + clientID + "&client_secret=" + clientSecret
+    authTokenBody := "grant_type=client_credentials&client_id=" + 
+					 clientID + "&client_secret=" + clientSecret
 
 	// Create a new POST request
     req, err := http.NewRequest("POST", "https://accounts.spotify.com/api/token", strings.NewReader(authTokenBody))
@@ -67,18 +69,22 @@ func GetSpotifyToken(w http.ResponseWriter, r *http.Request) {
 }
 
 // Function to get session details
-func GetSessionDetails(w http.ResponseWriter, r *http.Request) {
-	_, username := helpers.GetSessionDetails(r)
-	if username == "" || !models.IsValidUsername(username) {
+func HandleGetSessionDetails(w http.ResponseWriter, r *http.Request) {
+    // Retrieve the username from the session using models.GetSessionUser
+    username := models.GetSessionUser(r)
+    if username == "" || !models.IsValidUsername(username) {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
-		return
-	}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"username": username})
+        return
+    }
+
+    // Respond with the username
+    response := map[string]string{"username": username}
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(response)
 }
 
 // Function to get album reviews, now taking albumReviews as a parameter
-func GetAlbumReviews(albumReviews *models.AlbumReviews) http.HandlerFunc {
+func HandleGetAlbumReviews(albumReviews *models.AlbumReviews) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         vars := mux.Vars(r)
         id := vars["id"]
@@ -89,12 +95,12 @@ func GetAlbumReviews(albumReviews *models.AlbumReviews) http.HandlerFunc {
 }
 
 // Function to create a new session
-func CreateSession(w http.ResponseWriter, r *http.Request) {
+func HandleCreateSession(w http.ResponseWriter, r *http.Request) {
 	var reqBody struct {
 		Username string `json:"username"`
 	}
 	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
-		helpers.SendError(w, http.StatusBadRequest, "required-username")
+		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
 		return
 	}
 	username := reqBody.Username
@@ -110,10 +116,7 @@ func CreateSession(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create session
-	session, _ := helpers.Store.Get(r, "session")
-	session.Values["username"] = username
-	session.Save(r, w)
-
+	models.AddSession(w, r, username)
 
 	// Initialize user data if not present
 	existingUserData := models.GetUserData(username)
@@ -130,18 +133,240 @@ func CreateSession(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func DeleteSession(w http.ResponseWriter, r *http.Request) {
-	_, username := helpers.GetSessionDetails(r)
+func HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
+	username := models.GetSessionUser(r)
 
 	// Clear session
-	session, _ := helpers.Store.Get(r, "session")
-	session.Options.MaxAge = -1
-	if err := session.Save(r, w); err != nil {
-		helpers.SendError(w, http.StatusInternalServerError, "internal-error")
-		return
-	}
+	models.DeleteSession(w, r)
 
 	// Return username
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(map[string]string{"username": username})
+}
+
+func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
+	username := models.GetSessionUser(r)
+
+	if username == "" {
+		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+		return
+	}
+
+	userData := models.GetUserData(username)
+
+	response := map[string]interface{}{
+		"albums":  userData.GetAlbums(),
+		"reviews": userData.GetReviews(),
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}
+
+func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
+	username := models.GetSessionUser(r)
+	log.Println("username: ", username)
+
+	if !models.IsValidUsername(username) {
+		log.Println("auth-missing")
+		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+		return
+	}
+
+	var albumInfo models.AlbumInfo
+	if err := json.NewDecoder(r.Body).Decode(&albumInfo); err != nil {
+		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
+		return
+	}
+
+	if albumInfo.ID == "" { // Assuming ID is a string and cannot be empty
+		helpers.SendError(w, http.StatusBadRequest, "required-info")
+		return
+	}
+
+	userLibrary := models.GetUserData(username)
+
+	id := userLibrary.AddAlbum(albumInfo)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(userLibrary.GetAlbum(id))
+}
+
+func HandleDeleteAlbum(w http.ResponseWriter, r *http.Request) {
+	username := models.GetSessionUser(r)
+
+	if !models.IsValidUsername(username) {
+		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+		return
+	}
+
+	vars := mux.Vars(r)
+	id := vars["id"]
+
+	userLibrary := models.GetUserData(username)
+	if userLibrary == nil {
+		helpers.SendError(w, http.StatusNotFound, "user-not-found")
+		return
+	}
+
+	exists := userLibrary.ContainsAlbum(id)
+	if exists {
+		userLibrary.DeleteAlbum(id)
+	}
+
+	responseMessage := map[string]string{
+        "message": func() string {
+            if exists {
+                return "Album deleted"
+            }
+            return "Your saved album did not exist in our records. Please try again."
+        }(),
+    }
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(responseMessage)
+}
+
+func HandleAddReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		username := models.GetSessionUser(r)
+
+		if !models.IsValidUsername(username) {
+			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+			return
+		}
+
+		var requestData struct {
+			Content          string             `json:"content"`
+			ReviewedAlbumInfo models.AlbumInfo  `json:"reviewedAlbumInfo"`
+		}
+
+		if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
+			helpers.SendError(w, http.StatusBadRequest, "invalid-request")
+			return
+		}
+
+		content := requestData.Content
+		reviewedAlbumInfo := requestData.ReviewedAlbumInfo
+
+		if content == "" || reviewedAlbumInfo.IsEmpty() { 
+			helpers.SendError(w, http.StatusBadRequest, "required-info")
+			return
+		}
+
+		if !models.IsValidReview(content) {
+			helpers.SendError(w, http.StatusBadRequest, "invalid-info")
+			return
+		}
+
+		userLibrary := models.GetUserData(username)
+		if userLibrary == nil {
+			helpers.SendError(w, http.StatusNotFound, "user-not-found")
+			return
+		}
+
+		_, exists := userLibrary.GetReviewByAlbum(reviewedAlbumInfo.ID)
+		if exists {
+			helpers.SendError(w, http.StatusBadRequest, "duplicate-review")
+			return
+		}
+
+		id := userLibrary.AddReview(content, reviewedAlbumInfo, username)
+
+		// then add to the global review data
+		addedReview, _ := userLibrary.GetReviewByID(id)
+		albumReviews.AddReview(reviewedAlbumInfo.ID, addedReview)
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(addedReview)
+	}
+}
+
+func HandleDeleteReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		username := models.GetSessionUser(r)
+
+		if !models.IsValidUsername(username) {
+			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+			return
+		}
+
+		vars := mux.Vars(r)
+		id := vars["id"]
+
+		userLibrary := models.GetUserData(username)
+		if userLibrary == nil {
+			helpers.SendError(w, http.StatusNotFound, "user-not-found")
+			return
+		}
+
+		exists := userLibrary.ContainsReview(id)
+		if exists {
+			toDeleteReview, _ := userLibrary.GetReviewByID(id)
+			userLibrary.DeleteReview(id)
+
+			// handle the global review data next
+			albumReviews.DeleteReview(toDeleteReview.AlbumInfo.ID, toDeleteReview.ID)
+		}
+
+		responseMessage := map[string]string{
+			"message": func() string {
+				if exists {
+					return "Review deleted"
+				}
+				return "Your review did not exist in our records. Please try again."
+			}(),
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(responseMessage)
+	}
+}
+
+func HandleUpdateReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		username := models.GetSessionUser(r)
+
+		if !models.IsValidUsername(username) {
+			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+			return
+		}
+
+		vars := mux.Vars(r)
+		id := vars["id"]
+
+		var requestData struct {
+			Content string `json:"content"`
+		}
+
+		err := json.NewDecoder(r.Body).Decode(&requestData)
+		if err != nil || requestData.Content == "" {
+			helpers.SendError(w, http.StatusBadRequest, "required-info")
+			return
+		}
+
+		if !models.IsValidReview(requestData.Content) {
+			helpers.SendError(w, http.StatusBadRequest, "invalid-request")
+			return
+		}
+
+		userLibrary := models.GetUserData(username)
+		if userLibrary == nil {
+			helpers.SendError(w, http.StatusNotFound, "user-not-found")
+			return
+		}
+
+		exists := userLibrary.ContainsReview(id)
+		if !exists {
+			helpers.SendError(w, http.StatusNotFound, "invalid-info")
+			return
+		}
+
+		userLibrary.UpdateReview(id, requestData.Content)
+
+		// handle the global review data next
+		patchedReview, _ := userLibrary.GetReviewByID(id)
+		albumReviews.UpdateReview(patchedReview.AlbumInfo.ID, patchedReview)
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(patchedReview)
+	}
 }

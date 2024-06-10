@@ -24,6 +24,7 @@ export enum SERVER {
     DUPLICATE_REVIEW = 'duplicate-review',
     TOKEN_ERROR = 'token-error',
     INTERNAL_ERROR = 'internal-error',
+    USER_NOT_FOUND = 'user-not-found',
 };
 
 export enum CLIENT {
@@ -47,6 +48,7 @@ export const MESSAGES = {
     [SERVER.DUPLICATE_REVIEW]: `You have already reviewed the album. We do not allow duplicate reviews. Please revise your review.`,
     [SERVER.TOKEN_ERROR]: `Our server is experiencing some issues. Please try again later.`,
     [SERVER.INTERNAL_ERROR]: `Our server is experiencing some issues. Please try again later.`,
+    [SERVER.USER_NOT_FOUND]: `Your account was not found. Please register through our website.`,
     ERROR: 'Something went wrong.  Please try again',
     default: 'Something went wrong.  Please try again',
 };

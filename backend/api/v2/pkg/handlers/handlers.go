@@ -24,7 +24,6 @@ func HandleGetSpotifyToken(w http.ResponseWriter, r *http.Request) {
 	// Create a new POST request
     req, err := http.NewRequest("POST", "https://accounts.spotify.com/api/token", strings.NewReader(authTokenBody))
     if err != nil {
-        log.Println("Failed to create request:", err)
         helpers.SendError(w, http.StatusInternalServerError, "internal-error")
         return
     }
@@ -35,7 +34,6 @@ func HandleGetSpotifyToken(w http.ResponseWriter, r *http.Request) {
     client := &http.Client{}
     resp, err := client.Do(req)
     if err != nil {
-        log.Println("Spotify server error:", err)
         helpers.SendError(w, http.StatusInternalServerError, "internal-error")
         return
     }
@@ -70,14 +68,26 @@ func HandleGetSpotifyToken(w http.ResponseWriter, r *http.Request) {
 
 // Function to get session details
 func HandleGetSessionDetails(w http.ResponseWriter, r *http.Request) {
-    // Retrieve the username from the session using models.GetSessionUser
-    username := models.GetSessionUser(r)
-    if username == "" || !models.IsValidUsername(username) {
-		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+    sid, username := helpers.GetSessionDetails(r)
+    log.Println("sid: ", sid)
+    log.Println("username: ", username)
+
+    if sid == "" || !models.IsValidUsername(username) {
+		// if sid is not empty, Clear the "sid" cookie
+		if sid != "" {
+			http.SetCookie(w, &http.Cookie{
+				Name:     "sid",
+				Value:    "",
+				Path:     "/",
+				SameSite: http.SameSiteNoneMode,
+				Secure:   true,
+				MaxAge:   -1,
+        })
+    }
+        helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
         return
     }
 
-    // Respond with the username
     response := map[string]string{"username": username}
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(response)
@@ -96,58 +106,86 @@ func HandleGetAlbumReviews(albumReviews *models.AlbumReviews) http.HandlerFunc {
 
 // Function to create a new session
 func HandleCreateSession(w http.ResponseWriter, r *http.Request) {
-	var reqBody struct {
-		Username string `json:"username"`
-	}
-	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
-		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
-		return
-	}
-	username := reqBody.Username
+    var reqBody struct {
+        Username string `json:"username"`
+    }
 
-	// Validate username
-	if !models.IsValidUsername(username) {
-		helpers.SendError(w, http.StatusBadRequest, "required-username")
-		return
-	}
-	if username == "dog" {
-		helpers.SendError(w, http.StatusForbidden, "auth-insufficient")
-		return
-	}
+    if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+        helpers.SendError(w, http.StatusBadRequest, "invalid-request")
+        return
+    }
 
-	// Create session
-	models.AddSession(w, r, username)
+    username := reqBody.Username
 
-	// Initialize user data if not present
-	existingUserData := models.GetUserData(username)
-	if existingUserData == nil {
-		models.AddUserData(username, models.NewUserLibrary())
-	}
+    // Validate username
+    if !models.IsValidUsername(username) {
+        helpers.SendError(w, http.StatusBadRequest, "required-username")
+        return
+    }
 
-	// Return user data
-	userData := models.GetUserData(username)
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"albums":  userData.GetAlbums(),
-		"reviews": userData.GetReviews(),
-	})
+    if username == "dog" {
+        helpers.SendError(w, http.StatusForbidden, "auth-insufficient")
+        return
+    }
+
+    // Create session
+    sessionID := models.AddSession(username)
+
+    // Initialize user data if not present
+    existingUserData := models.GetUserData(username)
+    if existingUserData == nil {
+        models.AddUserData(username, models.NewUserLibrary())
+    }
+
+    // Set the "sid" cookie in the response
+    http.SetCookie(w, &http.Cookie{
+        Name:     "sid",
+        Value:    sessionID,
+        Path:     "/", // Set the path to root to ensure consistency
+        SameSite: http.SameSiteNoneMode, // Ensures the cookie is sent for cross-site requests
+        Secure:   true, // Ensures the cookie is sent only over HTTPS
+        MaxAge:   3600, // Set the cookie to expire in 1 hour
+    })
+
+    // Return user data
+    userData := models.GetUserData(username)
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]interface{}{
+        "albums":  userData.GetAlbums(),
+        "reviews": userData.GetReviews(),
+    })
 }
 
 func HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
-	username := models.GetSessionUser(r)
+    sid, username := helpers.GetSessionDetails(r)
+    log.Println("in delete sid: ", sid)
+    log.Println("in delete username: ", username)
 
-	// Clear session
-	models.DeleteSession(w, r)
+    if sid != "" {
+        // Clear the "sid" cookie
+        http.SetCookie(w, &http.Cookie{
+            Name:     "sid",
+            Value:    "",
+            Path:     "/",
+            SameSite: http.SameSiteNoneMode,
+            Secure:   true,
+            MaxAge:   -1,
+        })
 
-	// Return username
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(map[string]string{"username": username})
+        // Delete the session data
+        models.DeleteSession(sid)
+    }
+
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]string{"username": username})
 }
 
 func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
-	username := models.GetSessionUser(r)
+	sid, username := helpers.GetSessionDetails(r)
+	log.Println("in user library sid: ", sid)
+    log.Println("in user library username: ", username)
 
-	if username == "" {
+	if sid == "" || username == "" {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 		return
 	}
@@ -163,20 +201,36 @@ func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
-	username := models.GetSessionUser(r)
+	sid, username := helpers.GetSessionDetails(r)
+	log.Println("in add album sid: ", sid)
+	log.Println("in add album username: ", username)
+
 	log.Println("username: ", username)
 
-	if !models.IsValidUsername(username) {
-		log.Println("auth-missing")
+	if sid == "" || !models.IsValidUsername(username) {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 		return
 	}
 
-	var albumInfo models.AlbumInfo
+	var reqBody struct {
+		albumInfo models.AlbumInfo  `json:"albumInfo"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
+		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
+		return
+	}
+
+	log.Println("reqBody: ", reqBody)
+
+	albumInfo := reqBody.albumInfo
+
 	if err := json.NewDecoder(r.Body).Decode(&albumInfo); err != nil {
 		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
 		return
 	}
+
+	log.Println("albumInfo: ", albumInfo)
 
 	if albumInfo.ID == "" { // Assuming ID is a string and cannot be empty
 		helpers.SendError(w, http.StatusBadRequest, "required-info")
@@ -191,9 +245,9 @@ func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleDeleteAlbum(w http.ResponseWriter, r *http.Request) {
-	username := models.GetSessionUser(r)
+	sid, username := helpers.GetSessionDetails(r)
 
-	if !models.IsValidUsername(username) {
+	if sid == "" || !models.IsValidUsername(username) {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 		return
 	}
@@ -227,9 +281,9 @@ func HandleDeleteAlbum(w http.ResponseWriter, r *http.Request) {
 
 func HandleAddReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		username := models.GetSessionUser(r)
+		sid, username := helpers.GetSessionDetails(r)
 
-		if !models.IsValidUsername(username) {
+		if sid == "" || !models.IsValidUsername(username) {
 			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 			return
 		}
@@ -282,9 +336,9 @@ func HandleAddReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 
 func HandleDeleteReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		username := models.GetSessionUser(r)
+		sid, username := helpers.GetSessionDetails(r)
 
-		if !models.IsValidUsername(username) {
+		if sid == "" || !models.IsValidUsername(username) {
 			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 			return
 		}
@@ -323,9 +377,9 @@ func HandleDeleteReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 
 func HandleUpdateReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		username := models.GetSessionUser(r)
+		sid, username := helpers.GetSessionDetails(r)
 
-		if !models.IsValidUsername(username) {
+		if sid == "" || !models.IsValidUsername(username) {
 			helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 			return
 		}

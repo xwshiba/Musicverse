@@ -71,7 +71,7 @@ func HandleGetSessionDetails(w http.ResponseWriter, r *http.Request) {
     sid, username := helpers.GetSessionDetails(r)
 
     if sid == "" || !models.IsValidUsername(username) {
-		// if sid is not empty, Clear the "sid" cookie
+		// if sid is unauthorized, clear the "sid" cookie
 		if sid != "" {
 			http.SetCookie(w, &http.Cookie{
 				Name:     "sid",
@@ -80,10 +80,11 @@ func HandleGetSessionDetails(w http.ResponseWriter, r *http.Request) {
 				SameSite: http.SameSiteNoneMode,
 				Secure:   true,
 				MaxAge:   -1,
-        })
-    }
-        helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
-        return
+			})
+    	}
+    
+		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
+    	return
     }
 
     response := map[string]string{"username": username}
@@ -197,8 +198,6 @@ func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
 func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 	sid, username := helpers.GetSessionDetails(r)
 
-	log.Println("in add album r.Body: ", r.Body)
-
 	if sid == "" || !models.IsValidUsername(username) {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
 		return
@@ -213,11 +212,7 @@ func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println("reqBody: ", reqBody)
-
 	albumInfo := reqBody.AlbumInfo
-
-	log.Println("albumInfo: ", albumInfo)
 
 	if albumInfo.ID == "" { // Assuming ID is a string and cannot be empty
 		helpers.SendError(w, http.StatusBadRequest, "required-info")
@@ -276,8 +271,8 @@ func HandleAddReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 		}
 
 		var requestData struct {
-			Content          string             `json:"content"`
-			ReviewedAlbumInfo models.AlbumInfo  `json:"reviewedAlbumInfo"`
+			Content          	string              `json:"content"`
+			ReviewedAlbumInfo 	models.AlbumInfo  	`json:"reviewedAlbumInfo"`
 		}
 
 		if err := json.NewDecoder(r.Body).Decode(&requestData); err != nil {
@@ -313,7 +308,11 @@ func HandleAddReview(albumReviews *models.AlbumReviews) http.HandlerFunc {
 		id := userLibrary.AddReview(content, reviewedAlbumInfo, username)
 
 		// then add to the global review data
-		addedReview, _ := userLibrary.GetReviewByID(id)
+		addedReview, exist := userLibrary.GetReviewByID(id)
+		if exist == false {
+			helpers.SendError(w, http.StatusInternalServerError, "internal-error")
+			return
+		}
 		albumReviews.AddReview(reviewedAlbumInfo.ID, addedReview)
 
 		w.Header().Set("Content-Type", "application/json")

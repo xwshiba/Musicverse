@@ -49,7 +49,7 @@ type Review struct {
 	ID        string    `json:"id"`
 	Content   string    `json:"content"`
 	Date      string    `json:"date"`
-	AlbumInfo AlbumInfo `json:"album_info"`
+	AlbumInfo AlbumInfo `json:"albumInfo"` // will need to revise later with front-end together, to follow naming convention
 	Username  string    `json:"username"`
 }
 
@@ -57,14 +57,12 @@ type UserLibrary struct {
 	albums  map[string]AlbumInfo
 	reviews map[string]Review
 	mu      sync.RWMutex
-	ar      *AlbumReviews
 }
 
 func NewUserLibrary() *UserLibrary {
 	return &UserLibrary{
 		albums:  make(map[string]AlbumInfo),
 		reviews: make(map[string]Review),
-		ar:	     ar,
 	}
 }
 
@@ -149,8 +147,7 @@ func (ul *UserLibrary) AddReview(content string, albumInfo AlbumInfo, username s
 func (ul *UserLibrary) DeleteReview(id string) {
 	ul.mu.Lock()
 	defer ul.mu.Unlock()
-	if review, exists := ul.reviews[id]; exists {
-		ul.ar.DeleteReview(review.AlbumInfo.ID, id)
+	if _, exists := ul.reviews[id]; exists {
 		delete(ul.reviews, id)
 	}
 }
@@ -162,6 +159,5 @@ func (ul *UserLibrary) UpdateReview(id, content string) {
 		review.Content = content
 		review.Date = time.Now().Format("2006-01-02")
 		ul.reviews[id] = review
-		ul.ar.UpdateReview(review.AlbumInfo.ID, review)
 	}
 }

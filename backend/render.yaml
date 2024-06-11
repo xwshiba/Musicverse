@@ -3,7 +3,7 @@ services:
     name: musicverse-backend
     env: docker
     plan: free
-    dockerfilePath: api/v2/Dockerfile
+    dockerfilePath: backend/api/v2/Dockerfile
     buildCommand: go build -o /app/server ./cmd/server/main.go
     startCommand: /app/server
     ports:

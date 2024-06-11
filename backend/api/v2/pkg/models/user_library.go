@@ -7,13 +7,33 @@ import (
 	"github.com/google/uuid"
 )
 
+type Track struct {
+	ID   			string 	`json:"id"`
+	Name 			string 	`json:"name"`
+	DurationMs 		int 	`json:"duration_ms"`
+}
+
+type TrackList struct {
+    Items 			[]Track 	`json:"items"`
+}
+
+type Artist struct {
+	ID  	string 			`json:"id"`
+	Name 	string 			`json:"name"`
+}
+
+type Image struct {
+	URL 	string `json:"url"`
+}
+
 type AlbumInfo struct {
-	ID          string   `json:"id"`
-	Name        string   `json:"name"`
-	Images      []string `json:"images"`
-	Artists     []string `json:"artists"`
-	ReleaseDate string   `json:"release_date"`
-	AlbumType   string   `json:"album_type"`
+	ID          string   	`json:"id"`
+	Name        string   	`json:"name"`
+	Images      []Image 	`json:"images"`
+	Artists     []Artist 	`json:"artists"`
+	ReleaseDate string   	`json:"release_date"`
+	AlbumType   string   	`json:"album_type"`
+	Tracks      *TrackList 	`json:"tracks,omitempty"` // Optional field
 }
 
 func (ai AlbumInfo) IsEmpty() bool {

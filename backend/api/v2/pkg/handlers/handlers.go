@@ -69,8 +69,6 @@ func HandleGetSpotifyToken(w http.ResponseWriter, r *http.Request) {
 // Function to get session details
 func HandleGetSessionDetails(w http.ResponseWriter, r *http.Request) {
     sid, username := helpers.GetSessionDetails(r)
-    log.Println("sid: ", sid)
-    log.Println("username: ", username)
 
     if sid == "" || !models.IsValidUsername(username) {
 		// if sid is not empty, Clear the "sid" cookie
@@ -158,8 +156,6 @@ func HandleCreateSession(w http.ResponseWriter, r *http.Request) {
 
 func HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
     sid, username := helpers.GetSessionDetails(r)
-    log.Println("in delete sid: ", sid)
-    log.Println("in delete username: ", username)
 
     if sid != "" {
         // Clear the "sid" cookie
@@ -182,8 +178,6 @@ func HandleDeleteSession(w http.ResponseWriter, r *http.Request) {
 
 func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
 	sid, username := helpers.GetSessionDetails(r)
-	log.Println("in user library sid: ", sid)
-    log.Println("in user library username: ", username)
 
 	if sid == "" || username == "" {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
@@ -202,10 +196,8 @@ func HandleGetUserLibrary(w http.ResponseWriter, r *http.Request) {
 
 func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 	sid, username := helpers.GetSessionDetails(r)
-	log.Println("in add album sid: ", sid)
-	log.Println("in add album username: ", username)
 
-	log.Println("username: ", username)
+	log.Println("in add album r.Body: ", r.Body)
 
 	if sid == "" || !models.IsValidUsername(username) {
 		helpers.SendError(w, http.StatusUnauthorized, "auth-missing")
@@ -213,7 +205,7 @@ func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var reqBody struct {
-		albumInfo models.AlbumInfo  `json:"albumInfo"`
+		AlbumInfo models.AlbumInfo  `json:"albumInfo"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&reqBody); err != nil {
@@ -223,12 +215,7 @@ func HandleAddAlbum(w http.ResponseWriter, r *http.Request) {
 
 	log.Println("reqBody: ", reqBody)
 
-	albumInfo := reqBody.albumInfo
-
-	if err := json.NewDecoder(r.Body).Decode(&albumInfo); err != nil {
-		helpers.SendError(w, http.StatusBadRequest, "invalid-request")
-		return
-	}
+	albumInfo := reqBody.AlbumInfo
 
 	log.Println("albumInfo: ", albumInfo)
 

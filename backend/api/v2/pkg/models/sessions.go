@@ -1,12 +1,9 @@
 package models
 
 import (
-    "log"
-    "os"
     "sync"
 
     "github.com/google/uuid"
-    "github.com/joho/godotenv"
 )
 
 var (
@@ -16,26 +13,12 @@ var (
 )
 
 func init() {
-    // Load environment variables from the .env file
-    if err := godotenv.Load(); err != nil {
-        log.Fatalf("Error loading .env file: %v", err)
-    }
-
-    // Load session secret key from environment variable
-    sessionSecretKey = os.Getenv("SESSION_SECRET")
-    log.Println("SESSION_SECRET:", sessionSecretKey) // Add this line to debug
-    if sessionSecretKey == "" {
-        panic("SESSION_SECRET environment variable not set")
-    }
-
     // Initialize the sessionStore map
     sessionStore = make(map[string]string)
 }
 
 // AddSession adds a new session with the given username and returns the session ID.
 func AddSession(username string) string {
-    log.Println("Session start adding", sessionStore)
-
     // Generate a unique session ID
     sessionID := uuid.New().String()
 
@@ -43,7 +26,6 @@ func AddSession(username string) string {
     mu.Lock()
     defer mu.Unlock()
     sessionStore[sessionID] = username
-    log.Println("Session added", sessionStore)
 
     return sessionID
 }
@@ -57,7 +39,6 @@ func GetSessionUser(sid string) string {
     // Retrieve the username from the session store
     username, ok := sessionStore[sid]
     if !ok {
-        log.Println("Session not found.")
         return ""
     }
 
@@ -66,10 +47,8 @@ func GetSessionUser(sid string) string {
 
 // DeleteSession deletes the session with the given session ID.
 func DeleteSession(sid string) {
-    log.Println("Session start deleting, sid: ", sid)
     // Delete the session ID from the sessionStore
     mu.Lock()
     defer mu.Unlock()
     delete(sessionStore, sid)
-    log.Println("Session deleted", sessionStore)
 }

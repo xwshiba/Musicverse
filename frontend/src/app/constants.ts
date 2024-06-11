@@ -25,6 +25,7 @@ export enum SERVER {
     TOKEN_ERROR = 'token-error',
     INTERNAL_ERROR = 'internal-error',
     USER_NOT_FOUND = 'user-not-found',
+    INVALID_REQUEST = 'invalid-request',
 };
 
 export enum CLIENT {
@@ -49,6 +50,7 @@ export const MESSAGES = {
     [SERVER.TOKEN_ERROR]: `Our server is experiencing some issues. Please try again later.`,
     [SERVER.INTERNAL_ERROR]: `Our server is experiencing some issues. Please try again later.`,
     [SERVER.USER_NOT_FOUND]: `Your account was not found. Please register through our website.`,
+    [SERVER.INVALID_REQUEST]: `Your request was invalid. Please try again.`,
     ERROR: 'Something went wrong.  Please try again',
     default: 'Something went wrong.  Please try again',
 };

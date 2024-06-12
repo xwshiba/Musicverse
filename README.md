@@ -14,13 +14,15 @@ Hope this site is enjoyable to you.
 
 The frontend of the project was bootstrapped with [Next.js](https://nextjs.org/) using React and TypeScript.
 
-The backend is using JavaScript. Future plan: TypeScript.
+The backend is using `go 1.22.3`.
 
 Some services are from [Spotify](https://spotify.com). The tokens format is included in the `.env.example` file.
 
-Please create / copy the `.env` file in this directory to start exploring the site.
+Please create / copy the `.env` files in both `frontend/` and `backend/` directory, following the `.env.example` format to start exploring the site.
 
-The code is runnable with `yarn install`; `yarn build`; `yarn start` in project directory root.
+Build mode: the code is runnable with `yarn install`; `yarn build`; `yarn start` in project directory root.
+
+Dev mode: Please install `go 1.22.3` accordingly if you would like to access the dev mode. Then, run `yarn install`; `yarn dev` in project directory root.
 
 ### Security
 
@@ -37,11 +39,12 @@ The code is runnable with `yarn install`; `yarn build`; `yarn start` in project 
         - search functions will be accessible to the public. Spotify will handle the security concerns.
 
 ### File Structure
-- `/src` contains the frontend resources.
+- `frontend/src/app` contains the frontend resources.
     - `/components` contains the React components.
-    - `/pages` contains the site pages. The app is NOT expected to handle the Back button or maintaining the current frontend state on page reload/refresh.
-    - `/css` contains all the css files. css is using BEM style.
-- `/` root folder contains the backend resources.
+    - `page.tsx` contains the site pages. The app is NOT expected to handle the Back button or maintaining the current frontend state on page reload/refresh.
+    - `/css` contains all the css files. css is using BEM style. Mobile version is not supported right now.
+- `backend/api/v1` folder contains the deprecated JavaScript backend APIs.
+- `backend/api/v2` folder contains the current Go backend APIs.
 
 ### License
 
@@ -74,6 +77,7 @@ There's always room for improvements. I am listing them here for my own document
     - ~~Switch CRA to Next.js for better support~~
     - ~~Revise front-end from JavaScript / JSX to TypeScript / TSX for type security~~
     - ~~Deploy the app to be live on web~~
-    - Revise back-end from JavaScript to Python / Go for more powerful oop support
+    - ~~Revise back-end from JavaScript to Python / Go for more powerful oop support~~
+    - Backend to incorporate gorilla/sessions instead of current manual session management
     - Add tests to reduce manual and repeated testing efforts
     - Change from CSS to SASS or SCSS

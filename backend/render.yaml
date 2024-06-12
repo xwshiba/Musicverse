@@ -4,7 +4,7 @@ services:
     env: docker
     plan: free
     dockerfilePath: backend/api/v2/Dockerfile
-    buildCommand: go build -o /app/server ./cmd/server/main.go
-    startCommand: /app/server
+    buildCommand: go build -o server ./cmd/server/main.go
+    startCommand: ./server
     ports:
       - 8080

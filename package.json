@@ -8,13 +8,12 @@
     ],
     "scripts": {
         "start:frontend": "yarn workspace musicverse-frontend start",
-        "start:backend": "yarn workspace musicverse-backend start",
         "dev:frontend": "yarn workspace musicverse-frontend dev",
         "dev:backend": "./start-backend.sh",
         "build:frontend": "yarn workspace musicverse-frontend build",
-        "build:backend": "echo 'No build step for backend'",
-        "start": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
-        "build": "yarn build:frontend && yarn build:backend"
+        "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
+        "start": "yarn start:frontend",
+        "build": "yarn build:frontend"
     },
     "devDependencies": {
         "concurrently": "^7.2.1"

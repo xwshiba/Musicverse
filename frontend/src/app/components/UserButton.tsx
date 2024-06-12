@@ -49,7 +49,7 @@ function UserButton({ username, setPage, onLogout } : UserButtonProps) {
                 className="navbar__subheader btn">
                 {username}
             </a>
-            <span className="navbar__icon gg-arrow-down-r"></span>
+            <span className="navbar__icon gg-chevron-down"></span>
             <Submenu isSubmenuOpen={isSubmenuOpen} navigateAndClose={navigateAndClose} onLogout={onLogout} />
         </li>
     );

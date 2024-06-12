@@ -42,3 +42,7 @@
     transform-origin: top;
     transform: rotateX(0deg);
 }
+
+.submenu__item {
+    margin: 0.4rem 0;
+}

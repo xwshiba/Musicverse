@@ -13,7 +13,7 @@ import {
 } from "./types";
 
 // variables
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v2';
 const headers = {
     'content-type': 'application/json',
 };
@@ -67,6 +67,8 @@ export async function fetchLogin(username : string):Promise<ServerUserLibrary> {
 export async function fetchLogout(): Promise<{ username: string }> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
+        headers,
+        credentials: 'include',
     };
     return fetchRequest<{ username: string }>(`${apiBaseUrl}/session`, options);
 };
@@ -93,6 +95,8 @@ export async function fetchSaveAlbum(albumInfo : ServerAlbumInfo) : Promise<Serv
 export async function fetchDeleteAlbum(id : string): Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
+        headers,
+        credentials: 'include',
     };
     return fetchRequest<ServerDeleteResponse>(`${apiBaseUrl}/userLibrary/albums/${id}`, options);
 };
@@ -110,6 +114,8 @@ export async function fetchAddReview(content : string, reviewedAlbumInfo : Serve
 export async function fetchDeleteReview(id : string) : Promise<ServerDeleteResponse> {
     const options: FetchRequestOptions = {
         method: 'DELETE',
+        headers,
+        credentials: 'include',
     };
     return fetchRequest<ServerDeleteResponse>(`${apiBaseUrl}/userLibrary/reviews/${id}`, options);
 };

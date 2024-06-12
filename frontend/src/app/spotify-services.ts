@@ -4,7 +4,7 @@
 import { FetchRequestOptions, FetchError, SpotifyAuthTokenResponse, SpotifyAlbumTracks, SpotifySearch } from './types';
 
 const spotifyBaseUrl = 'https://api.spotify.com/v1';
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v1';
+const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || '/api/v2';
 
 
 // params required by Spotify

@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: musicverse-backend
+    env: docker
+    plan: free
+    dockerfilePath: backend/api/v2/Dockerfile
+    buildCommand: go build -o server ./cmd/server/main.go
+    startCommand: ./server
+    ports:
+      - 8080

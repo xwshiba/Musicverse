@@ -10,8 +10,8 @@ const PORT = process.env.PORT || 4000;
 
 // Use CORS middleware to allow requests from your frontend
 const corsOptions = {
-    origin: process.env.FRONT_END_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    origin: process.env.FRONT_END_URL || 'http://localhost:4000',
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // Allow credentials (cookies, etc.) to be included
 };
@@ -69,14 +69,14 @@ app.get('/api/v1/spotify-token', async (req, res) => {
         });
 
         if (!response.ok) {
-            sendError(res, response.status, 'Failed to fetch Spotify token');
+            sendError(res, response.status, 'token-error');
             return;
         };
 
         const data = await response.json();
         res.json(data);
     } catch (error) {
-        sendError(res, 500, 'Internal Server Error');
+        sendError(res, 500, 'internal-error');
     }
 });
 
@@ -139,8 +139,6 @@ app.delete('/api/v1/session', (req, res) => {
 });
 
 app.get('/api/v1/userLibrary', (req, res) => {
-    // Session checks for these are very repetitive - a good place to abstract out
-
     // when users get to their account pages
     const { sid, username } = getSessionDetails(req);
 

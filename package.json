@@ -1,6 +1,6 @@
 {
     "name": "musicverse",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "private": true,
     "workspaces": [
         "frontend",
@@ -8,13 +8,14 @@
     ],
     "scripts": {
         "start:frontend": "yarn workspace musicverse-frontend start",
-        "start:backend": "yarn workspace musicverse-backend start",
+        "start:backend": "./start-backend.sh",
         "dev:frontend": "yarn workspace musicverse-frontend dev",
-        "dev:backend": "yarn workspace musicverse-backend start",
+        "dev:backend": "./dev-start-backend.sh",
         "build:frontend": "yarn workspace musicverse-frontend build",
-        "build:backend": "echo 'No build step for backend'",
-        "start": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
-        "build": "yarn build:frontend && yarn build:backend"
+        "build:backend": "./build-backend.sh",
+        "dev": "concurrently \"yarn dev:frontend\" \"yarn dev:backend\"",
+        "start": "concurrently \"yarn start:frontend\" \"yarn start:backend\"",
+        "build": "concurrently \"yarn build:frontend\" \"yarn build:backend\""
     },
     "devDependencies": {
         "concurrently": "^7.2.1"
